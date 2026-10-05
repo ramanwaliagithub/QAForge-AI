@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Secrets
+.env
+
+# Test artifacts
+allure-results/
+allure-report/
+test-results/
+traces/
+playwright-report/
+
+# Eval/redteam raw outputs (curated results live in reports/ and evals/results/)
+reports/tmp/
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
