@@ -21,4 +21,4 @@ uv run pytest -q
 
 ## Status
 
-Day 1 of 60: repo and environment.
+Day 2 of 60: Playwright + pytest baseline.

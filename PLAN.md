@@ -85,10 +85,10 @@ qaforge-ai/
 - Commit: `chore: init repo, venv, plan`
 
 ### Day 2: Playwright + pytest baseline
-- [ ] `playwright install`, write first test against ParaBank login page
-- [ ] Add `conftest.py` with browser/page fixtures
-- [ ] Configure `pytest.ini` (markers: smoke, ai, eval, redteam)
-- [ ] Run headed and headless, note differences
+- [x] `playwright install`, write first test against ParaBank login page
+- [x] Add `conftest.py` with browser/page fixtures
+- [x] Configure `pytest.ini` (markers: smoke, ai, eval, redteam)
+- [x] Run headed and headless, note differences
 - Commit: `test: first playwright test on ParaBank`
 
 ### Day 3: Page objects and structure
