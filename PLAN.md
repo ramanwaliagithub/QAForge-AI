@@ -12,7 +12,7 @@
 
 ## Ground rules
 
-1. One day = one commit minimum. Use the commit message given for each day (or improve it).
+1. One day = one commit minimum, but prefer several small, logical commits per day (one per task or feature) for a clean history. The commit message listed for a day is used for the final/summary commit.
 2. Notes go in `docs/notes/dayNN.md` (3-5 lines: what I learned, what broke).
 3. If a day overruns, finish it tomorrow and shift the plan. Never skip the commit.
 4. Everything uses free/open-source tools. Local LLMs via **Ollama** (no API cost). A paid API key is optional.
@@ -30,6 +30,7 @@ Critical decisions are asked before building and recorded here.
 | 2026-10-07 | Test user for account tests | **Fresh user per run** | Registered in a session fixture with a unique username; each xdist worker registers its own |
 | 2026-10-07 | Playwright fixtures | **Own fixtures**, not the pytest-playwright plugin | Keeps control and avoids name clashes; revisit if the plugin's tracing/screenshot options are wanted |
 | 2026-10-06 | Git identity | `Raman Walia <walia.raman89@gmail.com>` | Set in repo-local git config |
+| 2026-10-07 | Commit granularity | **Multiple small commits per day** | One per task where practical, each passing tests; push at end of day |
 | 2026-10-05 | Remote | `https://github.com/ramanwaliagithub/QAForge-AI.git` | |
 
 ## Open-source stack
