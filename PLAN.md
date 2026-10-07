@@ -27,6 +27,9 @@ Critical decisions are asked before building and recorded here.
 | 2026-10-05 | Env tooling | **uv** (not plain venv+pip) | Installed via Homebrew; `uv sync`, `uv add`, `uv run`. Python 3.11 |
 | 2026-10-05 | License | **Deferred** to Day 59 | |
 | 2026-10-05 | Git workflow | **Branch per phase**, push daily to that branch, merge to `main` when the phase is complete | Branches: `phase-1-foundations`, `phase-2-ai-testgen`, ... Tag releases on `main` |
+| 2026-10-07 | Test user for account tests | **Fresh user per run** | Registered in a session fixture with a unique username; each xdist worker registers its own |
+| 2026-10-07 | Playwright fixtures | **Own fixtures**, not the pytest-playwright plugin | Keeps control and avoids name clashes; revisit if the plugin's tracing/screenshot options are wanted |
+| 2026-10-06 | Git identity | `Raman Walia <walia.raman89@gmail.com>` | Set in repo-local git config |
 | 2026-10-05 | Remote | `https://github.com/ramanwaliagithub/QAForge-AI.git` | |
 
 ## Open-source stack
@@ -92,10 +95,10 @@ qaforge-ai/
 - Commit: `test: first playwright test on ParaBank`
 
 ### Day 3: Page objects and structure
-- [ ] Create `framework/pages/` with LoginPage and AccountsPage
-- [ ] Add a base page with wait/click helpers
-- [ ] Write 3 tests using the page objects (login valid/invalid, open account)
-- [ ] Add pytest-xdist and run in parallel
+- [x] Create `framework/pages/` with LoginPage and AccountsPage
+- [x] Add a base page with wait/click helpers
+- [x] Write 3 tests using the page objects (login valid/invalid, open account)
+- [x] Add pytest-xdist and run in parallel
 - Commit: `feat: page object layer and parallel run`
 
 ### Day 4: Reporting and logging

@@ -21,4 +21,4 @@ uv run pytest -q
 
 ## Status
 
-Day 2 of 60: Playwright + pytest baseline.
+Day 3 of 60: page objects and parallel runs.
