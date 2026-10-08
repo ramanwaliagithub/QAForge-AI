@@ -1,6 +1,9 @@
 import os
+import re
 import uuid
+from pathlib import Path
 
+import allure
 import pytest
 from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
@@ -31,11 +34,34 @@ def browser(request):
         browser.close()
 
 
+@pytest.hookimpl(hookwrapper=True, tryfirst=True)
+def pytest_runtest_makereport(item, call):
+    """Expose each phase's report on the item so fixtures can see if the test failed."""
+    outcome = yield
+    setattr(item, f"rep_{call.when}", outcome.get_result())
+
+
+ARTIFACTS_DIR = Path("test-results")
+
+
 @pytest.fixture
-def page(browser):
+def page(browser, request):
     context = browser.new_context()
+    context.tracing.start(screenshots=True, snapshots=True, sources=False)
     page = context.new_page()
     yield page
+    failed = getattr(request.node, "rep_call", None) and request.node.rep_call.failed
+    if failed:
+        name = re.sub(r"[^\w.-]+", "_", request.node.nodeid)
+        ARTIFACTS_DIR.mkdir(exist_ok=True)
+        shot = page.screenshot(full_page=True)
+        (ARTIFACTS_DIR / f"{name}.png").write_bytes(shot)
+        allure.attach(shot, name="screenshot", attachment_type=allure.attachment_type.PNG)
+        trace_path = ARTIFACTS_DIR / f"{name}.zip"
+        context.tracing.stop(path=str(trace_path))
+        allure.attach.file(str(trace_path), name="trace.zip", extension="zip")
+    else:
+        context.tracing.stop()
     context.close()
 
 
