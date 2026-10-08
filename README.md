@@ -22,3 +22,12 @@ uv run pytest -q
 ## Status
 
 Day 3 of 60: page objects and parallel runs.
+
+## Reports
+
+```bash
+uv run pytest -n 3                                  # writes allure-results/
+allure generate allure-results -o allure-report --clean
+allure open allure-report
+```
+Requires the Allure CLI (`brew install allure`).
