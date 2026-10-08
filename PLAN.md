@@ -103,10 +103,10 @@ qaforge-ai/
 - Commit: `feat: page object layer and parallel run`
 
 ### Day 4: Reporting and logging
-- [ ] Add allure-pytest, generate a report
-- [ ] Screenshot and trace on failure via conftest hook
-- [ ] Add structured logging helper
-- [ ] Save sample report screenshot to `docs/`
+- [x] Add allure-pytest, generate a report
+- [x] Screenshot and trace on failure via conftest hook
+- [x] Add structured logging helper
+- [x] Save sample report screenshot to `docs/`
 - Commit: `feat: allure reporting, failure artifacts`
 
 ### Day 5: Local LLM setup

@@ -21,7 +21,7 @@ uv run pytest -q
 
 ## Status
 
-Day 3 of 60: page objects and parallel runs.
+Day 4 of 60: reporting and logging.
 
 ## Reports
 
