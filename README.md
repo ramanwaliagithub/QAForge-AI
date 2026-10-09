@@ -21,7 +21,7 @@ uv run pytest -q
 
 ## Status
 
-Day 4 of 60: reporting and logging.
+Day 5 of 60: local LLM setup (Phase 1 complete).
 
 ## Reports
 
@@ -31,3 +31,11 @@ allure generate allure-results -o allure-report --clean
 allure open allure-report
 ```
 Requires the Allure CLI (`brew install allure`).
+
+## Local LLM
+
+```bash
+brew install ollama && ollama serve        # in another terminal
+ollama pull llama3.1:8b && ollama pull nomic-embed-text
+uv run python -m scripts.llm_hello
+```

@@ -1,4 +1,4 @@
-"""Smoke-check the local model and compare temperatures: `uv run python scripts/llm_hello.py`."""
+"""Smoke-check the local model and compare temperatures: `uv run python -m scripts.llm_hello`."""
 from dotenv import load_dotenv
 
 from framework.llm_client import get_client

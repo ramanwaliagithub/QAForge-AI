@@ -31,6 +31,7 @@ Critical decisions are asked before building and recorded here.
 | 2026-10-07 | Playwright fixtures | **Own fixtures**, not the pytest-playwright plugin | Keeps control and avoids name clashes; revisit if the plugin's tracing/screenshot options are wanted |
 | 2026-10-06 | Git identity | `Raman Walia <walia.raman89@gmail.com>` | Set in repo-local git config |
 | 2026-10-07 | Commit granularity | **Multiple small commits per day** | One per task where practical, each passing tests; push at end of day |
+| 2026-10-09 | Local model | **llama3.1:8b** + nomic-embed-text | Default from plan; swap via `OLLAMA_MODEL` |
 | 2026-10-05 | Remote | `https://github.com/ramanwaliagithub/QAForge-AI.git` | |
 
 ## Open-source stack
@@ -110,10 +111,10 @@ qaforge-ai/
 - Commit: `feat: allure reporting, failure artifacts`
 
 ### Day 5: Local LLM setup
-- [ ] Install Ollama, pull `llama3.1:8b` (or `qwen2.5:7b`) and `nomic-embed-text`
-- [ ] Call the model from Python (`ollama` package), print a response
-- [ ] Learn: temperature, system prompt, context window (write 5 lines in notes)
-- [ ] Create `framework/llm_client.py` wrapper (swap-able for a hosted API later)
+- [x] Install Ollama, pull `llama3.1:8b` (or `qwen2.5:7b`) and `nomic-embed-text`
+- [x] Call the model from Python (`ollama` package), print a response
+- [x] Learn: temperature, system prompt, context window (write 5 lines in notes)
+- [x] Create `framework/llm_client.py` wrapper (swap-able for a hosted API later)
 - Commit: `feat: ollama client wrapper`
 
 ---
