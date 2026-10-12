@@ -6,11 +6,14 @@ from pathlib import Path
 import allure
 import pytest
 from dotenv import load_dotenv
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import expect, sync_playwright
 
 from framework.pages import LoginPage, RegisterPage
 
 load_dotenv()
+
+# The shared public ParaBank demo is sometimes slow; Playwright's 5s default caused flaky failures.
+expect.set_options(timeout=int(os.getenv("EXPECT_TIMEOUT_MS", "10000")))
 
 
 def pytest_addoption(parser):
