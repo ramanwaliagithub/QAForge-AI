@@ -122,10 +122,10 @@ qaforge-ai/
 # PHASE 2: AI Test Generation and Self-Healing (Days 6-17)
 
 ### Day 6: Prompting for test cases
-- [ ] Write a prompt that turns a user story into test scenarios (Given/When/Then)
-- [ ] Run it on 3 ParaBank stories (transfer funds, bill pay, open account)
-- [ ] Compare outputs across temperatures 0 and 0.8
-- [ ] Save prompts in `ai_testgen/prompts/`
+- [x] Write a prompt that turns a user story into test scenarios (Given/When/Then)
+- [x] Run it on 3 ParaBank stories (transfer funds, bill pay, open account)
+- [x] Compare outputs across temperatures 0 and 0.8
+- [x] Save prompts in `ai_testgen/prompts/`
 - Commit: `feat: prompt templates for scenario generation`
 
 ### Day 7: Structured outputs

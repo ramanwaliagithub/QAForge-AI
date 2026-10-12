@@ -21,7 +21,7 @@ uv run pytest -q
 
 ## Status
 
-Day 5 of 60: local LLM setup (Phase 1 complete).
+Day 6 of 60: prompts for test scenario generation (Phase 2).
 
 ## Reports
 
