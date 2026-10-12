@@ -6,6 +6,7 @@ from framework.llm_client import LLMClient, LLMResponse
 
 PROMPTS_DIR = Path(__file__).parent / "prompts"
 STORIES_DIR = Path(__file__).parent / "stories"
+OUTPUTS_DIR = Path(__file__).parent / "outputs"
 
 
 @dataclass
@@ -37,4 +38,5 @@ def generate_scenarios(client: LLMClient, story: Story, temperature: float = 0.0
 
 
 def count_scenarios(text: str) -> int:
-    return sum(1 for ln in text.splitlines() if ln.strip().lower().startswith("scenario:"))
+    """Count scenario headers, tolerating markdown decoration such as `**Scenario:**` or `### Scenario:`."""
+    return sum(1 for ln in text.splitlines() if ln.strip().lstrip("#*_ ").lower().startswith("scenario:"))

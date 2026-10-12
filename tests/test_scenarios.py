@@ -26,6 +26,10 @@ def test_count_scenarios():
     assert count_scenarios("Scenario: a\nGiven x\n\nscenario: b\nGiven y") == 2
 
 
+def test_count_scenarios_tolerates_markdown():
+    assert count_scenarios("Here you go:\n**Scenario: a**\n### Scenario: b\nNot a scenario: c") == 2
+
+
 class FakeClient:
     def generate(self, prompt, *, temperature=0.0, **kw):
         self.prompt, self.temperature = prompt, temperature
