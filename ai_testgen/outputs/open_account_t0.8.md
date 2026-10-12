@@ -1,38 +1,31 @@
-Here are the test scenarios for the user story:
-
-**Scenario: Open New Account - Happy Path**
+Scenario: Open Checking Account
 Type: happy
 Priority: high
-Given I am a logged-in customer with a valid account (Account A)
-And I have a funding account (Account B) with sufficient balance
-And I am on the Open New Account page
-When I select the account type as CHECKING
-And I select Account B as the funding account
-And I enter the initial deposit amount as 1000
-And I click the Submit button
-Then I see the success message "Account Opened!" with the new account number
-And the new account appears in Accounts Overview with the correct account type and balance
+Given the user is logged in to the ParaBank web application
+And the user navigates to the Open New Account page
+And the user selects CHECKING as the account type
+And the user selects a valid funding account with a sufficient balance
+When the user submits the Open New Account form
+Then an "Account Opened!" message is shown with the new account number
+And the new checking account appears in the Accounts Overview page
+And the funding account balance decreases by the initial deposit amount
 
-**Scenario: Open New Account - No Funding Account Selected**
+Scenario: No Funding Account Selected
 Type: negative
 Priority: medium
-Given I am a logged-in customer with a valid account (Account A)
-And I am on the Open New Account page
-And I select the account type as CHECKING
-And I leave the funding account field blank
-When I click the Submit button
-Then I see the error message "Please select a funding account"
-And the funding account field is highlighted as an error
+Given the user is logged in to the ParaBank web application
+And the user navigates to the Open New Account page
+And the user selects CHECKING as the account type
+And the user does not select a funding account
+When the user submits the Open New Account form
+Then an error message is shown
 
-**Scenario: Open New Account - Insufficient Balance**
+Scenario: Insufficient Funding Account Balance
 Type: negative
-Priority: medium
-Given I am a logged-in customer with a valid account (Account A)
-And I am on the Open New Account page
-And I have a funding account (Account B) with insufficient balance
-And I select Account B as the funding account
-When I select the account type as CHECKING
-And I enter the initial deposit amount as 1000
-And I click the Submit button
-Then I see the error message "Insufficient balance in the funding account"
-And the funding account field is highlighted as an error
+Priority: high
+Given the user is logged in to the ParaBank web application
+And the user navigates to the Open New Account page
+And the user selects CHECKING as the account type
+And the user selects a funding account with an insufficient balance
+When the user submits the Open New Account form
+Then an error message is shown

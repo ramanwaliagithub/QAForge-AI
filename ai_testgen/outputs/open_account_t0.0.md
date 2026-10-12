@@ -1,49 +1,42 @@
-Here are the test scenarios:
-
-**Scenario: Open New Account Page**
+Scenario: Open New Checking Account
 Type: happy
 Priority: high
-Given I am logged in to ParaBank as a customer with a valid account
-When I navigate to the Open New Account page
-Then the page displays an account type dropdown with options CHECKING and SAVINGS
-And the page displays a funding account dropdown with my existing accounts
+Given the user is logged in and on the Accounts Overview page
+When the user clicks the "Open New Account" button and selects CHECKING as the account type
+And the user selects an existing account as the funding account
+And the user enters an initial deposit amount of 100
+When the user clicks the "Open Account" button
+Then an error message is shown
+And the new account number is displayed on the page
+And the new account appears in the Accounts Overview list
 
-**Scenario: Successful Account Opening**
-Type: happy
-Priority: high
-Given I am logged in to ParaBank as a customer with a valid account
-And I have selected a funding account with sufficient balance
-When I select an account type and submit the form with the required initial deposit
-Then the page displays "Account Opened!" with the new account number
-And the new account appears in my Accounts Overview
-
-**Scenario: Insufficient Funding**
-Type: negative
-Priority: high
-Given I am logged in to ParaBank as a customer with a valid account
-And I have selected a funding account with insufficient balance
-When I select an account type and submit the form with the required initial deposit
-Then the page displays an error message "Insufficient funds in funding account"
-
-**Scenario: Invalid Initial Deposit**
+Scenario: Open New Account with Insufficient Funds
 Type: negative
 Priority: medium
-Given I am logged in to ParaBank as a customer with a valid account
-And I have selected a funding account with sufficient balance
-When I select an account type and submit the form with an invalid initial deposit (e.g. negative number)
-Then the page displays an error message "Invalid initial deposit amount"
+Given the user is logged in and on the Accounts Overview page
+When the user clicks the "Open New Account" button and selects CHECKING as the account type
+And the user selects an existing account as the funding account with a balance of 0
+And the user enters an initial deposit amount of 100
+When the user clicks the "Open Account" button
+Then an error message is shown
+And the account balance is not updated
 
-**Scenario: No Funding Account Selected**
+Scenario: Open New Account with Invalid Funding Account
 Type: negative
 Priority: medium
-Given I am logged in to ParaBank as a customer with a valid account
-When I navigate to the Open New Account page
-Then the page displays an error message "Please select a funding account"
+Given the user is logged in and on the Accounts Overview page
+When the user clicks the "Open New Account" button and selects CHECKING as the account type
+And the user selects an account that does not exist as the funding account
+And the user enters an initial deposit amount of 100
+When the user clicks the "Open Account" button
+Then an error message is shown
 
-**Scenario: Edge Case - Zero Initial Deposit**
+Scenario: Open New Account with Zero Initial Deposit
 Type: edge
 Priority: low
-Given I am logged in to ParaBank as a customer with a valid account
-And I have selected a funding account with sufficient balance
-When I select an account type and submit the form with an initial deposit of $0
-Then the page displays an error message "Initial deposit must be greater than $0"
+Given the user is logged in and on the Accounts Overview page
+When the user clicks the "Open New Account" button and selects CHECKING as the account type
+And the user selects an existing account as the funding account
+And the user enters an initial deposit amount of 0
+When the user clicks the "Open Account" button
+Then an error message is shown

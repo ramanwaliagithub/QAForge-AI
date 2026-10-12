@@ -1,36 +1,41 @@
-Here are the test scenarios in Given/When/Then format:
-
-**Scenario: Successful Transfer**
+Scenario: Transfer Funds - Happy Path
 Type: happy
 Priority: high
-Given I am logged in to my ParaBank account and have two valid accounts, "Account 123" and "Account 456", both with sufficient balance.
-When I navigate to the Transfer Funds page, select "Account 123" as the "from" account and "Account 456" as the "to" account, and enter a positive amount of $100.00.
-Then the Transfer Funds page displays "Transfer Complete!" with the amount "$100.00" and both account IDs ("123" and "456").
+Given the user is logged in to ParaBank and has two accounts: an account with a balance of 100 and another account with a balance of 500.
+When the user clicks on the "Transfer Funds" button and navigates to the Transfer Funds page.
+Then the Transfer Funds page asks for an amount, a "from" account, and a "to" account.
+And the user enters 50 in the amount field, selects the account with a balance of 100 as the "from" account, and selects the account with a balance of 500 as the "to" account.
+And when the user clicks the "Transfer" button.
+Then the user sees "Transfer Complete!" with the amount 50 and both account ids.
+And the account with a balance of 100 has a balance of 50 and the account with a balance of 500 has a balance of 550.
 
-**Scenario: Invalid Transfer Amount (Negative)**
+Scenario: Transfer Funds - Negative - Invalid Amount
 Type: negative
-Priority: medium
-Given I am logged in to my ParaBank account and have two valid accounts, "Account 123" and "Account 456", both with sufficient balance.
-When I navigate to the Transfer Funds page, select "Account 123" as the "from" account and "Account 456" as the "to" account, and enter a negative amount of -$100.00.
-Then the Transfer Funds page displays an error message "Invalid amount. Please enter a positive number."
+Priority: high
+Given the user is logged in to ParaBank and has two accounts: an account with a balance of 100 and another account with a balance of 500.
+When the user clicks on the "Transfer Funds" button and navigates to the Transfer Funds page.
+Then the Transfer Funds page asks for an amount, a "from" account, and a "to" account.
+And the user enters -50 in the amount field, selects the account with a balance of 100 as the "from" account, and selects the account with a balance of 500 as the "to" account.
+And when the user clicks the "Transfer" button.
+Then an error message is shown.
 
-**Scenario: Invalid Transfer Amount (Boundary)**
+Scenario: Transfer Funds - Negative - Insufficient Balance
+Type: negative
+Priority: high
+Given the user is logged in to ParaBank and has two accounts: an account with a balance of 0 and another account with a balance of 500.
+When the user clicks on the "Transfer Funds" button and navigates to the Transfer Funds page.
+Then the Transfer Funds page asks for an amount, a "from" account, and a "to" account.
+And the user enters 50 in the amount field, selects the account with a balance of 0 as the "from" account, and selects the account with a balance of 500 as the "to" account.
+And when the user clicks the "Transfer" button.
+Then an error message is shown.
+
+Scenario: Transfer Funds - Edge - Minimum Transfer Amount
 Type: edge
 Priority: medium
-Given I am logged in to my ParaBank account and have two valid accounts, "Account 123" and "Account 456", both with sufficient balance.
-When I navigate to the Transfer Funds page, select "Account 123" as the "from" account and "Account 456" as the "to" account, and enter an amount of $0.00.
-Then the Transfer Funds page displays an error message "Invalid amount. Please enter a positive number."
-
-**Scenario: Invalid "To" Account (Negative)**
-Type: negative
-Priority: medium
-Given I am logged in to my ParaBank account and have two valid accounts, "Account 123" and "Account 456", both with sufficient balance.
-When I navigate to the Transfer Funds page, select "Account 123" as the "from" account and an invalid account "Account 999" as the "to" account, and enter a positive amount of $100.00.
-Then the Transfer Funds page displays an error message "Invalid account. Please select a valid account."
-
-**Scenario: Invalid "From" Account (Negative)**
-Type: negative
-Priority: medium
-Given I am logged in to my ParaBank account and have two valid accounts, "Account 123" and "Account 456", both with sufficient balance.
-When I navigate to the Transfer Funds page, select an invalid account "Account 999" as the "from" account and "Account 456" as the "to" account, and enter a positive amount of $100.00.
-Then the Transfer Funds page displays an error message "Invalid account. Please select a valid account."
+Given the user is logged in to ParaBank and has two accounts: an account with a balance of 100 and another account with a balance of 500.
+When the user clicks on the "Transfer Funds" button and navigates to the Transfer Funds page.
+Then the Transfer Funds page asks for an amount, a "from" account, and a "to" account.
+And the user enters 0.01 in the amount field, selects the account with a balance of 100 as the "from" account, and selects the account with a balance of 500 as the "to" account.
+And when the user clicks the "Transfer" button.
+Then the user sees "Transfer Complete!" with the amount 0.01 and both account ids.
+And the account with a balance of 100 has a balance of 99.99 and the account with a balance of 500 has a balance of 500.01.

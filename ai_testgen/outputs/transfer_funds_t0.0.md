@@ -1,29 +1,27 @@
-Here are the test scenarios:
-
-**Scenario: Transfer Funds - Happy Path**
+Scenario: Transfer Funds Page
 Type: happy
 Priority: high
-Given I am logged in as a customer with two accounts, "12345" and "67890", and I am on the Transfer Funds page.
-When I enter "100.00" in the Amount field, select "12345" as the From Account and "67890" as the To Account, and click the Transfer button.
-Then the page displays "Transfer Complete!" with the amount "100.00" and both account ids "12345" and "67890".
+Given the customer is logged in and has two accounts: an account with a balance of 100 and an account with a balance of 200
+When the customer navigates to the Transfer Funds page
+Then the page asks for an amount, a "from" account, and a "to" account
 
-**Scenario: Transfer Funds - Negative - Invalid Amount**
-Type: negative
+Scenario: Successful Transfer
+Type: happy
 Priority: high
-Given I am logged in as a customer with two accounts, "12345" and "67890", and I am on the Transfer Funds page.
-When I enter "-100.00" in the Amount field, select "12345" as the From Account and "67890" as the To Account, and click the Transfer button.
-Then the page displays an error message "Invalid amount. Please enter a positive number."
+Given the customer is logged in and has two accounts: an account with a balance of 100 and an account with a balance of 200
+When the customer enters an amount of 50, selects the first account as the "from" account, and selects the second account as the "to" account, then clicks the "Transfer" button
+Then an error message is shown with the text "Transfer Complete!" and the amount 50 and both account ids
 
-**Scenario: Transfer Funds - Negative - Invalid From Account**
+Scenario: Invalid Amount
 Type: negative
 Priority: medium
-Given I am logged in as a customer with two accounts, "12345" and "67890", and I am on the Transfer Funds page.
-When I enter "100.00" in the Amount field, select "67890" as the From Account and "12345" as the To Account, and click the Transfer button.
-Then the page displays an error message "Invalid from account. Please select a valid account."
+Given the customer is logged in and has two accounts: an account with a balance of 100 and an account with a balance of 200
+When the customer enters an amount of -50, selects the first account as the "from" account, and selects the second account as the "to" account, then clicks the "Transfer" button
+Then an error message is shown
 
-**Scenario: Transfer Funds - Edge - Zero Amount**
-Type: edge
-Priority: low
-Given I am logged in as a customer with two accounts, "12345" and "67890", and I am on the Transfer Funds page.
-When I enter "0.00" in the Amount field, select "12345" as the From Account and "67890" as the To Account, and click the Transfer button.
-Then the page displays an error message "Invalid amount. Please enter a positive number."
+Scenario: Same Account Selected
+Type: negative
+Priority: medium
+Given the customer is logged in and has two accounts: an account with a balance of 100 and an account with a balance of 200
+When the customer enters an amount of 50, selects the first account as both the "from" and "to" accounts, then clicks the "Transfer" button
+Then an error message is shown
