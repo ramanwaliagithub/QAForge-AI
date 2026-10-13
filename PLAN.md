@@ -129,10 +129,10 @@ qaforge-ai/
 - Commit: `feat: prompt templates for scenario generation`
 
 ### Day 7: Structured outputs
-- [ ] Define a Pydantic model `TestCase` (title, steps, expected, priority)
-- [ ] Force JSON output and validate; add retry on invalid JSON
-- [ ] Write unit tests for the parser using canned LLM responses
-- [ ] Notes: why structured output beats free text
+- [x] Define a Pydantic model `TestCase` (title, steps, expected, priority)
+- [x] Force JSON output and validate; add retry on invalid JSON
+- [x] Write unit tests for the parser using canned LLM responses
+- [x] Notes: why structured output beats free text
 - Commit: `feat: structured testcase schema and parser`
 
 ### Day 8: From scenarios to pytest code

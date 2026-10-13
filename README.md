@@ -21,7 +21,7 @@ uv run pytest -q
 
 ## Status
 
-Day 6 of 60: prompts for test scenario generation (Phase 2).
+Day 7 of 60: structured test case generation.
 
 ## Reports
 
