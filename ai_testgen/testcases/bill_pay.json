@@ -1,0 +1,76 @@
+[
+  {
+    "title": "Bill Payment Service form is displayed",
+    "type": "happy",
+    "priority": "high",
+    "preconditions": "Customer is logged in to the web banking application",
+    "steps": [
+      "Navigate to the Bill Payment page",
+      "Verify that the form contains fields for payee name, address, city, state, zip, phone, account number (entered twice), amount, and a 'from' account"
+    ],
+    "expected": "The form is displayed with all required fields"
+  },
+  {
+    "title": "Missing payee fields show validation messages",
+    "type": "negative",
+    "priority": "high",
+    "preconditions": "Customer is logged in to the web banking application",
+    "steps": [
+      "Navigate to the Bill Payment page",
+      "Leave a required payee field blank",
+      "Submit the form"
+    ],
+    "expected": "An error message is shown next to the blank field"
+  },
+  {
+    "title": "Account number entries do not match",
+    "type": "negative",
+    "priority": "high",
+    "preconditions": "Customer is logged in to the web banking application",
+    "steps": [
+      "Navigate to the Bill Payment page",
+      "Enter different account numbers in the two account number fields",
+      "Submit the form"
+    ],
+    "expected": "An error message is shown"
+  },
+  {
+    "title": "Amount is not a number",
+    "type": "negative",
+    "priority": "high",
+    "preconditions": "Customer is logged in to the web banking application",
+    "steps": [
+      "Navigate to the Bill Payment page",
+      "Enter a non-numeric value in the amount field",
+      "Submit the form"
+    ],
+    "expected": "An error message is shown"
+  },
+  {
+    "title": "Successful payment shows confirmation message",
+    "type": "happy",
+    "priority": "high",
+    "preconditions": "Customer is logged in to the web banking application and has sufficient funds in the selected account",
+    "steps": [
+      "Navigate to the Bill Payment page",
+      "Enter valid payee information and account numbers",
+      "Enter a valid amount",
+      "Submit the form"
+    ],
+    "expected": "Bill Payment Complete with payee name, amount, and from-account is displayed"
+  },
+  {
+    "title": "Account with insufficient funds is selected",
+    "type": "edge",
+    "priority": "medium",
+    "preconditions": "Customer is logged in to the web banking application and has an account with a balance of 0",
+    "steps": [
+      "Navigate to the Bill Payment page",
+      "Select the account with insufficient funds",
+      "Enter valid payee information and account numbers",
+      "Enter a valid amount greater than the account balance",
+      "Submit the form"
+    ],
+    "expected": "An error message is shown"
+  }
+]
