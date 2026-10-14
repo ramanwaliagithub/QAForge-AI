@@ -136,10 +136,10 @@ qaforge-ai/
 - Commit: `feat: structured testcase schema and parser`
 
 ### Day 8: From scenarios to pytest code
-- [ ] Prompt that converts a `TestCase` into a pytest-playwright test using your page objects
-- [ ] Generate tests into `ai_testgen/generated/`
-- [ ] Run them; record pass/fail rate
-- [ ] Log every failure reason in notes
+- [x] Prompt that converts a `TestCase` into a pytest-playwright test using your page objects
+- [x] Generate tests into `ai_testgen/generated/`
+- [x] Run them; record pass/fail rate
+- [x] Log every failure reason in notes
 - Commit: `feat: LLM test code generator v1`
 
 ### Day 9: Grounding with page context

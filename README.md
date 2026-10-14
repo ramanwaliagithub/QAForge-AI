@@ -21,7 +21,7 @@ uv run pytest -q
 
 ## Status
 
-Day 7 of 60: structured test case generation.
+Day 8 of 60: LLM test code generator v1 (baseline 0/15).
 
 ## Reports
 
