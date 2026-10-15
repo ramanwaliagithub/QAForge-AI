@@ -13,7 +13,14 @@ You are a senior test automation engineer. Write ONE pytest-playwright test (syn
 ```
 Use these page objects wherever they cover a step. For screens with no page object, use `page` / `logged_in_page` with Playwright locators.
 
+## Page context for the screen(s) under test
+{page_context}
+
 ## Rules
+- Locators must come from the page context above. If an element has no accessible name, use the exact CSS selector given, with `page.locator(...)`. Never guess a label, id or selector that is not listed.
+- Use `locator.select_option(...)` for dropdowns. Never hardcode account numbers.
+- `BasePage.click` and `BasePage.fill` take a Locator. Plain Playwright calls (`page.locator(...).fill("x")`) are fine too.
+- Do not call methods on a page object that are not listed above.
 - Output only Python code: no markdown fences, no explanations.
 - Exactly one test function named `test_<short_snake_case_name>`.
 - Decorate it with `@pytest.mark.ai`. Imports needed: `import pytest` and `from playwright.sync_api import expect`.

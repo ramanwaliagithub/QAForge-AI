@@ -76,3 +76,15 @@ def test_write_test_file_names_by_story_index_and_title(tmp_path):
     assert path.name == "test_open_account_03_open_account.py"
     assert path.read_text() == GOOD
     assert slugify("A very / odd title!!") == "a_very_odd_title"
+
+
+def test_prompt_includes_page_context_or_fallback():
+    assert "selector: #amount" in render_codegen_prompt(CASE, "selector: #amount")
+    assert "No page snapshot available" in render_codegen_prompt(CASE)
+    assert "{page_context}" not in render_codegen_prompt(CASE)
+
+
+def test_generate_passes_page_context_into_prompt():
+    client = Scripted(GOOD)
+    generate_test_code(client, CASE, page_context="CTX-MARKER")
+    assert "CTX-MARKER" in client.prompts[0]

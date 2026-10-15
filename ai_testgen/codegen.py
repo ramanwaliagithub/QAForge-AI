@@ -43,10 +43,14 @@ def page_object_summary() -> str:
     return "\n".join(lines).strip()
 
 
-def render_codegen_prompt(case: TestCase) -> str:
+NO_CONTEXT = "(No page snapshot available. Infer locators carefully from the test case.)"
+
+
+def render_codegen_prompt(case: TestCase, page_context: str = "") -> str:
     return (
         load_prompt("codegen")
         .replace("{page_objects}", page_object_summary())
+        .replace("{page_context}", page_context or NO_CONTEXT)
         .replace("{testcase}", json.dumps(case.model_dump(), indent=2))
     )
 
@@ -72,8 +76,10 @@ def check_code(code: str) -> None:
         raise ValueError("The test has no assertion.")
 
 
-def generate_test_code(client: LLMClient, case: TestCase, temperature: float = 0.0, max_retries: int = 2) -> str:
-    base_prompt = render_codegen_prompt(case)
+def generate_test_code(
+    client: LLMClient, case: TestCase, temperature: float = 0.0, max_retries: int = 2, page_context: str = ""
+) -> str:
+    base_prompt = render_codegen_prompt(case, page_context)
     prompt, last_error = base_prompt, None
     for attempt in range(max_retries + 1):
         code = extract_code(client.generate(prompt, temperature=temperature).text)
