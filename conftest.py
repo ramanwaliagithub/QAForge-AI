@@ -6,11 +6,14 @@ from pathlib import Path
 import allure
 import pytest
 from dotenv import load_dotenv
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import expect, sync_playwright
 
+from framework.logging_utils import get_logger
 from framework.pages import LoginPage, RegisterPage
 
 load_dotenv()
+log = get_logger("qaforge.tests")
 
 # The shared public ParaBank demo is sometimes slow; Playwright's 5s default caused flaky failures.
 expect.set_options(timeout=int(os.getenv("EXPECT_TIMEOUT_MS", "10000")))
@@ -71,7 +74,11 @@ def page(browser, request):
 
 @pytest.fixture(scope="session")
 def registered_user(browser, base_url):
-    """A fresh ParaBank customer, created once per session (once per worker under xdist)."""
+    """A fresh ParaBank customer, created once per session (once per worker under xdist).
+
+    ParaBank sometimes rejects a brand-new username ("This username already exists") when several
+    workers register at once, so retry with a new username instead of failing every test.
+    """
     user = {
         "first_name": "Qa",
         "last_name": "Forge",
@@ -81,15 +88,23 @@ def registered_user(browser, base_url):
         "zip_code": "90210",
         "phone": "5550100",
         "ssn": "123-45-6789",
-        "username": f"qaforge_{uuid.uuid4().hex[:10]}",
         "password": "Passw0rd!",
     }
-    context = browser.new_context()
-    page = context.new_page()
-    RegisterPage(page, base_url).open().register(**user)
-    page.get_by_role("link", name="Log Out").wait_for()
-    context.close()
-    return user
+    last_error = None
+    for attempt in range(1, 4):
+        user["username"] = f"qaforge_{uuid.uuid4().hex[:10]}"
+        context = browser.new_context()
+        page = context.new_page()
+        try:
+            RegisterPage(page, base_url).open().register(**user)
+            page.get_by_role("link", name="Log Out").wait_for(timeout=10_000)
+            return user
+        except PlaywrightTimeoutError as e:
+            last_error = e
+            log.warning("registration_retry", extra={"attempt": attempt, "username": user["username"]})
+        finally:
+            context.close()
+    raise RuntimeError(f"Could not register a test user after 3 attempts: {last_error}")
 
 
 @pytest.fixture
