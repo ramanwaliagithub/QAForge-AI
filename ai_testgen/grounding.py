@@ -69,7 +69,8 @@ def format_elements(elements: list[dict]) -> str:
         if el.get("label"):
             parts.append(f"label: {el['label']!r}")
         if el.get("options"):
-            parts.append(f"options: {el['options']}")
+            numeric = all(o.isdigit() for o in el["options"])  # account ids differ per user; don't let the model hardcode them
+            parts.append("options: account ids (vary per user, never hardcode)" if numeric else f"options: {el['options']}")
         lines.append("  ".join(parts))
     return "\n".join(lines)
 

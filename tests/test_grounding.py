@@ -23,8 +23,13 @@ def test_selector_prefers_stable_id_then_name_then_value():
 
 def test_format_elements_includes_selector_label_options_and_skips_unselectable():
     out = format_elements(ELEMENTS)
-    assert "selector: #amount" in out and "label: 'Phone #:'" in out and "options: ['1', '2']" in out
+    assert "selector: #amount" in out and "label: 'Phone #:'" in out and "never hardcode" in out
     assert len(out.splitlines()) == 5
+
+
+def test_non_numeric_options_are_kept():
+    el = {"tag": "select", "type": "select-one", "id": "type", "options": ["CHECKING", "SAVINGS"]}
+    assert "options: ['CHECKING', 'SAVINGS']" in format_elements([el])
 
 
 def test_trim_removes_bare_structure_lines():

@@ -1,0 +1,118 @@
+{
+  "path": "billpay.htm",
+  "aria": "- heading \"Bill Payment Service\" [level=1]\n- paragraph: Enter payee information\n- table:\n  - rowgroup:\n    - row \"Payee Name:\":\n      - cell \"Payee Name:\"\n      - cell:\n        - textbox\n      - cell\n    - row \"Address:\":\n      - cell \"Address:\"\n      - cell:\n        - textbox\n      - cell\n    - row \"City:\":\n      - cell \"City:\"\n      - cell:\n        - textbox\n      - cell\n    - row \"State:\":\n      - cell \"State:\"\n      - cell:\n        - textbox\n      - cell\n    - row \"Zip Code:\":\n      - cell \"Zip Code:\"\n      - cell:\n        - textbox\n      - cell\n    - 'row \"Phone #:\"':\n      - 'cell \"Phone #:\"'\n      - cell:\n        - textbox\n      - cell\n    - row:\n      - cell\n    - 'row \"Account #:\"':\n      - 'cell \"Account #:\"'\n      - cell:\n        - textbox\n      - cell\n    - 'row \"Verify Account #:\"':\n      - 'cell \"Verify Account #:\"'\n      - cell:\n        - textbox\n      - cell\n    - row:\n      - cell\n    - 'row \"Amount: $\"':\n      - 'cell \"Amount: $\"'\n      - cell:\n        - textbox\n      - cell\n    - row:\n      - cell\n    - 'row \"From account #: 14121\"':\n      - 'cell \"From account #:\"'\n      - cell \"14121\":\n        - combobox:\n          - option \"14121\" [selected]\n    - row \"Send Payment\":\n      - cell\n      - cell \"Send Payment\":\n        - button \"Send Payment\"",
+  "elements": [
+    {
+      "tag": "input",
+      "type": "text",
+      "id": null,
+      "name": "payee.name",
+      "value": null,
+      "text": null,
+      "label": "Payee Name:",
+      "options": null
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "id": null,
+      "name": "payee.address.street",
+      "value": null,
+      "text": null,
+      "label": "Address:",
+      "options": null
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "id": null,
+      "name": "payee.address.city",
+      "value": null,
+      "text": null,
+      "label": "City:",
+      "options": null
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "id": null,
+      "name": "payee.address.state",
+      "value": null,
+      "text": null,
+      "label": "State:",
+      "options": null
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "id": null,
+      "name": "payee.address.zipCode",
+      "value": null,
+      "text": null,
+      "label": "Zip Code:",
+      "options": null
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "id": "78be5f8d-98cd-4076-8c20-e2f20139517c",
+      "name": "payee.phoneNumber",
+      "value": null,
+      "text": null,
+      "label": "Phone #:",
+      "options": null
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "id": null,
+      "name": "payee.accountNumber",
+      "value": null,
+      "text": null,
+      "label": "Account #:",
+      "options": null
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "id": null,
+      "name": "verifyAccount",
+      "value": null,
+      "text": null,
+      "label": "Verify Account #:",
+      "options": null
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "id": null,
+      "name": "amount",
+      "value": null,
+      "text": null,
+      "label": "Amount: $",
+      "options": null
+    },
+    {
+      "tag": "select",
+      "type": "select-one",
+      "id": null,
+      "name": "fromAccountId",
+      "value": null,
+      "text": null,
+      "label": "From account #:",
+      "options": [
+        "14121"
+      ]
+    },
+    {
+      "tag": "input",
+      "type": "button",
+      "id": null,
+      "name": null,
+      "value": "Send Payment",
+      "text": null,
+      "label": "",
+      "options": null
+    }
+  ]
+}
