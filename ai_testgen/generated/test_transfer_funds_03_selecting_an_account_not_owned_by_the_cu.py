@@ -5,14 +5,15 @@ from framework.pages import AccountsPage
 
 
 @pytest.mark.ai
-def test_select_non_owned_account(logged_in_page, base_url):
+def test_select_account_not_owned_by_customer(logged_in_page, base_url):
     accounts = AccountsPage(logged_in_page, base_url)
-    accounts.open_new_account(account_type="SAVINGS")  # Create a new savings account
-    accounts.open_new_account(account_type="CHECKING")  # Create a new checking account
-    accounts.wait_for_url("accounts")
-    accounts.click(accounts.get_by_role("button", name="Transfer Funds"))
-    accounts.fill(accounts.get_by_label("From Account"), "SAVINGS")
-    accounts.fill(accounts.get_by_label("To Account"), "CHECKING")
-    accounts.fill(accounts.get_by_label("Amount"), "50")
-    accounts.click(accounts.get_by_role("button", name="Transfer"))
-    expect(accounts.error_message).to_contain_text("You do not have permission to perform this transaction.")
+    accounts.wait_for_url("transfer.htm")
+    amount_locator = page.locator("#amount")
+    amount_locator.fill("50")
+    from_account_locator = page.locator("#fromAccountId")
+    from_account_locator.select_option(registered_user["account_ids"][0])  # Select an account not owned by the customer
+    to_account_locator = page.locator("#toAccountId")
+    to_account_locator.select_option(registered_user["account_ids"][1])  # Select the 'to' account
+    submit_locator = page.locator("input[value='Transfer']")
+    submit_locator.click()
+    expect(page.locator(".error-message")).to_be_visible()

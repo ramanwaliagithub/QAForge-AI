@@ -1,0 +1,83 @@
+{
+  "label": "day09_aria",
+  "total": 15,
+  "passed": 0,
+  "pass_rate": 0.0,
+  "results": [
+    {
+      "test": "test_bill_pay_05_successful_payment_shows_confirmation_me",
+      "passed": false,
+      "reason": "playwright._impl._errors.TimeoutError: Locator.click: Timeout 30000ms exceeded."
+    },
+    {
+      "test": "test_bill_pay_03_account_number_entries_do_not_match",
+      "passed": false,
+      "reason": "playwright._impl._errors.TimeoutError: Timeout 30000ms exceeded."
+    },
+    {
+      "test": "test_bill_pay_01_bill_payment_service_form_is_displayed",
+      "passed": false,
+      "reason": "failed on setup with \"playwright._impl._errors.TimeoutError: Locator.wait_for: Timeout 30000ms exceeded."
+    },
+    {
+      "test": "test_bill_pay_02_missing_payee_fields_show_validation_mes",
+      "passed": false,
+      "reason": "failed on setup with \"playwright._impl._errors.TimeoutError: Locator.wait_for: Timeout 30000ms exceeded."
+    },
+    {
+      "test": "test_open_account_01_open_new_checking_account",
+      "passed": false,
+      "reason": "failed on setup with \"playwright._impl._errors.TimeoutError: Locator.wait_for: Timeout 30000ms exceeded."
+    },
+    {
+      "test": "test_open_account_02_open_new_savings_account",
+      "passed": false,
+      "reason": "failed on setup with \"playwright._impl._errors.TimeoutError: Locator.wait_for: Timeout 30000ms exceeded."
+    },
+    {
+      "test": "test_open_account_03_no_funding_account_selected",
+      "passed": false,
+      "reason": "failed on setup with \"playwright._impl._errors.TimeoutError: Locator.wait_for: Timeout 30000ms exceeded."
+    },
+    {
+      "test": "test_open_account_04_insufficient_funds_in_funding_account",
+      "passed": false,
+      "reason": "failed on setup with \"playwright._impl._errors.TimeoutError: Locator.wait_for: Timeout 30000ms exceeded."
+    },
+    {
+      "test": "test_open_account_05_zero_initial_deposit_amount",
+      "passed": false,
+      "reason": "failed on setup with \"playwright._impl._errors.TimeoutError: Locator.wait_for: Timeout 30000ms exceeded."
+    },
+    {
+      "test": "test_transfer_funds_01_transfer_money_between_own_accounts",
+      "passed": false,
+      "reason": "failed on setup with \"playwright._impl._errors.TimeoutError: Locator.wait_for: Timeout 30000ms exceeded."
+    },
+    {
+      "test": "test_transfer_funds_02_invalid_amount",
+      "passed": false,
+      "reason": "failed on setup with \"playwright._impl._errors.TimeoutError: Locator.wait_for: Timeout 30000ms exceeded."
+    },
+    {
+      "test": "test_transfer_funds_03_selecting_an_account_not_owned_by_the_cu",
+      "passed": false,
+      "reason": "failed on setup with \"playwright._impl._errors.TimeoutError: Locator.wait_for: Timeout 30000ms exceeded."
+    },
+    {
+      "test": "test_transfer_funds_04_edge_case_transferring_the_same_amount_t",
+      "passed": false,
+      "reason": "failed on setup with \"playwright._impl._errors.TimeoutError: Locator.wait_for: Timeout 30000ms exceeded."
+    },
+    {
+      "test": "test_bill_pay_06_account_with_insufficient_funds_is_selec",
+      "passed": false,
+      "reason": "playwright._impl._errors.TimeoutError: Timeout 30000ms exceeded."
+    },
+    {
+      "test": "test_bill_pay_04_amount_is_not_a_number",
+      "passed": false,
+      "reason": "playwright._impl._errors.TimeoutError: Timeout 30000ms exceeded."
+    }
+  ]
+}

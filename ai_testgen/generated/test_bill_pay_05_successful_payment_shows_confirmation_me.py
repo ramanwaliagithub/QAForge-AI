@@ -1,28 +1,23 @@
 import pytest
 from playwright.sync_api import expect
 
-from framework.pages import AccountsPage, LoginPage
-
-
 @pytest.mark.ai
-def test_successful_payment_confirmation(logged_in_page, base_url):
-    # Navigate to the Bill Payment page
-    logged_in_page.click(logged_in_page.get_by_role("menuitem", name="Bill Payment"))
-    
-    # Enter valid payee information and account numbers
-    bill_payment_page = logged_in_page.get_by_text("Bill Payment")
-    bill_payment_page.click()
-    bill_payment_page.fill(bill_payment_page.get_by_label("Payee"), "Payee Name")
-    bill_payment_page.fill(bill_payment_page.get_by_label("Account"), "Account Number")
-    
-    # Enter a valid amount
-    bill_payment_page.fill(bill_payment_page.get_by_label("Amount"), "100.00")
-    
-    # Submit the form
-    bill_payment_page.click(bill_payment_page.get_by_role("button", name="Make Payment"))
-    
-    # Assert the expected result
-    expect(logged_in_page.get_by_text("Bill Payment Complete")).to_be_visible()
-    expect(logged_in_page.get_by_text("Payee Name")).to_be_visible()
-    expect(logged_in_page.get_by_text("100.00")).to_be_visible()
-    expect(logged_in_page.get_by_text("Account Number")).to_be_visible()
+def test_successful_payment(logged_in_page, base_url, registered_user):
+    logged_in_page.wait_for_url('account')
+    logged_in_page.click(page.locator('text="Bill Pay"'))
+    logged_in_page.wait_for_url('billpay.htm')
+    logged_in_page.fill(page.locator('input[name="payee.name"]'), 'Test Payee')
+    logged_in_page.fill(page.locator('input[name="payee.address.street"]'), '123 Main St')
+    logged_in_page.fill(page.locator('input[name="payee.address.city"]'), 'Anytown')
+    logged_in_page.fill(page.locator('input[name="payee.address.state"]'), 'CA')
+    logged_in_page.fill(page.locator('input[name="payee.address.zipCode"]'), '12345')
+    logged_in_page.fill(page.locator('input[name="payee.phoneNumber"]'), '1234567890')
+    logged_in_page.fill(page.locator('input[name="payee.accountNumber"]'), '1234567890')
+    logged_in_page.fill(page.locator('input[name="verifyAccount"]'), '1234567890')
+    logged_in_page.fill(page.locator('input[name="amount"]'), '100.00')
+    logged_in_page.locator('select[name="fromAccountId"]').select_option(registered_user['account_number'])
+    logged_in_page.click(page.locator('input[value="Send Payment"]'))
+    expect(logged_in_page.locator('text="Bill Payment Complete"')).to_be_visible()
+    expect(logged_in_page.locator('text="Test Payee"')).to_be_visible()
+    expect(logged_in_page.locator('text="100.00"')).to_be_visible()
+    expect(logged_in_page.locator('text="1234567890"')).to_be_visible()

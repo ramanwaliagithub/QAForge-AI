@@ -4,6 +4,9 @@ import json
 import re
 from pathlib import Path
 
+from pyflakes import messages
+from pyflakes.checker import Checker
+
 from ai_testgen.scenarios import load_prompt
 from ai_testgen.schema import TestCase
 from framework.llm_client import LLMClient
@@ -69,6 +72,11 @@ def check_code(code: str) -> None:
     tests = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name.startswith("test_")]
     if len(tests) != 1:
         raise ValueError(f"Expected exactly one test_ function, found {len(tests)}.")
+    undefined = sorted({m.message_args[0] for m in Checker(tree, "generated").messages if isinstance(m, messages.UndefinedName)})
+    if undefined:
+        raise ValueError(
+            f"Undefined name(s): {', '.join(undefined)}. Fixtures must be declared as parameters of the test function."
+        )
     if "sleep" in code or "wait_for_timeout" in code:
         raise ValueError("Do not use sleep or wait_for_timeout.")
     if not any(isinstance(n, ast.Assert) or (isinstance(n, ast.Call) and ast.unparse(n.func) == "expect")

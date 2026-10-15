@@ -50,6 +50,7 @@ ARTIFACTS_DIR = Path("test-results")
 @pytest.fixture
 def page(browser, request):
     context = browser.new_context()
+    context.set_default_timeout(int(os.getenv("ACTION_TIMEOUT_MS", "15000")))  # fail bad locators in 15s, not 30s
     context.tracing.start(screenshots=True, snapshots=True, sources=False)
     page = context.new_page()
     yield page

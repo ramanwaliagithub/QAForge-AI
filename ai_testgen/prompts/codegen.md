@@ -21,6 +21,10 @@ Use these page objects wherever they cover a step. For screens with no page obje
 - Use `locator.select_option(...)` for dropdowns. Never hardcode account numbers.
 - `BasePage.click` and `BasePage.fill` take a Locator. Plain Playwright calls (`page.locator(...).fill("x")`) are fine too.
 - Do not call methods on a page object that are not listed above.
+- Every fixture you use (`page`, `base_url`, `logged_in_page`, ...) must be a parameter of the test function. Do not use any name that is not a parameter or imported.
+- `logged_in_page` starts on Accounts Overview. To reach a screen, navigate with `logged_in_page.goto(f"{base_url}/<screen>")` using the screen name from the page context. Do not wait for a URL you have not navigated to.
+- `registered_user` only has the keys listed above; it has no account numbers. Pick dropdown options by index, e.g. `select_option(index=0)`.
+- Only assert text that appears in the test case's expected result. Find messages with `get_by_text(...)`; do not invent CSS classes for message elements.
 - Output only Python code: no markdown fences, no explanations.
 - Exactly one test function named `test_<short_snake_case_name>`.
 - Decorate it with `@pytest.mark.ai`. Imports needed: `import pytest` and `from playwright.sync_api import expect`.

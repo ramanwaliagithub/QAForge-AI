@@ -31,6 +31,7 @@ def test_check_code_accepts_good():
         ("def test_a(page):\n    assert 1\ndef test_b(page):\n    assert 1\n", "exactly one"),
         ("import time\ndef test_x(page):\n    time.sleep(1)\n    assert 1\n", "sleep"),
         ("def test_x(page):\n    page.goto('x')\n", "no assertion"),
+        ("def test_x(logged_in_page):\n    assert page.title()\n", "Undefined name.*page"),
     ],
 )
 def test_check_code_rejects(code, fragment):

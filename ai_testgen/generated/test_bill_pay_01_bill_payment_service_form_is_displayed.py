@@ -1,24 +1,26 @@
 import pytest
 from playwright.sync_api import expect
 
-from framework.pages import AccountsPage
-
-
 @pytest.mark.ai
 def test_bill_payment_form(logged_in_page, base_url):
-    accounts = AccountsPage(logged_in_page, base_url)
-    accounts.open_new_account("SAVINGS")  # Open a new savings account to have an account to pay from
-    accounts.wait_for_url("accounts")
-    accounts.click(get_by_role("button", name="Pay Bills"))
-    bill_payment_page = AccountsPage(logged_in_page, base_url)
-    expect(bill_payment_page.get_by_role("form")).to_be_visible()
-    expect(bill_payment_page.get_by_label("Payee Name")).to_be_visible()
-    expect(bill_payment_page.get_by_label("Address")).to_be_visible()
-    expect(bill_payment_page.get_by_label("City")).to_be_visible()
-    expect(bill_payment_page.get_by_label("State")).to_be_visible()
-    expect(bill_payment_page.get_by_label("Zip")).to_be_visible()
-    expect(bill_payment_page.get_by_label("Phone")).to_be_visible()
-    expect(bill_payment_page.get_by_label("Account Number")).to_be_visible()
-    expect(bill_payment_page.get_by_label("Account Number (again)")).to_be_visible()
-    expect(bill_payment_page.get_by_label("Amount")).to_be_visible()
-    expect(bill_payment_page.get_by_label("From Account")).to_be_visible()
+    logged_in_page.wait_for_url('billpay.htm')
+    page = logged_in_page
+
+    # Verify that the form contains fields for payee name, address, city, state, zip, phone, account number (entered twice), amount, and a 'from' account
+    expect(page.locator('input[name="payee.name"]').get_attribute('value')).to_be_empty()
+    expect(page.locator('input[name="payee.address.street"]').get_attribute('value')).to_be_empty()
+    expect(page.locator('input[name="payee.address.city"]').get_attribute('value')).to_be_empty()
+    expect(page.locator('input[name="payee.address.state"]').get_attribute('value')).to_be_empty()
+    expect(page.locator('input[name="payee.address.zipCode"]').get_attribute('value')).to_be_empty()
+    expect(page.locator('input[name="payee.phoneNumber"]').get_attribute('value')).to_be_empty()
+    expect(page.locator('input[name="payee.accountNumber"]').get_attribute('value')).to_be_empty()
+    expect(page.locator('input[name="verifyAccount"]').get_attribute('value')).to_be_empty()
+    expect(page.locator('input[name="amount"]').get_attribute('value')).to_be_empty()
+    expect(page.locator('select[name="fromAccountId"]').get_attribute('value')).to_be_empty()
+
+    # Verify that the 'from' account dropdown contains all account IDs
+    accounts = logged_in_page.accounts_table
+    account_ids = [account.get_attribute('id') for account in accounts]
+    expect(page.locator('select[name="fromAccountId"]').options()).to_have_length(len(account_ids))
+    for account_id in account_ids:
+        expect(page.locator('select[name="fromAccountId"]').option(account_id)).to_be_visible()

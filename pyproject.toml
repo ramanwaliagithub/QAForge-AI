@@ -13,5 +13,6 @@ dependencies = [
 [dependency-groups]
 dev = [
     "allure-pytest>=2.16.2",
+    "pyflakes>=4.0.3",
     "pytest-xdist>=3.8.0",
 ]
