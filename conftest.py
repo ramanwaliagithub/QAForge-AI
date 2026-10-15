@@ -23,7 +23,7 @@ def pytest_addoption(parser):
 
 @pytest.fixture(scope="session")
 def base_url():
-    return os.getenv("BASE_URL", "https://parabank.parasoft.com/parabank")
+    return os.getenv("BASE_URL", "http://localhost:8080/parabank")
 
 
 @pytest.fixture(scope="session")

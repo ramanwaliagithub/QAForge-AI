@@ -9,7 +9,7 @@ from ai_testgen.grounding import STORY_PAGES, capture_page, save_snapshot
 from framework.pages import RegisterPage
 
 load_dotenv()
-base_url = os.getenv("BASE_URL", "https://parabank.parasoft.com/parabank")
+base_url = os.getenv("BASE_URL", "http://localhost:8080/parabank")
 user = dict(first_name="Qa", last_name="Forge", street="1 Test Street", city="Testville", state="CA",
             zip_code="90210", phone="5550100", ssn="123-45-6789",
             username=f"snap_{uuid.uuid4().hex[:8]}", password="Passw0rd!")

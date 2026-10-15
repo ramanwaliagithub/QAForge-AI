@@ -14,6 +14,7 @@ See [PLAN.md](PLAN.md) for the day-by-day plan and decision log.
 
 ```bash
 uv sync                       # creates .venv and installs dependencies
+docker compose up -d          # local ParaBank on http://localhost:8080/parabank
 cp .env.example .env
 uv run playwright install     # from Day 2
 uv run pytest -q

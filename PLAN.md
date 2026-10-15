@@ -32,6 +32,7 @@ Critical decisions are asked before building and recorded here.
 | 2026-10-06 | Git identity | `Raman Walia <walia.raman89@gmail.com>` | Set in repo-local git config |
 | 2026-10-07 | Commit granularity | **Multiple small commits per day** | One per task where practical, each passing tests; push at end of day |
 | 2026-10-09 | Local model | **llama3.1:8b** + nomic-embed-text | Default from plan; swap via `OLLAMA_MODEL` |
+| 2026-10-15 | App under test | **ParaBank in local Docker** (`docker compose up -d`, `http://localhost:8080/parabank`) | Public demo's registration started returning HTTP 500 and was slow/flaky (Day 6). Local is stable, fast (suite 10s -> 2s) and CI-ready. Public demo still usable via `BASE_URL` |
 | 2026-10-05 | Remote | `https://github.com/ramanwaliagithub/QAForge-AI.git` | |
 
 ## Open-source stack
@@ -39,7 +40,7 @@ Critical decisions are asked before building and recorded here.
 | Area | Tools |
 |---|---|
 | Language/test | Python 3.11+, pytest, pytest-playwright, pytest-xdist, allure-pytest |
-| App under test | ParaBank (public demo), plus a small RAG chatbot you build in Phase 5 |
+| App under test | ParaBank (local Docker image `parasoft/parabank`), plus a small RAG chatbot you build in Phase 5 |
 | Local LLMs | Ollama (llama3.1, qwen2.5, nomic-embed-text) |
 | AI-assisted testing | Playwright MCP, MCP Python SDK, Claude Code/Copilot (optional) |
 | Evals | promptfoo, DeepEval, Ragas |

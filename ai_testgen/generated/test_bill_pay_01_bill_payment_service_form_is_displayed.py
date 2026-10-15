@@ -1,26 +1,64 @@
 import pytest
 from playwright.sync_api import expect
 
+from framework.pages import AccountsPage
+
+
 @pytest.mark.ai
-def test_bill_payment_form(logged_in_page, base_url):
-    logged_in_page.wait_for_url('billpay.htm')
-    page = logged_in_page
+def test_bill_payment_form(logged_in_page, base_url, registered_user):
+    logged_in_page.goto(f"{base_url}/billpay.htm")
 
     # Verify that the form contains fields for payee name, address, city, state, zip, phone, account number (entered twice), amount, and a 'from' account
-    expect(page.locator('input[name="payee.name"]').get_attribute('value')).to_be_empty()
-    expect(page.locator('input[name="payee.address.street"]').get_attribute('value')).to_be_empty()
-    expect(page.locator('input[name="payee.address.city"]').get_attribute('value')).to_be_empty()
-    expect(page.locator('input[name="payee.address.state"]').get_attribute('value')).to_be_empty()
-    expect(page.locator('input[name="payee.address.zipCode"]').get_attribute('value')).to_be_empty()
-    expect(page.locator('input[name="payee.phoneNumber"]').get_attribute('value')).to_be_empty()
-    expect(page.locator('input[name="payee.accountNumber"]').get_attribute('value')).to_be_empty()
-    expect(page.locator('input[name="verifyAccount"]').get_attribute('value')).to_be_empty()
-    expect(page.locator('input[name="amount"]').get_attribute('value')).to_be_empty()
-    expect(page.locator('select[name="fromAccountId"]').get_attribute('value')).to_be_empty()
+    page = logged_in_page
+    payee_name = page.locator("input[name='payee.name']")
+    expect(payee_name).to_be_visible()
 
-    # Verify that the 'from' account dropdown contains all account IDs
-    accounts = logged_in_page.accounts_table
-    account_ids = [account.get_attribute('id') for account in accounts]
-    expect(page.locator('select[name="fromAccountId"]').options()).to_have_length(len(account_ids))
-    for account_id in account_ids:
-        expect(page.locator('select[name="fromAccountId"]').option(account_id)).to_be_visible()
+    address_street = page.locator("input[name='payee.address.street']")
+    expect(address_street).to_be_visible()
+
+    city = page.locator("input[name='payee.address.city']")
+    expect(city).to_be_visible()
+
+    state = page.locator("input[name='payee.address.state']")
+    expect(state).to_be_visible()
+
+    zip_code = page.locator("input[name='payee.address.zipCode']")
+    expect(zip_code).to_be_visible()
+
+    phone_number = page.locator("input[name='payee.phoneNumber']")
+    expect(phone_number).to_be_visible()
+
+    account_number = page.locator("input[name='payee.accountNumber']")
+    expect(account_number).to_be_visible()
+
+    verify_account = page.locator("input[name='verifyAccount']")
+    expect(verify_account).to_be_visible()
+
+    amount = page.locator("input[name='amount']")
+    expect(amount).to_be_visible()
+
+    from_account = page.locator("select[name='fromAccountId']")
+    expect(from_account).to_be_visible()
+
+    send_payment = page.locator("input[value='Send Payment']")
+    expect(send_payment).to_be_visible()
+
+    # Fill in the form with test data
+    page.fill(payee_name, "Test Payee")
+    page.fill(address_street, "123 Main St")
+    page.fill(city, "Anytown")
+    page.fill(state, "CA")
+    page.fill(zip_code, "12345")
+    page.fill(phone_number, "123-456-7890")
+    page.fill(account_number, "123456789")
+    page.fill(verify_account, "123456789")
+    page.fill(amount, "100.00")
+
+    # Select the 'from' account
+    from_account.select_option(index=0)
+
+    # Click the 'Send Payment' button
+    page.click(send_payment)
+
+    # Verify that the form is displayed with all required fields
+    expect(page.locator("text=The form is displayed with all required fields")).to_be_visible()
