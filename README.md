@@ -22,7 +22,7 @@ uv run pytest -q
 
 ## Status
 
-Day 8 of 60: LLM test code generator v1 (baseline 0/15).
+Day 9 of 60: DOM-grounded generation (0/15 either way; see notes).
 
 ## Reports
 

@@ -144,10 +144,10 @@ qaforge-ai/
 - Commit: `feat: LLM test code generator v1`
 
 ### Day 9: Grounding with page context
-- [ ] Extract page DOM/accessibility snapshot with Playwright
-- [ ] Feed the snapshot to the prompt so locators are real, not guessed
-- [ ] Compare pass rate vs Day 8
-- [ ] Add a small token-size trimmer for large DOMs
+- [x] Extract page DOM/accessibility snapshot with Playwright
+- [x] Feed the snapshot to the prompt so locators are real, not guessed
+- [x] Compare pass rate vs Day 8
+- [x] Add a small token-size trimmer for large DOMs
 - Commit: `feat: DOM-grounded generation`
 
 ### Day 10: Playwright MCP intro
