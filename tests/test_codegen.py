@@ -1,7 +1,7 @@
 import pytest
 
 from ai_testgen.codegen import (
-    CodegenError, check_code, extract_code, generate_test_code, page_object_summary, render_codegen_prompt, slugify,
+    CodegenError, load_examples, check_code, extract_code, generate_test_code, page_object_summary, render_codegen_prompt, slugify,
     write_test_file,
 )
 from ai_testgen.schema import TestCase
@@ -89,3 +89,16 @@ def test_generate_passes_page_context_into_prompt():
     client = Scripted(GOOD)
     generate_test_code(client, CASE, page_context="CTX-MARKER")
     assert "CTX-MARKER" in client.prompts[0]
+
+
+def test_prompt_includes_few_shot_examples_and_can_disable_them():
+    with_examples = render_codegen_prompt(CASE)
+    assert "test_logout_returns_to_login_form" in with_examples and "{examples}" not in with_examples
+    assert "test_logout_returns_to_login_form" not in render_codegen_prompt(CASE, few_shot=False)
+
+
+def test_examples_do_not_cover_evaluated_screens():
+    """Guard against leaking answers: examples must not touch the screens we measure generation on."""
+    text = load_examples()
+    for evaluated in ("transfer.htm", "billpay.htm", "openaccount.htm", "AccountsPage"):
+        assert evaluated not in text

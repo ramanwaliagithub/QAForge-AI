@@ -16,6 +16,7 @@ log = get_logger("qaforge.codegen")
 
 PAGES_DIR = Path(__file__).resolve().parent.parent / "framework" / "pages"
 GENERATED_DIR = Path(__file__).parent / "generated"
+EXAMPLES_DIR = Path(__file__).resolve().parent.parent / "tests" / "examples"
 
 _FENCE = re.compile(r"```(?:python|py)?\s*\n(.*?)```", re.DOTALL)
 
@@ -46,12 +47,19 @@ def page_object_summary() -> str:
     return "\n".join(lines).strip()
 
 
+def load_examples(examples_dir: Path = EXAMPLES_DIR) -> str:
+    """Few-shot examples: the real, passing example tests, each as a fenced code block."""
+    blocks = [f"```python\n{p.read_text().strip()}\n```" for p in sorted(examples_dir.glob("test_example_*.py"))]
+    return "\n\n".join(blocks)
+
+
 NO_CONTEXT = "(No page snapshot available. Infer locators carefully from the test case.)"
 
 
-def render_codegen_prompt(case: TestCase, page_context: str = "") -> str:
+def render_codegen_prompt(case: TestCase, page_context: str = "", few_shot: bool = True) -> str:
     return (
         load_prompt("codegen")
+        .replace("{examples}", load_examples() if few_shot else "(none)")
         .replace("{page_objects}", page_object_summary())
         .replace("{page_context}", page_context or NO_CONTEXT)
         .replace("{testcase}", json.dumps(case.model_dump(), indent=2))
@@ -85,9 +93,10 @@ def check_code(code: str) -> None:
 
 
 def generate_test_code(
-    client: LLMClient, case: TestCase, temperature: float = 0.0, max_retries: int = 2, page_context: str = ""
+    client: LLMClient, case: TestCase, temperature: float = 0.0, max_retries: int = 2, page_context: str = "",
+    few_shot: bool = True,
 ) -> str:
-    base_prompt = render_codegen_prompt(case, page_context)
+    base_prompt = render_codegen_prompt(case, page_context, few_shot)
     prompt, last_error = base_prompt, None
     for attempt in range(max_retries + 1):
         code = extract_code(client.generate(prompt, temperature=temperature).text)
