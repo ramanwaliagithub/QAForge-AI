@@ -1,0 +1,58 @@
+[
+  {
+    "title": "Transfer money between own accounts",
+    "type": "happy",
+    "priority": "high",
+    "preconditions": "Customer is logged in and has two accounts",
+    "steps": [
+      "Navigate to the Transfer Funds page",
+      "Enter a positive amount (e.g. 50)",
+      "Select the 'from' account",
+      "Select the 'to' account",
+      "Submit the transfer"
+    ],
+    "expected": "Transfer Complete! with the amount and both account ids"
+  },
+  {
+    "title": "Invalid amount",
+    "type": "negative",
+    "priority": "high",
+    "preconditions": "Customer is logged in and has two accounts",
+    "steps": [
+      "Navigate to the Transfer Funds page",
+      "Enter a non-positive amount (e.g. -50)",
+      "Select the 'from' account",
+      "Select the 'to' account",
+      "Submit the transfer"
+    ],
+    "expected": "an error message is shown"
+  },
+  {
+    "title": "Selecting an account not owned by the customer",
+    "type": "negative",
+    "priority": "medium",
+    "preconditions": "Customer is logged in and has two accounts",
+    "steps": [
+      "Navigate to the Transfer Funds page",
+      "Enter a positive amount (e.g. 50)",
+      "Select an account not owned by the customer as the 'from' account",
+      "Select the 'to' account",
+      "Submit the transfer"
+    ],
+    "expected": "an error message is shown"
+  },
+  {
+    "title": "Edge case: transferring the same amount to the same account",
+    "type": "edge",
+    "priority": "low",
+    "preconditions": "Customer is logged in and has two accounts",
+    "steps": [
+      "Navigate to the Transfer Funds page",
+      "Enter a positive amount (e.g. 50)",
+      "Select the 'from' account",
+      "Select the 'to' account",
+      "Submit the transfer again"
+    ],
+    "expected": "Transfer Complete! with the amount and both account ids"
+  }
+]

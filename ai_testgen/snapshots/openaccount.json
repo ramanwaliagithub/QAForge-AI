@@ -1,0 +1,51 @@
+{
+  "path": "openaccount.htm",
+  "aria": "- heading \"Open New Account\" [level=1]\n- paragraph: What type of Account would you like to open?\n- combobox:\n  - option \"CHECKING\" [selected]\n  - option \"SAVINGS\"\n- paragraph: A minimum of $100.00 must be deposited into this account at time of opening. Please choose an existing account to transfer funds into the new account.\n- combobox:\n  - option \"13899\" [selected]\n- button \"Open New Account\"",
+  "elements": [
+    {
+      "tag": "select",
+      "type": "select-one",
+      "id": "type",
+      "name": null,
+      "value": null,
+      "text": null,
+      "label": "",
+      "options": [
+        "CHECKING",
+        "SAVINGS"
+      ]
+    },
+    {
+      "tag": "select",
+      "type": "select-one",
+      "id": "fromAccountId",
+      "name": null,
+      "value": null,
+      "text": null,
+      "label": "",
+      "options": [
+        "13899"
+      ]
+    },
+    {
+      "tag": "input",
+      "type": "button",
+      "id": null,
+      "name": null,
+      "value": "Open New Account",
+      "text": null,
+      "label": "",
+      "options": null
+    },
+    {
+      "tag": "a",
+      "type": null,
+      "id": "newAccountId",
+      "name": null,
+      "value": null,
+      "text": "",
+      "label": "",
+      "options": null
+    }
+  ]
+}

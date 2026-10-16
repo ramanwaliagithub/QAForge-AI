@@ -1,0 +1,50 @@
+{
+  "path": "transfer.htm",
+  "aria": "- heading \"Transfer Funds\" [level=1]\n- paragraph:\n  - text: \"Amount: $\"\n  - textbox\n- text: \"From account #\"\n- combobox:\n  - option \"13899\" [selected]\n- text: \"to account #\"\n- combobox:\n  - option \"13899\" [selected]\n- button \"Transfer\"",
+  "elements": [
+    {
+      "tag": "input",
+      "type": "text",
+      "id": "amount",
+      "name": "input",
+      "value": null,
+      "text": null,
+      "label": "",
+      "options": null
+    },
+    {
+      "tag": "select",
+      "type": "select-one",
+      "id": "fromAccountId",
+      "name": null,
+      "value": null,
+      "text": null,
+      "label": "",
+      "options": [
+        "13899"
+      ]
+    },
+    {
+      "tag": "select",
+      "type": "select-one",
+      "id": "toAccountId",
+      "name": null,
+      "value": null,
+      "text": null,
+      "label": "",
+      "options": [
+        "13899"
+      ]
+    },
+    {
+      "tag": "input",
+      "type": "submit",
+      "id": null,
+      "name": null,
+      "value": "Transfer",
+      "text": null,
+      "label": "",
+      "options": null
+    }
+  ]
+}

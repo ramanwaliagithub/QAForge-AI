@@ -1,0 +1,63 @@
+{
+  "label": "day09_final_elements",
+  "total": 11,
+  "passed": 0,
+  "pass_rate": 0.0,
+  "results": [
+    {
+      "test": "test_bill_pay_03_account_number_entries_do_not_match",
+      "passed": false,
+      "reason": "playwright._impl._errors.TimeoutError: Locator.text_content: Timeout 15000ms exceeded."
+    },
+    {
+      "test": "test_bill_pay_06_account_with_insufficient_funds_is_selec",
+      "passed": false,
+      "reason": "AssertionError: Locator expected to be visible"
+    },
+    {
+      "test": "test_bill_pay_01_bill_payment_service_form_is_displayed",
+      "passed": false,
+      "reason": "TypeError: Page.fill: Object of type Locator is not JSON serializable"
+    },
+    {
+      "test": "test_open_account_01_open_new_checking_account",
+      "passed": false,
+      "reason": "AssertionError: Locator expected to be visible"
+    },
+    {
+      "test": "test_bill_pay_02_missing_payee_fields_show_validation_mes",
+      "passed": false,
+      "reason": "TypeError: Page.fill: Object of type Locator is not JSON serializable"
+    },
+    {
+      "test": "test_open_account_03_no_funding_account_selected",
+      "passed": false,
+      "reason": "AttributeError: 'AccountsPage' object has no attribute 'locator'"
+    },
+    {
+      "test": "test_open_account_04_insufficient_funds_in_funding_account",
+      "passed": false,
+      "reason": "playwright._impl._errors.TimeoutError: Locator.select_option: Timeout 15000ms exceeded."
+    },
+    {
+      "test": "test_bill_pay_04_amount_is_not_a_number",
+      "passed": false,
+      "reason": "AssertionError: Locator expected to be visible"
+    },
+    {
+      "test": "test_open_account_02_open_new_savings_account",
+      "passed": false,
+      "reason": "AttributeError: 'AccountsPage' object has no attribute 'goto'"
+    },
+    {
+      "test": "test_transfer_funds_04_edge_case_transferring_the_same_amount_t",
+      "passed": false,
+      "reason": "AssertionError: Locator expected to be visible"
+    },
+    {
+      "test": "test_open_account_05_zero_initial_deposit_amount",
+      "passed": false,
+      "reason": "playwright._impl._errors.TimeoutError: Locator.select_option: Timeout 15000ms exceeded."
+    }
+  ]
+}

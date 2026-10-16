@@ -32,6 +32,7 @@ Critical decisions are asked before building and recorded here.
 | 2026-10-06 | Git identity | `Raman Walia <walia.raman89@gmail.com>` | Set in repo-local git config |
 | 2026-10-07 | Commit granularity | **Multiple small commits per day** | One per task where practical, each passing tests; push at end of day |
 | 2026-10-09 | Local model | **llama3.1:8b** + nomic-embed-text | Default from plan; swap via `OLLAMA_MODEL` |
+| 2026-10-15 | App under test | **ParaBank in local Docker** (`docker compose up -d`, `http://localhost:8080/parabank`) | Public demo's registration started returning HTTP 500 and was slow/flaky (Day 6). Local is stable, fast (suite 10s -> 2s) and CI-ready. Public demo still usable via `BASE_URL` |
 | 2026-10-05 | Remote | `https://github.com/ramanwaliagithub/QAForge-AI.git` | |
 
 ## Open-source stack
@@ -39,7 +40,7 @@ Critical decisions are asked before building and recorded here.
 | Area | Tools |
 |---|---|
 | Language/test | Python 3.11+, pytest, pytest-playwright, pytest-xdist, allure-pytest |
-| App under test | ParaBank (public demo), plus a small RAG chatbot you build in Phase 5 |
+| App under test | ParaBank (local Docker image `parasoft/parabank`), plus a small RAG chatbot you build in Phase 5 |
 | Local LLMs | Ollama (llama3.1, qwen2.5, nomic-embed-text) |
 | AI-assisted testing | Playwright MCP, MCP Python SDK, Claude Code/Copilot (optional) |
 | Evals | promptfoo, DeepEval, Ragas |
@@ -122,31 +123,31 @@ qaforge-ai/
 # PHASE 2: AI Test Generation and Self-Healing (Days 6-17)
 
 ### Day 6: Prompting for test cases
-- [ ] Write a prompt that turns a user story into test scenarios (Given/When/Then)
-- [ ] Run it on 3 ParaBank stories (transfer funds, bill pay, open account)
-- [ ] Compare outputs across temperatures 0 and 0.8
-- [ ] Save prompts in `ai_testgen/prompts/`
+- [x] Write a prompt that turns a user story into test scenarios (Given/When/Then)
+- [x] Run it on 3 ParaBank stories (transfer funds, bill pay, open account)
+- [x] Compare outputs across temperatures 0 and 0.8
+- [x] Save prompts in `ai_testgen/prompts/`
 - Commit: `feat: prompt templates for scenario generation`
 
 ### Day 7: Structured outputs
-- [ ] Define a Pydantic model `TestCase` (title, steps, expected, priority)
-- [ ] Force JSON output and validate; add retry on invalid JSON
-- [ ] Write unit tests for the parser using canned LLM responses
-- [ ] Notes: why structured output beats free text
+- [x] Define a Pydantic model `TestCase` (title, steps, expected, priority)
+- [x] Force JSON output and validate; add retry on invalid JSON
+- [x] Write unit tests for the parser using canned LLM responses
+- [x] Notes: why structured output beats free text
 - Commit: `feat: structured testcase schema and parser`
 
 ### Day 8: From scenarios to pytest code
-- [ ] Prompt that converts a `TestCase` into a pytest-playwright test using your page objects
-- [ ] Generate tests into `ai_testgen/generated/`
-- [ ] Run them; record pass/fail rate
-- [ ] Log every failure reason in notes
+- [x] Prompt that converts a `TestCase` into a pytest-playwright test using your page objects
+- [x] Generate tests into `ai_testgen/generated/`
+- [x] Run them; record pass/fail rate
+- [x] Log every failure reason in notes
 - Commit: `feat: LLM test code generator v1`
 
 ### Day 9: Grounding with page context
-- [ ] Extract page DOM/accessibility snapshot with Playwright
-- [ ] Feed the snapshot to the prompt so locators are real, not guessed
-- [ ] Compare pass rate vs Day 8
-- [ ] Add a small token-size trimmer for large DOMs
+- [x] Extract page DOM/accessibility snapshot with Playwright
+- [x] Feed the snapshot to the prompt so locators are real, not guessed
+- [x] Compare pass rate vs Day 8
+- [x] Add a small token-size trimmer for large DOMs
 - Commit: `feat: DOM-grounded generation`
 
 ### Day 10: Playwright MCP intro

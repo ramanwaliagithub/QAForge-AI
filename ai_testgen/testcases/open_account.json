@@ -1,0 +1,72 @@
+[
+  {
+    "title": "Open New Checking Account",
+    "type": "happy",
+    "priority": "high",
+    "preconditions": "Customer is logged in, on the Accounts Overview page",
+    "steps": [
+      "Click on the 'Open New Account' button",
+      "Select 'CHECKING' as the account type",
+      "Select a funding account",
+      "Enter an initial deposit amount",
+      "Submit the request"
+    ],
+    "expected": "Account Opened! with a new checking account number is shown, new account appears in Accounts Overview"
+  },
+  {
+    "title": "Open New Savings Account",
+    "type": "happy",
+    "priority": "high",
+    "preconditions": "Customer is logged in, on the Accounts Overview page",
+    "steps": [
+      "Click on the 'Open New Account' button",
+      "Select 'SAVINGS' as the account type",
+      "Select a funding account",
+      "Enter an initial deposit amount",
+      "Submit the request"
+    ],
+    "expected": "Account Opened! with a new savings account number is shown, new account appears in Accounts Overview"
+  },
+  {
+    "title": "No Funding Account Selected",
+    "type": "negative",
+    "priority": "medium",
+    "preconditions": "Customer is logged in, on the Open New Account page",
+    "steps": [
+      "Click on the 'Open New Account' button",
+      "Select 'CHECKING' as the account type",
+      "Do not select a funding account",
+      "Enter an initial deposit amount",
+      "Submit the request"
+    ],
+    "expected": "an error message is shown"
+  },
+  {
+    "title": "Insufficient Funds in Funding Account",
+    "type": "negative",
+    "priority": "medium",
+    "preconditions": "Customer is logged in, on the Open New Account page",
+    "steps": [
+      "Click on the 'Open New Account' button",
+      "Select 'CHECKING' as the account type",
+      "Select a funding account with insufficient funds",
+      "Enter an initial deposit amount",
+      "Submit the request"
+    ],
+    "expected": "an error message is shown"
+  },
+  {
+    "title": "Zero Initial Deposit Amount",
+    "type": "edge",
+    "priority": "low",
+    "preconditions": "Customer is logged in, on the Open New Account page",
+    "steps": [
+      "Click on the 'Open New Account' button",
+      "Select 'CHECKING' as the account type",
+      "Select a funding account",
+      "Enter an initial deposit amount of 0",
+      "Submit the request"
+    ],
+    "expected": "an error message is shown"
+  }
+]

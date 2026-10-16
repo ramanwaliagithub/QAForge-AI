@@ -1,0 +1,8 @@
+# Local ParaBank, the app under test. `docker compose up -d`, then BASE_URL=http://localhost:8080/parabank
+services:
+  parabank:
+    image: parasoft/parabank:latest
+    container_name: qaforge-parabank
+    ports:
+      - "8080:8080"
+    restart: unless-stopped

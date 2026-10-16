@@ -24,3 +24,4 @@ reports/tmp/
 .DS_Store
 .idea/
 .vscode/
+reports/testgen/*.xml
