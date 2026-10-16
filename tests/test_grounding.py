@@ -21,6 +21,10 @@ def test_selector_prefers_stable_id_then_name_then_value():
     assert selector_for(ELEMENTS[5]) is None
 
 
+def test_selector_uses_attribute_form_for_ids_with_dots():
+    assert selector_for({"tag": "input", "id": "customer.firstName"}) == "[id='customer.firstName']"
+
+
 def test_format_elements_includes_selector_label_options_and_skips_unselectable():
     out = format_elements(ELEMENTS)
     assert "selector: #amount" in out and "label: 'Phone #:'" in out and "never hardcode" in out

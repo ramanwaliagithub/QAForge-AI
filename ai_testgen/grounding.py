@@ -48,7 +48,8 @@ def capture_page(page: Page, base_url: str, path: str) -> dict:
 def selector_for(el: dict) -> str | None:
     """Best stable CSS selector for an element, or None if nothing stable exists."""
     if el.get("id") and not _UUID.match(el["id"]):
-        return f"#{el['id']}"
+        # `#a.b` would mean id "a" with class "b", so use an attribute selector for ids with special characters.
+        return f"#{el['id']}" if re.fullmatch(r"[A-Za-z_][\w-]*", el["id"]) else f"[id='{el['id']}']"
     if el.get("name"):
         return f"{el['tag']}[name='{el['name']}']"
     if el.get("value"):
