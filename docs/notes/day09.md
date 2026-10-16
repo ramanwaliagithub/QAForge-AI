@@ -29,3 +29,24 @@ ParaBank's inputs have **no accessible names** (the snapshot shows bare `textbox
 - The public ParaBank demo started returning HTTP 500 on registration, which broke everything. Switched to **local Docker** (`docker compose up -d`): same app, suite 10s -> ~1.2s.
 - ParaBank also has a **race on registration under parallel workers**: ~3 in 18 concurrent signups were rejected with "This username already exists" for a random uuid. `registered_user` now retries with a new username (12/12 clean parallel runs afterwards, vs 1 failure in 8 before).
 - Early v2 numbers were invalid because of these setup failures. Always check *where* a test failed (setup vs call) before blaming the model.
+
+# Follow-up: few-shot examples (time-boxed, same day)
+Added four **verified** example tests (`tests/examples/`, run in the main suite so they cannot rot) to the codegen prompt. They cover screens we do *not* evaluate (update profile, request loan, find transactions, logout via page objects). A unit test fails if an example mentions an evaluated screen, so we cannot leak the answers. The old prompt example (open account) was removed for the same reason.
+
+Also fixed a bug found while writing them: ids with dots (`customer.firstName`) were emitted as `#customer.firstName`, invalid CSS (means id + class); now `[id='customer.firstName']`.
+
+| Setup (llama3.1:8b, T=0, local ParaBank) | Valid code | Passed |
+|---|---|---|
+| elements context, zero-shot (Day 9) | 11/15 | 0 |
+| few-shot, no page context | 15/15 | 0 (14 locator timeouts) |
+| few-shot + elements context | 15/15 | **2** |
+| + explicit screen URL and "exactly one account" hint | 15/15 | **1** |
+
+- **Both ingredients are needed.** Examples fix code quality (valid code 11 -> 15 of 15, no more `Page.fill(Locator)` or undefined `page`). Selectors from the page fix locators. Either alone gives 0.
+- The last two rows differ by 1 test: that is noise (different prompts, T=0 still not fully stable across prompt edits). Read the result as "1-2 of 15", not as a regression.
+- The URL fix worked (`fundtransfer.htm` hallucination gone; every test now navigates to the right screen), so **navigation and locators are now essentially solved**.
+- **What still fails (13-14 of 15) is the assertions**, 9 of 14 as `AssertionError: expected to be visible`. The model pastes the test case's *prose* into `get_by_text`, e.g. `get_by_text("Bill Payment Complete with payee name, amount, and from-account is displayed")`, `get_by_text("is shown")`, `get_by_text("Invalid amount")`. It also invents Playwright API (`to_have_option`, `to_have_value(0)`).
+- Root cause is upstream, in the Day 7 schema: `expected` is a free-text description, not something checkable. The code generator is asked to turn "an error message is shown" into an assertion with no real text to use.
+
+## Next improvement (not done; for Day 17 or a later pass)
+Change the pipeline so each test case carries **checkable expectations**: e.g. `expected` becomes a list of `{kind: text_visible | url_contains | element_value, value}`, taken only from the acceptance criteria (and "an error is shown" cases are asserted generically, e.g. any `.error` element). Then codegen maps those to assertions mechanically. This is the "constrained steps" idea applied to assertions, and probably worth more than a bigger model.
