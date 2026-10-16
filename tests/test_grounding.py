@@ -63,3 +63,8 @@ def test_build_context_modes():
 
 def test_load_snapshots_unknown_story_is_empty():
     assert load_snapshots("nonexistent") == []
+
+
+def test_context_states_the_screen_url_to_navigate_to():
+    snap = {"path": "transfer.htm", "aria": "", "elements": ELEMENTS}
+    assert 'goto(f"{base_url}/transfer.htm")' in build_context([snap], "elements")

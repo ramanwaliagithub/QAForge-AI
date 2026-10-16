@@ -105,7 +105,7 @@ def build_context(snapshots: list[dict], mode: str = "elements", max_tokens: int
     per_page = max_tokens // len(snapshots)
     blocks = []
     for snap in snapshots:
-        parts = [f"### Screen: {snap['path']}"]
+        parts = [f"### Screen: {snap['path']}  (navigate with: logged_in_page.goto(f\"{{base_url}}/{snap['path']}\"))"]
         if mode in ("aria", "both"):
             parts.append("Accessibility snapshot:\n" + trim_to_tokens(snap["aria"], per_page // (2 if mode == "both" else 1)))
         if mode in ("elements", "both"):

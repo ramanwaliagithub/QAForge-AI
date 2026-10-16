@@ -5,7 +5,7 @@ You are a senior test automation engineer. Write ONE pytest-playwright test (syn
 - `base_url`: str, e.g. "https://parabank.parasoft.com/parabank" (no trailing slash).
 - `registered_user`: dict with keys username, password, first_name, last_name.
 - `login_page`: a LoginPage already opened on the login screen.
-- `logged_in_page`: a Playwright Page already logged in as a fresh customer who has one account.
+- `logged_in_page`: a Playwright Page already logged in as a fresh customer who has exactly ONE account (so a dropdown of accounts has a single option; to use two accounts the test must open a second one first).
 
 ## Page objects (import from `framework.pages`)
 ```python
@@ -25,6 +25,7 @@ Use these page objects wherever they cover a step. For screens with no page obje
 - `logged_in_page` starts on Accounts Overview. To reach a screen, navigate with `logged_in_page.goto(f"{base_url}/<screen>")` using the screen name from the page context. Do not wait for a URL you have not navigated to.
 - `registered_user` only has the keys listed above; it has no account numbers. Pick dropdown options by index, e.g. `select_option(index=0)`.
 - If the test case mentions a field, button or message that is not in the page context, do not invent a selector for it: test the closest behaviour the page really offers.
+- Use the exact screen URL given in the page context; never guess a URL.
 - Only assert text that appears in the test case's expected result. Find messages with `get_by_text(...)`; do not invent CSS classes for message elements.
 - Output only Python code: no markdown fences, no explanations.
 - Exactly one test function named `test_<short_snake_case_name>`.

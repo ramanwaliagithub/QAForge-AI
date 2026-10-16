@@ -1,21 +1,11 @@
 import pytest
 from playwright.sync_api import expect
 
-from framework.pages import AccountsPage, BasePage
-
 
 @pytest.mark.ai
 def test_account_number_entries_do_not_match(logged_in_page, base_url, registered_user):
-    logged_in_page.goto(f"{base_url}/billpay.htm")
-    page = logged_in_page
-
-    # Enter different account numbers in the two account number fields
-    page.locator('input[name="payee.accountNumber"]').fill("123456789")
-    page.locator('input[name="verifyAccount"]').fill("987654321")
-
-    # Submit the form
-    page.locator('input[value="Send Payment"]').click()
-
-    # Assert an error message is shown
-    error_message = page.get_by_text("Error: Invalid account number").text_content()
-    expect(error_message).to_contain_text("Invalid account number")
+    logged_in_page.goto(f"{base_url}/payees.htm")
+    logged_in_page.locator("#accountNumber").fill("1234567890")
+    logged_in_page.locator("#accountNumber2").fill("9876543210")
+    logged_in_page.locator("input[value='Submit']").click()
+    expect(logged_in_page.get_by_text("Account numbers do not match")).to_be_visible()

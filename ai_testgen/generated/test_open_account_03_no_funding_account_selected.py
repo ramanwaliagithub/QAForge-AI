@@ -1,17 +1,12 @@
 import pytest
 from playwright.sync_api import expect
 
-from framework.pages import AccountsPage
-
 
 @pytest.mark.ai
-def test_open_checking_account_without_funding(logged_in_page, base_url):
-    logged_in_page.goto(f"{base_url}/openaccount.htm")
-    logged_in_page.click("input[value='Open New Account']")
-    accounts = AccountsPage(logged_in_page, base_url)
-    accounts.open_new_account("CHECKING")
-    accounts.locator("#fromAccountId").select_option(index=0)
-    logged_in_page.fill("input[name='initialBalance']", "100")
-    logged_in_page.click("input[value='Open New Account']")
-    error_message = logged_in_page.get_by_text("Error Message").text_content()
-    expect(error_message).to_contain_text("No funding account selected")
+def test_open_new_account_requires_funding_account(logged_in_page, base_url, registered_user):
+    logged_in_page.goto(f"{base_url}/newaccount.htm")
+    logged_in_page.locator("text=Open New Account").click()
+    logged_in_page.locator("#accounttype").select_option(index=0)  # Select 'CHECKING'
+    logged_in_page.locator("#initialDeposit").fill("1000")
+    logged_in_page.locator("input[value='Add Account']").click()
+    expect(logged_in_page.get_by_text("Please select a funding account")).to_be_visible()

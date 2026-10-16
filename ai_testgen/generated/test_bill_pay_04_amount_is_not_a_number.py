@@ -1,23 +1,14 @@
 import pytest
 from playwright.sync_api import expect
 
-from framework.pages import BasePage
-
 
 @pytest.mark.ai
-def test_amount_is_not_a_number(page, base_url, registered_user, login_page, logged_in_page):
-    logged_in_page.goto(f"{base_url}/billpay.htm")
-    page.locator('input[name="payee.name"]').fill(registered_user['first_name'])
-    page.locator('input[name="payee.address.street"]').fill(registered_user['first_name'])
-    page.locator('input[name="payee.address.city"]').fill(registered_user['first_name'])
-    page.locator('input[name="payee.address.state"]').fill(registered_user['first_name'])
-    page.locator('input[name="payee.address.zipCode"]').fill(registered_user['first_name'])
-    page.locator('input[name="payee.phoneNumber"]').fill(registered_user['first_name'])
-    page.locator('input[name="payee.accountNumber"]').fill(registered_user['first_name'])
-    page.locator('input[name="verifyAccount"]').fill(registered_user['first_name'])
-    page.locator('input[name="amount"]').fill('abc')  # non-numeric value
-    select = page.locator('select[name="fromAccountId"]')
-    select.select_option(index=0)
-    page.locator('input[value="Send Payment"]').click()
-    error_message = logged_in_page.get_by_text('Error message is shown')
-    expect(error_message).to_be_visible()
+def test_amount_is_not_a_number(logged_in_page, base_url, registered_user):
+    logged_in_page.goto(f"{base_url}/payees.htm")
+    logged_in_page.locator("#payeeName").click()
+    logged_in_page.locator("#payeeName").fill("Test Payee")
+    logged_in_page.locator("#findPayees").click()
+    logged_in_page.locator("#payeeList").locator("text=Test Payee").click()
+    logged_in_page.locator("#amount").fill("abc")
+    logged_in_page.locator("input[value='Make Payment']").click()
+    expect(logged_in_page.get_by_text("Invalid amount")).to_be_visible()
