@@ -27,7 +27,8 @@ Critical decisions are asked before building and recorded here.
 | 2026-10-05 | Env tooling | **uv** (not plain venv+pip) | Installed via Homebrew; `uv sync`, `uv add`, `uv run`. Python 3.11 |
 | 2026-10-05 | License | **Deferred** to Day 59 | |
 | 2026-10-05 | Git workflow (superseded 2026-10-16) | Branch per phase, merge to `main` at phase end | Used for Days 1-9 |
-| 2026-10-16 | Git workflow | **Branch per day** `day-NN-<topic>`, merged to `main` at end of each day with a merge commit (`--no-ff`, no squash, to keep the small commits); push branch and `main`; phase tags go on `main` | Local merge (no PRs; `gh` not authenticated) |
+| 2026-10-19 | Git workflow (current) | **Issue + branch + PR per day**: open an issue for the day, work on `day-NN-<topic>`, open a PR with `Closes #N`, merge with `gh pr merge --merge` (merge commit) when tests pass. Aims at GitHub achievements (Pull Shark, YOLO) through real work only; no throwaway PRs or issues | `gh` is authenticated. Day 10 = issue #1 |
+| 2026-10-16 | Git workflow (superseded 2026-10-19) | **Branch per day** `day-NN-<topic>`, merged to `main` at end of each day with a merge commit (`--no-ff`, no squash, to keep the small commits); push branch and `main`; phase tags go on `main` | Local merge (no PRs; `gh` not authenticated) |
 | 2026-10-07 | Test user for account tests | **Fresh user per run** | Registered in a session fixture with a unique username; each xdist worker registers its own |
 | 2026-10-07 | Playwright fixtures | **Own fixtures**, not the pytest-playwright plugin | Keeps control and avoids name clashes; revisit if the plugin's tracing/screenshot options are wanted |
 | 2026-10-06 | Git identity | `Raman Walia <walia.raman89@gmail.com>` | Set in repo-local git config |
