@@ -25,3 +25,4 @@ reports/tmp/
 .idea/
 .vscode/
 reports/testgen/*.xml
+.playwright-mcp/

@@ -22,7 +22,7 @@ uv run pytest -q
 
 ## Status
 
-Day 9 of 60: DOM-grounded generation (0/15 either way; see notes).
+Day 10 of 60: Playwright MCP intro.
 
 ## Reports
 
