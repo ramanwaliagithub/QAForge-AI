@@ -1,7 +1,9 @@
 import asyncio
 from types import SimpleNamespace
 
-from ai_testgen.explore_agent import OLD_RESULT_CHARS, ALLOWED_TOOLS, run_agent, shorten_old_results, to_ollama_tools
+from ai_testgen.explore_agent import (
+    ALLOWED_TOOLS, OLD_RESULT_CHARS, parse_text_tool_call, run_agent, shorten_old_results, to_ollama_tools,
+)
 
 
 def scripted_llm(*replies):
@@ -24,7 +26,8 @@ def test_agent_calls_tools_then_stops_with_final_answer():
     )
     r = run(llm)
     assert r.stopped == "done" and r.final == "ParaBank has a login form."
-    assert r.steps[0].tool == "browser_navigate" and "http://x" in r.steps[0].result
+    assert r.steps[0].tool == "browser_navigate"
+    assert r.steps[0].result.startswith("ok:browser_snapshot")  # observation after a page-changing action
 
 
 def test_agent_stops_at_max_steps():
@@ -64,3 +67,39 @@ def test_to_ollama_tools_filters_to_allowlist():
     out = to_ollama_tools(tools)
     assert [t["function"]["name"] for t in out] == ["browser_click"]
     assert out[0]["function"]["description"] == "Click"
+
+
+def test_text_only_plan_before_any_tool_use_is_nudged():
+    llm = scripted_llm(
+        {"content": "I will navigate then click...", "tool_calls": []},
+        {"content": "", "tool_calls": [{"name": "browser_navigate", "arguments": {"url": "http://x"}}]},
+        {"content": "summary", "tool_calls": []},
+    )
+    r = run(llm)
+    assert r.nudges == 1 and len(r.steps) == 1 and r.final == "summary"
+
+
+def test_nudges_are_limited():
+    llm = scripted_llm(*[{"content": "plan", "tool_calls": []}] * 3)
+    r = run(llm)
+    assert r.nudges == 2 and r.stopped == "done" and r.steps == []
+
+
+def test_parse_text_tool_call():
+    text = 'I will do this: {"name": "browser_click", "parameters": {"target": "e5"}}'
+    assert parse_text_tool_call(text) == {"name": "browser_click", "arguments": {"target": "e5"}}
+    assert parse_text_tool_call('{"name": "rm_rf", "parameters": {}}') is None
+    assert parse_text_tool_call("just prose") is None
+
+
+def test_text_tool_call_is_executed_and_snapshot_not_taken_for_errors():
+    seen = []
+
+    async def call(name, args):
+        seen.append(name)
+        return "### Error\nbad" if name == "browser_click" else "ok"
+
+    llm = scripted_llm({"content": '{"name": "browser_click", "parameters": {"target": "e1"}}', "tool_calls": []},
+                       {"content": "done", "tool_calls": []})
+    r = asyncio.run(run_agent(llm, None, [], "s", "t", call_tool=call))
+    assert seen == ["browser_click"] and r.steps[0].result.startswith("### Error")
