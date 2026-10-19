@@ -153,10 +153,10 @@ qaforge-ai/
 - Commit: `feat: DOM-grounded generation`
 
 ### Day 10: Playwright MCP intro
-- [ ] Install and run `@playwright/mcp` locally
-- [ ] Connect it to VS Code (Copilot/Claude Code) or any MCP client
-- [ ] Ask the agent to explore ParaBank and describe flows
-- [ ] Save the transcript and observations in `docs/notes/`
+- [x] Install and run `@playwright/mcp` locally
+- [x] Connect it to VS Code (Copilot/Claude Code) or any MCP client (done via the Python MCP SDK client)
+- [x] Ask the agent to explore ParaBank and describe flows (local LLM agent failed, scripted walkthrough worked; see notes)
+- [x] Save the transcript and observations in `docs/notes/`
 - Commit: `docs: playwright mcp exploration notes`
 
 ### Day 11: MCP-driven exploratory testing
