@@ -27,7 +27,7 @@ def result_text(result) -> str:
 
 
 _REF = re.compile(r'^\s*- (?P<role>[\w-]+)(?: "(?P<name>[^"]*)")?(?P<attrs>(?: \[[^\]]*\])*)')
-_REF_ID = re.compile(r"\[ref=(e\d+)\]")
+_REF_ID = re.compile(r"\[ref=(\w*?e\d+)\]")  # refs inside frames are prefixed, e.g. f1e34
 
 
 def list_elements(snapshot: str) -> list[dict]:
@@ -55,7 +55,7 @@ def summarize_snapshot(snapshot: str) -> dict:
     elements = list_elements(snapshot)
     url = re.search(r"- Page URL: (\S+)", snapshot)
     title = re.search(r"- Page Title: (.+)", snapshot)
-    texts = [m.group(1).strip() for m in re.finditer(r"- paragraph(?: \[ref=e\d+\])?: (.+)", snapshot)]
+    texts = [m.group(1).strip() for m in re.finditer(r"- paragraph(?: \[ref=\w*?e\d+\])?: (.+)", snapshot)]
     return {
         "url": url.group(1) if url else "",
         "title": title.group(1).strip() if title else "",

@@ -43,3 +43,10 @@ def test_summarize_snapshot():
     assert s["url"].endswith("openaccount.htm") and s["title"] == "ParaBank | Open Account"
     assert s["headings"] == ["Open New Account"] and s["textboxes"] == 2 and s["comboboxes"] == 1
     assert s["buttons"] == ["Open New Account"] and s["text"] == ["What type of Account would you like to open?"]
+
+
+def test_frame_prefixed_refs_and_active_attribute():
+    snap = '- textbox [active] [ref=f1e34]\n- paragraph [ref=f1e40]: Hello\n- link "Register" [ref=f1e43] [cursor=pointer]'
+    assert find_ref(snap, "textbox") == "f1e34"
+    assert find_ref(snap, "link", "Register") == "f1e43"
+    assert summarize_snapshot(snap)["text"] == ["Hello"]
