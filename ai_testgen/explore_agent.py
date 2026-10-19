@@ -47,6 +47,27 @@ def to_ollama_tools(mcp_tools, allowed=ALLOWED_TOOLS) -> list[dict]:
     ]
 
 
+_ALIASES = ("ref", "id", "element_ref", "element_id", "selector", "element")
+
+
+def repair_args(args: dict, schema: dict) -> dict:
+    """Fix argument names a small model gets wrong, using the tool's JSON schema.
+
+    - drops arguments the schema does not know (the server rejects them);
+    - if a required argument is missing, fills it from a common alias (`id`, `ref`, `selector`, ...).
+    """
+    props = (schema or {}).get("properties", {})
+    if not props:
+        return args
+    fixed = {k: v for k, v in args.items() if k in props}
+    for req in (schema or {}).get("required", []):
+        if req not in fixed:
+            alias = next((a for a in _ALIASES if a in args and a not in props), None)
+            if alias:
+                fixed[req] = args[alias]
+    return fixed
+
+
 def parse_text_tool_call(text: str, allowed=ALLOWED_TOOLS) -> dict | None:
     """llama-style models often write a tool call as JSON text instead of using the tool-call channel."""
     for m in re.finditer(r"\{.*\}", text or "", re.DOTALL):
@@ -79,6 +100,7 @@ async def run_agent(llm_chat, session, tools: list[dict], system: str, task: str
         return result_text(await session.call_tool(name, args))
 
     call = call_tool or default_call
+    schemas = {t["function"]["name"]: t["function"].get("parameters") for t in tools}
     messages = [{"role": "system", "content": system}, {"role": "user", "content": task}]
     run = AgentRun()
     for n in range(1, max_steps + 1):
@@ -98,8 +120,11 @@ async def run_agent(llm_chat, session, tools: list[dict], system: str, task: str
             run.final, run.stopped = reply.get("content") or "", "done"
             return run
         for c in calls:
-            name, args = c["name"], c.get("arguments") or {}
+            name, raw_args = c["name"], c.get("arguments") or {}
+            args = repair_args(raw_args, schemas.get(name))
             step = Step(n=n, tool=name, args=args, note=reply.get("content") or "")
+            if args != raw_args:
+                step.note = (step.note + f" [args repaired from {json.dumps(raw_args)}]").strip()
             if name not in ALLOWED_TOOLS:
                 step.result = f"Error: tool {name} is not allowed."
             else:

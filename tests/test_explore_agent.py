@@ -2,7 +2,7 @@ import asyncio
 from types import SimpleNamespace
 
 from ai_testgen.explore_agent import (
-    ALLOWED_TOOLS, OLD_RESULT_CHARS, parse_text_tool_call, run_agent, shorten_old_results, to_ollama_tools,
+    ALLOWED_TOOLS, OLD_RESULT_CHARS, parse_text_tool_call, repair_args, run_agent, shorten_old_results, to_ollama_tools,
 )
 
 
@@ -103,3 +103,31 @@ def test_text_tool_call_is_executed_and_snapshot_not_taken_for_errors():
                        {"content": "done", "tool_calls": []})
     r = asyncio.run(run_agent(llm, None, [], "s", "t", call_tool=call))
     assert seen == ["browser_click"] and r.steps[0].result.startswith("### Error")
+
+
+CLICK_SCHEMA = {"properties": {"target": {"type": "string"}, "button": {"type": "string"}}, "required": ["target"]}
+
+
+def test_repair_args_maps_alias_and_drops_unknown():
+    assert repair_args({"id": "e43"}, CLICK_SCHEMA) == {"target": "e43"}
+    assert repair_args({"selector": "text=Register", "foo": 1, "button": "left"}, CLICK_SCHEMA) == {
+        "target": "text=Register", "button": "left"}
+
+
+def test_repair_args_leaves_valid_args_alone():
+    assert repair_args({"target": "e1"}, CLICK_SCHEMA) == {"target": "e1"}
+    assert repair_args({"anything": 1}, {}) == {"anything": 1}
+
+
+def test_run_agent_repairs_args_before_calling_the_tool():
+    got = []
+
+    async def call(name, args):
+        got.append(args)
+        return "ok"
+
+    tools = [{"type": "function", "function": {"name": "browser_click", "parameters": CLICK_SCHEMA}}]
+    llm = scripted_llm({"content": "", "tool_calls": [{"name": "browser_click", "arguments": {"id": "e9"}}]},
+                       {"content": "done", "tool_calls": []})
+    r = asyncio.run(run_agent(llm, None, tools, "s", "t", call_tool=call))
+    assert got[0] == {"target": "e9"} and "repaired" in r.steps[0].note
