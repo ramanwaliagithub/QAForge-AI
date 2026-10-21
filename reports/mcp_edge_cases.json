@@ -1,0 +1,115 @@
+{
+  "cases": [
+    {
+      "title": "Empty amount",
+      "amount": "",
+      "from": 0,
+      "to": 1,
+      "expected": "Reject transfer with error message",
+      "model_expects": "rejected",
+      "outcomes": [
+        "rejected",
+        "rejected"
+      ],
+      "stable": true,
+      "page_text": [
+        "Error!",
+        "An internal error has occurred and has been logged."
+      ]
+    },
+    {
+      "title": "Negative amount",
+      "amount": "-100",
+      "from": 0,
+      "to": 1,
+      "expected": "Reject transfer with error message",
+      "model_expects": "rejected",
+      "outcomes": [
+        "accepted",
+        "accepted"
+      ],
+      "stable": true,
+      "page_text": [
+        "Transfer Complete!",
+        "-$100.00 has been transferred from account #36765 to account #36876.",
+        "See Account Activity for more details."
+      ]
+    },
+    {
+      "title": "Amount with decimal point",
+      "amount": "100.50",
+      "from": 0,
+      "to": 1,
+      "expected": "Reject transfer with error message",
+      "model_expects": "rejected",
+      "outcomes": [
+        "accepted",
+        "accepted"
+      ],
+      "stable": true,
+      "page_text": [
+        "Transfer Complete!",
+        "$100.50 has been transferred from account #36765 to account #36876.",
+        "See Account Activity for more details."
+      ]
+    },
+    {
+      "title": "Transfer to same account",
+      "amount": "100",
+      "from": 0,
+      "to": 0,
+      "expected": "Reject transfer with error message",
+      "model_expects": "rejected",
+      "outcomes": [
+        "accepted",
+        "accepted"
+      ],
+      "stable": true,
+      "page_text": [
+        "Transfer Complete!",
+        "$100.00 has been transferred from account #36765 to account #36765.",
+        "See Account Activity for more details."
+      ]
+    },
+    {
+      "title": "Transfer with maximum allowed amount",
+      "amount": "1000000",
+      "from": 0,
+      "to": 1,
+      "expected": "Accept transfer",
+      "model_expects": "accepted",
+      "outcomes": [
+        "accepted",
+        "accepted"
+      ],
+      "stable": true,
+      "page_text": [
+        "Transfer Complete!",
+        "$1000000.00 has been transferred from account #36765 to account #36876.",
+        "See Account Activity for more details."
+      ]
+    }
+  ],
+  "infeasible_proposals": [
+    {
+      "item": {
+        "title": "Transfer from non-existent account",
+        "amount": "100",
+        "from_index": 2,
+        "to_index": 1,
+        "expected": "Error message or no action taken"
+      },
+      "why": "from_index: Input should be less than or equal to 1"
+    },
+    {
+      "item": {
+        "title": "Transfer to non-existent account",
+        "amount": "100",
+        "from_index": 0,
+        "to_index": 2,
+        "expected": "Error message or no action taken"
+      },
+      "why": "to_index: Input should be less than or equal to 1"
+    }
+  ]
+}
