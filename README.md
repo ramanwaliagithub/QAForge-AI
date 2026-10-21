@@ -22,7 +22,7 @@ uv run pytest -q
 
 ## Status
 
-Day 10 of 60: Playwright MCP intro.
+Day 11 of 60: MCP-driven exploratory testing (transfer funds).
 
 ## Reports
 
