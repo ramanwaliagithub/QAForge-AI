@@ -39,7 +39,7 @@ def page_texts(snapshot: str) -> list[str]:
     texts = []
     for m in re.finditer(r'- (?:heading "([^"]+)"|paragraph(?: \[ref=\w*?e\d+\])?: (.+)|text: (.+)|cell "([^"]+)")', snapshot):
         t = next(g for g in m.groups() if g).strip().strip('"')
-        if t and not any(t.startswith(c) for c in CHROME_TEXT) and t not in ("Account Services", "Customer Login", "Latest News"):
+        if t and re.search(r"\w", t) and not any(t.startswith(c) for c in CHROME_TEXT) and t not in ("Account Services", "Customer Login", "Latest News"):
             texts.append(t)
     return texts
 

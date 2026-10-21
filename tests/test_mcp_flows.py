@@ -13,6 +13,8 @@ SNAP = """- heading "Transfer Funds" [level=1] [ref=e7]
 - heading "Error!" [level=1] [ref=e14]
 - paragraph [ref=e15]: An internal error has occurred and has been logged.
 - text: "Amount: $"
+- cell "|"
+- paragraph [ref=e16]: |
 """
 
 
