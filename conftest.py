@@ -117,3 +117,23 @@ def logged_in_page(page, base_url, registered_user):
     LoginPage(page, base_url).open().login(registered_user["username"], registered_user["password"])
     page.get_by_role("link", name="Log Out").wait_for()
     return page
+
+
+@pytest.fixture
+def new_customer_page(browser, base_url):
+    """A page logged in as a brand-new customer (own context, own accounts).
+
+    Use for tests that change balances, so they cannot pollute the shared `registered_user`.
+    """
+    context = browser.new_context()
+    context.set_default_timeout(int(os.getenv("ACTION_TIMEOUT_MS", "15000")))
+    page = context.new_page()
+    user = {
+        "first_name": "New", "last_name": "Customer", "street": "1 Test Street", "city": "Testville", "state": "CA",
+        "zip_code": "90210", "phone": "5550100", "ssn": "123-45-6789", "password": "Passw0rd!",
+        "username": f"qaforge_{uuid.uuid4().hex[:10]}",
+    }
+    RegisterPage(page, base_url).open().register(**user)
+    page.get_by_role("link", name="Log Out").wait_for()  # registration logs the new customer in
+    yield page
+    context.close()

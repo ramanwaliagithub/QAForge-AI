@@ -160,10 +160,10 @@ qaforge-ai/
 - Commit: `docs: playwright mcp exploration notes`
 
 ### Day 11: MCP-driven exploratory testing
-- [ ] Ask the agent to find 5 edge cases on the transfer funds page
-- [ ] Convert two of its findings into real pytest tests by hand
-- [ ] Note where the agent was wrong or flaky
-- [ ] Add findings to `docs/mcp-findings.md`
+- [x] Ask the agent to find 5 edge cases on the transfer funds page
+- [x] Convert two of its findings into real pytest tests by hand
+- [x] Note where the agent was wrong or flaky
+- [x] Add findings to `docs/mcp-findings.md`
 - Commit: `test: edge cases found via playwright mcp`
 
 ### Day 12: Accessibility-snapshot based locators
