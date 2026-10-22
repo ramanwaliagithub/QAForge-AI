@@ -72,12 +72,12 @@ def page(browser, request):
     context.close()
 
 
-@pytest.fixture(scope="session")
-def registered_user(browser, base_url):
-    """A fresh ParaBank customer, created once per session (once per worker under xdist).
+def register_new_customer(browser, base_url, attempts: int = 3):
+    """Register a brand-new customer through the UI in a fresh browser context.
 
-    ParaBank sometimes rejects a brand-new username ("This username already exists") when several
-    workers register at once, so retry with a new username instead of failing every test.
+    Returns (context, page, user); the page is logged in because registration logs the customer in.
+    ParaBank sometimes rejects a brand-new username ("This username already exists") or stalls when several
+    workers register at once, so retry with a new username instead of failing the test.
     """
     user = {
         "first_name": "Qa",
@@ -91,20 +91,28 @@ def registered_user(browser, base_url):
         "password": "Passw0rd!",
     }
     last_error = None
-    for attempt in range(1, 4):
+    for attempt in range(1, attempts + 1):
         user["username"] = f"qaforge_{uuid.uuid4().hex[:10]}"
         context = browser.new_context()
+        context.set_default_timeout(int(os.getenv("ACTION_TIMEOUT_MS", "15000")))
         page = context.new_page()
         try:
             RegisterPage(page, base_url).open().register(**user)
             page.get_by_role("link", name="Log Out").wait_for(timeout=10_000)
-            return user
+            return context, page, user
         except PlaywrightTimeoutError as e:
             last_error = e
             log.warning("registration_retry", extra={"attempt": attempt, "username": user["username"]})
-        finally:
             context.close()
-    raise RuntimeError(f"Could not register a test user after 3 attempts: {last_error}")
+    raise RuntimeError(f"Could not register a test user after {attempts} attempts: {last_error}")
+
+
+@pytest.fixture(scope="session")
+def registered_user(browser, base_url):
+    """A fresh ParaBank customer, created once per session (once per worker under xdist)."""
+    context, _page, user = register_new_customer(browser, base_url)
+    context.close()
+    return user
 
 
 @pytest.fixture
@@ -125,15 +133,6 @@ def new_customer_page(browser, base_url):
 
     Use for tests that change balances, so they cannot pollute the shared `registered_user`.
     """
-    context = browser.new_context()
-    context.set_default_timeout(int(os.getenv("ACTION_TIMEOUT_MS", "15000")))
-    page = context.new_page()
-    user = {
-        "first_name": "New", "last_name": "Customer", "street": "1 Test Street", "city": "Testville", "state": "CA",
-        "zip_code": "90210", "phone": "5550100", "ssn": "123-45-6789", "password": "Passw0rd!",
-        "username": f"qaforge_{uuid.uuid4().hex[:10]}",
-    }
-    RegisterPage(page, base_url).open().register(**user)
-    page.get_by_role("link", name="Log Out").wait_for()  # registration logs the new customer in
+    context, page, _user = register_new_customer(browser, base_url)
     yield page
     context.close()

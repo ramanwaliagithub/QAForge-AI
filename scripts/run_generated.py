@@ -16,7 +16,7 @@ junit = out_dir / f"{label}.xml"
 
 subprocess.run(
     [sys.executable, "-m", "pytest", "ai_testgen/generated", "-m", "ai", "-q", "-p", "no:cacheprovider",
-     f"--junitxml={junit}", "--tb=line", "-n", "3"],
+     f"--junitxml={junit}", "--tb=line", "-n", "3", "--reruns", "0"]  # no reruns: a pass-rate experiment must not hide failures,
     check=False, capture_output=True, text=True,
 )
 

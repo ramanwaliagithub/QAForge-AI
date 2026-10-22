@@ -1,5 +1,7 @@
 import re
 
+from playwright.sync_api import expect
+
 from framework.pages.base_page import BasePage
 
 
@@ -20,7 +22,7 @@ class TransferPage(BasePage):
 
     @property
     def submit_button(self):
-        return self.page.locator("input[value='Transfer']")
+        return self.page.get_by_role("button", name="Transfer", exact=True)
 
     @property
     def success_heading(self):
@@ -36,9 +38,9 @@ class TransferPage(BasePage):
         return self.page.get_by_role("heading", name=re.compile(r"Transfer Complete!|Error!"))
 
     def open(self, accounts: int = 1):
-        """Open the page and wait until the account dropdowns are filled (they load asynchronously)."""
+        """Open the page and wait until the dropdowns list `accounts` accounts (they load asynchronously)."""
         super().open()
-        self.to_account.locator("option").nth(accounts - 1).wait_for(state="attached")
+        expect(self.to_account.get_by_role("option")).to_have_count(accounts)
         return self
 
     def transfer(self, amount: str, from_index: int = 0, to_index: int = 0):

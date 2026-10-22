@@ -8,7 +8,7 @@ account balances. Raw data: `reports/mcp_edge_cases.json` (committed; re-run the
 
 | Edge case | Model expected | ParaBank did | Verdict |
 |---|---|---|---|
-| Empty amount | reject | `Error!` "An internal error has occurred and has been logged." | Rejected, but the message is a server error, not "amount is required". UX defect. Test: `test_empty_amount_shows_an_error` |
+| Empty amount | reject | `Error!` page with **three** messages: "The amount cannot be empty.", "Please enter a valid amount." and "An internal error has occurred and has been logged." | Rejected with proper validation messages, **plus** a spurious internal error (defect). Test: `test_empty_amount_shows_an_error`. *Corrected on Day 12: the first version of this row listed only the internal error, because my snapshot digest did not surface the validation messages; Playwright's strict mode (`p.error` matched 3 elements) revealed them.* |
 | Negative amount (-100) | reject | **accepted**, "Transfer Complete! -$100.00 has been transferred" | **App bug.** Test: `test_negative_amount_is_rejected` (strict xfail) |
 | Decimal amount (100.50) | reject | accepted | **Model wrong.** Valid money. Test: `test_decimal_amount_is_accepted` |
 | Same account for From and To | reject | accepted | Debatable (no spec). Not turned into a test. It is also the form's default, so it is easy to hit by accident |

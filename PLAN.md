@@ -167,10 +167,10 @@ qaforge-ai/
 - Commit: `test: edge cases found via playwright mcp`
 
 ### Day 12: Accessibility-snapshot based locators
-- [ ] Learn role/label/text-based locators vs CSS/XPath
-- [ ] Refactor 5 fragile locators in the page objects
-- [ ] Add a locator-quality checklist to docs
-- [ ] Re-run suite for stability
+- [x] Learn role/label/text-based locators vs CSS/XPath
+- [x] Refactor 5 fragile locators in the page objects
+- [x] Add a locator-quality checklist to docs
+- [x] Re-run suite for stability
 - Commit: `refactor: resilient locators`
 
 ### Day 13: Failure analysis (healing step 1)
