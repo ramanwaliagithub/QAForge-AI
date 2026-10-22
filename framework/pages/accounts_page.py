@@ -40,7 +40,7 @@ class AccountsPage(BasePage):
         self.page.goto(f"{self.base_url}/openaccount.htm")
         self.account_type.select_option(account_type)
         # The funding-account dropdown is populated asynchronously.
-        expect(self.funding_account.locator("option")).not_to_have_count(0)
+        expect(self.funding_account.get_by_role("option")).not_to_have_count(0)
         self.click(self.page.get_by_role("button", name="Open New Account"))
         expect(self.new_account_link).to_be_visible()
         return self.new_account_link.inner_text()

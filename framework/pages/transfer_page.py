@@ -40,7 +40,7 @@ class TransferPage(BasePage):
     def open(self, accounts: int = 1):
         """Open the page and wait until the dropdowns list `accounts` accounts (they load asynchronously)."""
         super().open()
-        expect(self.to_account.locator("option")).to_have_count(accounts)
+        expect(self.to_account.get_by_role("option")).to_have_count(accounts)
         return self
 
     def transfer(self, amount: str, from_index: int = 0, to_index: int = 0):
