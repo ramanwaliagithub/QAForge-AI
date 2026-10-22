@@ -22,7 +22,7 @@ uv run pytest -q
 
 ## Status
 
-Day 11 of 60: MCP-driven exploratory testing (transfer funds).
+Day 12 of 60: resilient locators, locator audit, flake findings.
 
 ## Reports
 
