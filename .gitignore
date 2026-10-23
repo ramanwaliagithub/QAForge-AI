@@ -26,3 +26,4 @@ reports/tmp/
 .vscode/
 reports/testgen/*.xml
 .playwright-mcp/
+reports/failures/
