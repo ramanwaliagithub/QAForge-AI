@@ -37,6 +37,7 @@ class ErrorInfo:
     action: str | None = None   # "click", "fill", or the expect matcher such as "to_be_visible"
     timeout_ms: int | None = None
     frames: list[dict] = field(default_factory=list)  # project source frames, innermost last
+    raised_in: str = "other"   # page_object | test | other: where the innermost project frame is
 
 
 def clean_message(text: str, max_chars: int = 1500) -> str:
@@ -88,9 +89,20 @@ def project_frames(tb, root: Path | None = None, limit: int = 8) -> list[dict]:
     return out[-limit:]
 
 
+def raised_in(frames: list[dict]) -> str:
+    """Where the failure surfaced. In a page object the locator definition is nearby; in a test it is an assertion."""
+    if not frames:
+        return "other"
+    inner = frames[-1]["file"].replace("\\", "/")
+    if inner.startswith("framework/pages/"):
+        return "page_object"
+    return "test" if inner.startswith("tests/") or inner.startswith("ai_testgen/generated/") else "other"
+
+
 def analyze_exception(exc: BaseException, root: Path | None = None) -> ErrorInfo:
     exc_type = f"{type(exc).__module__}.{type(exc).__qualname__}"
     message = clean_message(str(exc))
     kind, locator, action, timeout_ms = classify_message(exc_type, message)
+    frames = project_frames(exc.__traceback__, root)
     return ErrorInfo(type=exc_type, message=message, kind=kind, heal_hint=KIND_HINT[kind], locator=locator,
-                     action=action, timeout_ms=timeout_ms, frames=project_frames(exc.__traceback__, root))
+                     action=action, timeout_ms=timeout_ms, frames=frames, raised_in=raised_in(frames))

@@ -1,7 +1,7 @@
 """Classification tests use the real error texts Playwright produced (captured on 2026-10-23)."""
 import pytest
 
-from framework.healing.errors import KIND_HINT, analyze_exception, classify_message, clean_message
+from framework.healing.errors import KIND_HINT, analyze_exception, classify_message, clean_message, raised_in
 
 TIMEOUT = "playwright._impl._errors.TimeoutError"
 PWERR = "playwright._impl._errors.Error"
@@ -77,3 +77,13 @@ def test_analyze_exception_collects_project_frames():
     assert info.frames[-1]["function"] == "helper"
     assert info.frames[-1]["file"] == "tests/test_healing_errors.py"
     assert info.frames[-1]["code"] == 'raise AssertionError("assert 1 == 2")'
+
+
+def test_raised_in_uses_the_innermost_project_frame():
+    f = lambda file: [{"file": file}]  # noqa: E731
+    assert raised_in(f("framework/pages/transfer_page.py")) == "page_object"
+    assert raised_in([{"file": "tests/test_a.py"}, {"file": "framework/pages/base_page.py"}]) == "page_object"
+    assert raised_in(f("tests/test_a.py")) == "test"
+    assert raised_in(f("ai_testgen/generated/test_x.py")) == "test"
+    assert raised_in(f("scripts/x.py")) == "other" and raised_in([]) == "other"
+    assert analyze_exception(RuntimeError("x")).raised_in == "other"  # no traceback, no frames
