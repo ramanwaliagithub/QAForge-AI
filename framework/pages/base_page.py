@@ -1,4 +1,4 @@
-from playwright.sync_api import Locator, Page, expect
+from playwright.sync_api import Locator, Page
 
 from framework.logging_utils import get_logger
 
@@ -20,12 +20,14 @@ class BasePage:
         return self
 
     def click(self, locator: Locator):
-        expect(locator).to_be_visible()
+        # wait_for (not expect): a missing element is a locator problem and raises a Playwright timeout, which the
+        # failure collector classifies as `locator_not_found`. expect() is reserved for assertions in tests.
+        locator.wait_for(state="visible")
         log.info("click", extra={"locator": str(locator)})
         locator.click()
 
     def fill(self, locator: Locator, value: str):
-        expect(locator).to_be_visible()
+        locator.wait_for(state="visible")
         log.info("fill", extra={"locator": str(locator)})
         locator.fill(value)
 

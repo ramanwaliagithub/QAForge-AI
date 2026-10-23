@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import expect, sync_playwright
 
+from framework.healing.collector import DEFAULT_DIR, collect_failure_context
 from framework.logging_utils import get_logger
 from framework.pages import LoginPage, RegisterPage
 
@@ -45,9 +46,19 @@ def pytest_runtest_makereport(item, call):
     """Expose each phase's report on the item so fixtures can see if the test failed."""
     outcome = yield
     setattr(item, f"rep_{call.when}", outcome.get_result())
+    if call.when == "call":
+        item.excinfo_call = call.excinfo  # the exception object (None on pass); the failure collector needs it
 
 
 ARTIFACTS_DIR = Path("test-results")
+
+
+def collect_failure(request, page):
+    """If the test body failed, write the failure context (error, page state, screenshot) for the healer."""
+    excinfo = getattr(request.node, "excinfo_call", None)
+    failed = getattr(request.node, "rep_call", None) and request.node.rep_call.failed
+    if failed and excinfo is not None:
+        collect_failure_context(page, request.node.nodeid, excinfo.value, Path(os.getenv("FAILURE_DIR", DEFAULT_DIR)))
 
 
 @pytest.fixture
@@ -59,6 +70,7 @@ def page(browser, request):
     yield page
     failed = getattr(request.node, "rep_call", None) and request.node.rep_call.failed
     if failed:
+        collect_failure(request, page)
         name = re.sub(r"[^\w.-]+", "_", request.node.nodeid)
         ARTIFACTS_DIR.mkdir(exist_ok=True)
         shot = page.screenshot(full_page=True)
@@ -128,11 +140,12 @@ def logged_in_page(page, base_url, registered_user):
 
 
 @pytest.fixture
-def new_customer_page(browser, base_url):
+def new_customer_page(browser, base_url, request):
     """A page logged in as a brand-new customer (own context, own accounts).
 
     Use for tests that change balances, so they cannot pollute the shared `registered_user`.
     """
     context, page, _user = register_new_customer(browser, base_url)
     yield page
+    collect_failure(request, page)
     context.close()
