@@ -48,6 +48,12 @@ def test_classify_message(exc_type, message, kind, locator, action):
     assert (got_kind, got_locator, got_action) == (kind, locator, action)
 
 
+def test_locator_drops_the_wait_for_state_suffix():
+    msg = 'Locator.wait_for: Timeout 3000ms exceeded.\nCall log:\n  - waiting for locator("#amt") to be visible\n'
+    kind, locator, action, _ = classify_message(TIMEOUT, msg)
+    assert (kind, locator, action) == ("locator_not_found", 'locator("#amt")', "wait_for")
+
+
 def test_timeout_is_extracted():
     assert classify_message(TIMEOUT, ID_MISSING)[3] == 2000
     assert classify_message(ASSERT, "assert 1 == 2")[3] is None
@@ -85,5 +91,6 @@ def test_raised_in_uses_the_innermost_project_frame():
     assert raised_in([{"file": "tests/test_a.py"}, {"file": "framework/pages/base_page.py"}]) == "page_object"
     assert raised_in(f("tests/test_a.py")) == "test"
     assert raised_in(f("ai_testgen/generated/test_x.py")) == "test"
+    assert raised_in(f("framework/healing/sample_tests/test_broken_locators.py")) == "test"
     assert raised_in(f("scripts/x.py")) == "other" and raised_in([]) == "other"
     assert analyze_exception(RuntimeError("x")).raised_in == "other"  # no traceback, no frames

@@ -10,6 +10,7 @@ from pathlib import Path
 
 _ANSI = re.compile(r"\x1b\[[0-9;]*m")
 _LOCATOR_EXPR = re.compile(r"^\s*-\s*waiting for ((?:locator|get_by_\w+|frame_locator)\(.*)$", re.M)
+_STATE_SUFFIX = re.compile(r"\s+to be (?:visible|hidden|attached|detached|enabled|editable|stable)\b.*$")  # wait_for() adds this
 _ACTION = re.compile(r"^(?:\w+\.)?(?P<cls>Locator|Page|Frame)\.(?P<action>\w+): ", re.M)
 _TIMEOUT = re.compile(r"Timeout (\d+)ms exceeded")
 _EXPECT = re.compile(r'Expect "(\w+)"')
@@ -49,7 +50,7 @@ def clean_message(text: str, max_chars: int = 1500) -> str:
 def classify_message(exc_type: str, message: str) -> tuple[str, str | None, str | None, int | None]:
     """Return (kind, locator, action, timeout_ms) from an exception type name and its (cleaned) message."""
     loc = _LOCATOR_EXPR.search(message)
-    locator = loc.group(1).strip() if loc else None
+    locator = _STATE_SUFFIX.sub("", loc.group(1).strip()) if loc else None
     timeout = _TIMEOUT.search(message)
     timeout_ms = int(timeout.group(1)) if timeout else None
     expect = _EXPECT.search(message)
@@ -96,7 +97,7 @@ def raised_in(frames: list[dict]) -> str:
     inner = frames[-1]["file"].replace("\\", "/")
     if inner.startswith("framework/pages/"):
         return "page_object"
-    return "test" if inner.startswith("tests/") or inner.startswith("ai_testgen/generated/") else "other"
+    return "test" if Path(inner).name.startswith("test_") else "other"
 
 
 def analyze_exception(exc: BaseException, root: Path | None = None) -> ErrorInfo:
