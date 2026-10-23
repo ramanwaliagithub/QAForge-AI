@@ -174,10 +174,10 @@ qaforge-ai/
 - Commit: `refactor: resilient locators`
 
 ### Day 13: Failure analysis (healing step 1)
-- [ ] On test failure, capture error, DOM snapshot, screenshot
-- [ ] Build `framework/healing/collector.py` to save these as JSON
-- [ ] Deliberately break 3 locators to produce samples
-- [ ] Write tests for the collector
+- [x] On test failure, capture error, DOM snapshot, screenshot
+- [x] Build `framework/healing/collector.py` to save these as JSON
+- [x] Deliberately break 3 locators to produce samples
+- [x] Write tests for the collector
 - Commit: `feat: failure context collector`
 
 ### Day 14: Healing suggester

@@ -22,7 +22,7 @@ uv run pytest -q
 
 ## Status
 
-Day 12 of 60: resilient locators, locator audit, flake findings.
+Day 13 of 60: failure context collector (healing step 1).
 
 ## Reports
 
