@@ -5,7 +5,7 @@ from pathlib import Path
 
 from framework.healing.collector import FailureContext
 from framework.healing.suggestion import (
-    action_compatible, LocatorSuggestion, SuggestionParseError, Validation, intended_action, parse_suggestion, render_locator,
+    action_compatible, failed_role, LocatorSuggestion, SuggestionParseError, Validation, intended_action, parse_suggestion, render_locator,
     validate_suggestion,
 )
 from framework.llm_client import LLMClient
@@ -94,20 +94,21 @@ def css_hint(el: dict) -> str | None:
     return None
 
 
-def format_elements(elements: list[dict], limit: int = MAX_ELEMENTS, action: str | None = None) -> str:
+def format_elements(elements: list[dict], limit: int = MAX_ELEMENTS, action: str | None = None,
+                    role: str | None = None) -> str:
     """Candidates a locator could target, described like the accessibility tree: role and accessible name, plus a
     ready-made CSS selector when there is no accessible name. With an `action`, only elements it can work on are listed."""
     lines = []
     for el in elements:
         if not el.get("visible", True) or (action and not action_compatible(action, el)):
             continue
-        role, name = implicit_role(el), accessible_name(el)
-        if not role:
+        el_role, name = implicit_role(el), accessible_name(el)
+        if not el_role or (role and el_role != role):
             continue
         if name:
-            line = f"- {role} name={name!r}"
+            line = f"- {el_role} name={name!r}"
         elif css_hint(el):
-            line = f"- {role}, NO accessible name; css={css_hint(el)}"
+            line = f"- {el_role}, NO accessible name; css={css_hint(el)}"
         else:
             continue  # nothing to identify it by
         if line not in lines:  # footer links repeat the header ones
@@ -127,7 +128,7 @@ def build_prompt(ctx: FailureContext) -> str:
             .replace("{action}", action or "(unknown)")
             .replace("{frames}", format_frames(e.frames))
             .replace("{title}", ctx.page.title).replace("{url}", ctx.page.url)
-            .replace("{elements}", format_elements(ctx.page.elements, action=action)))
+            .replace("{elements}", format_elements(ctx.page.elements, action=action, role=failed_role(e.locator))))
 
 
 def suggest_locator(client: LLMClient, ctx: FailureContext, page, max_attempts: int = 3, temperature: float = 0.0) -> HealResult:
@@ -145,7 +146,7 @@ def suggest_locator(client: LLMClient, ctx: FailureContext, page, max_attempts: 
             prompt = f"{base_prompt}\n\nYour previous answer was rejected: {e}\nAnswer with corrected JSON only."
             continue
         source = render_locator(suggestion)
-        validation = validate_suggestion(page, suggestion, ctx.error.locator, action)
+        validation = validate_suggestion(page, suggestion, ctx.error.locator, action, role=failed_role(ctx.error.locator))
         if validation.ok:
             result.attempts.append(Attempt(suggestion, source, validation))
             result.healed = True

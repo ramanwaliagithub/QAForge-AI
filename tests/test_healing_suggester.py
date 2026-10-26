@@ -168,3 +168,28 @@ def test_unique_but_wrong_element_for_the_action_is_not_healed(snapshot):
     wrong = {"strategy": "role", "role": "button", "name": "Transfer"}
     r = suggest_locator(Scripted(wrong, CSS_AMOUNT), ctx, snapshot(ctx))
     assert r.healed and "fills text" in r.attempts[0].rejected_because and len(r.attempts) == 2
+
+
+def test_candidates_keep_the_role_the_failed_locator_asked_for():
+    els = [
+        {"tag": "a", "text": "Register", "visible": True},
+        {"tag": "input", "type": "submit", "value": "Register", "visible": True},
+    ]
+    assert format_elements(els, action="click").splitlines() == ["- link name='Register'", "- button name='Register'"]
+    assert format_elements(els, action="click", role="button").splitlines() == ["- button name='Register'"]
+
+
+def test_prompt_for_a_failed_button_lists_only_buttons():
+    p = build_prompt(load("button_text_changed"))
+    listed = p.split("## Candidate elements on the page")[1].split("## Rules")[0]
+    assert "button name='Transfer'" in listed and "link name=" not in listed
+
+
+def test_wrong_role_suggestion_is_not_healed_and_feedback_says_why(snapshot):
+    ctx = load("button_text_changed")
+    wrong = {"strategy": "role", "role": "link", "name": "Log Out", "exact": True}
+    right = {"strategy": "role", "role": "button", "name": "Transfer", "exact": True}
+    client = Scripted(wrong, right)
+    r = suggest_locator(client, ctx, snapshot(ctx))
+    assert r.healed and len(r.attempts) == 2 and "asked for a button" in r.attempts[0].rejected_because
+    assert "asked for a button" in client.prompts[1]

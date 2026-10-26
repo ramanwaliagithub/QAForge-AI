@@ -1,0 +1,99 @@
+{
+  "summary": {
+    "label": "day14_heldout2_t0",
+    "temperature": 0.0,
+    "runs": 1,
+    "heldout2": {
+      "cases": 4,
+      "correct": 2,
+      "healed_wrong_element": 1,
+      "not_healed": 1,
+      "first_try_valid": 2
+    }
+  },
+  "rows": [
+    {
+      "set": "heldout2",
+      "sample": "password_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "locator(\"input[name='password']\")",
+      "element": {
+        "tag": "input",
+        "type": "password",
+        "id": null,
+        "name": "password",
+        "value": null,
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true
+    },
+    {
+      "set": "heldout2",
+      "sample": "register_button_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": false,
+      "attempts": 1,
+      "suggestion": "get_by_role(\"link\", name=\"Register\", exact=True)",
+      "element": {
+        "tag": "a",
+        "type": null,
+        "id": null,
+        "name": null,
+        "value": null,
+        "text": "Register"
+      },
+      "rejections": [],
+      "first_try_valid": true
+    },
+    {
+      "set": "heldout2",
+      "sample": "state_field_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": false,
+      "correct": false,
+      "attempts": 3,
+      "suggestion": null,
+      "element": null,
+      "rejections": [
+        "Same locator as the one that failed.",
+        "CSS selector \"css=[id='customer.address.state']\" is fragile (class, structure, position or XPath); use role/label/text, or an id or name attribute.",
+        "CSS selector \"css=[id='customer.address.region']\" is fragile (class, structure, position or XPath); use role/label/text, or an id or name attribute."
+      ],
+      "first_try_valid": false
+    },
+    {
+      "set": "heldout2",
+      "sample": "to_account_id_renamed",
+      "kind": "page_object_precondition",
+      "guard_attempts": false,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 2,
+      "suggestion": "locator(\"#toAccountId\")",
+      "element": {
+        "tag": "select",
+        "type": "select-one",
+        "id": "toAccountId",
+        "name": null,
+        "value": null,
+        "text": "396849"
+      },
+      "rejections": [
+        "Matches no element on the page."
+      ],
+      "first_try_valid": false
+    }
+  ]
+}

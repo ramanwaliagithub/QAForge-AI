@@ -26,6 +26,14 @@ class LocatorSuggestion(BaseModel):
     reason: str = ""
     confidence: float = Field(0.5, ge=0, le=1)
 
+    @model_validator(mode="before")
+    @classmethod
+    def _strip_css_prefix(cls, data):
+        # Playwright accepts `css=<selector>`; models copy that prefix from prompts. Same meaning, so normalise it.
+        if isinstance(data, dict) and isinstance(data.get("css"), str) and data["css"].strip().startswith("css="):
+            data = {**data, "css": data["css"].strip()[4:]}
+        return data
+
     @model_validator(mode="after")
     def _fields_match_strategy(self):
         if self.strategy == "role" and not self.role:
@@ -79,6 +87,15 @@ def build_locator(page, s: LocatorSuggestion):
         s.text, exact=s.exact)
 
 
+_FAILED_ROLE = re.compile(r"^get_by_role\(\s*[\"'](\w[\w-]*)[\"']")
+
+
+def failed_role(failed_locator: str | None) -> str | None:
+    """Role the failed locator asked for, e.g. `button` for get_by_role("button", name="Sign Up"); None if it was not a role locator."""
+    m = _FAILED_ROLE.match((failed_locator or "").strip())
+    return m.group(1) if m else None
+
+
 def intended_action(error: ErrorInfo) -> str | None:
     """What the test was trying to do with the locator, read from the failing source lines (innermost first)."""
     for frame in reversed(error.frames):
@@ -101,7 +118,8 @@ _DESCRIBE_JS = """e => ({tag: e.tagName.toLowerCase(), type: e.type || null, id:
   text: (e.innerText || '').trim().replace(/\\s+/g, ' ').slice(0, 60) || null})"""
 
 
-def validate_suggestion(page, s: LocatorSuggestion, failed_locator: str | None = None, action: str | None = None) -> Validation:
+def validate_suggestion(page, s: LocatorSuggestion, failed_locator: str | None = None, action: str | None = None,
+                        role: str | None = None) -> Validation:
     """Check a suggestion against the captured DOM loaded in `page`. Rejects: unchanged, fragile, zero or many matches,
     or an element the intended action cannot work on."""
     if failed_locator and _normalise(render_locator(s)) == _normalise(failed_locator):
@@ -122,7 +140,24 @@ def validate_suggestion(page, s: LocatorSuggestion, failed_locator: str | None =
     problem = _incompatible(action, element)
     if problem:
         return Validation(False, 1, problem, element)
+    if role and _element_role(element) != role:
+        return Validation(False, 1, f"The failed locator asked for a {role}, but this is a {_element_role(element)}; "
+                                    f"pick a {role}.", element)
     return Validation(True, 1, "Matches exactly one element.", element)
+
+
+def _element_role(el: dict) -> str | None:
+    """Implicit ARIA role of an element description from _DESCRIBE_JS (a small subset: what these pages use)."""
+    tag, typ = el.get("tag"), el.get("type") or ""
+    if tag == "a":
+        return "link"
+    if tag == "button" or (tag == "input" and typ in ("submit", "button", "reset", "image")):
+        return "button"
+    if tag == "select":
+        return "combobox"
+    if tag == "textarea" or (tag == "input" and typ not in ("checkbox", "radio", "hidden")):
+        return "textbox"
+    return typ if tag == "input" else {"h1": "heading", "h2": "heading", "h3": "heading"}.get(tag)
 
 
 def action_compatible(action: str | None, el: dict) -> bool:

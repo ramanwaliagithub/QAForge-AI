@@ -5,7 +5,7 @@ import pytest
 
 from framework.healing.collector import load_failure_context
 from framework.healing.suggestion import (
-    LocatorSuggestion, SuggestionParseError, build_locator, intended_action, parse_suggestion, render_locator,
+    failed_role, LocatorSuggestion, SuggestionParseError, build_locator, intended_action, parse_suggestion, render_locator,
     validate_suggestion,
 )
 
@@ -140,3 +140,25 @@ def test_a_selector_that_playwright_cannot_parse_is_a_rejection_not_a_crash(snap
     ctx = load("id_renamed")
     v = validate_suggestion(snapshot_page(ctx), S(strategy="css", css="input[[["), None, None)
     assert not v.ok and "invalid" in v.reason.lower()
+
+
+def test_css_prefix_copied_from_the_prompt_is_normalised():
+    assert S(strategy="css", css="css=[id='customer.address.state']").css == "[id='customer.address.state']"
+    assert S(strategy="css", css="#amount").css == "#amount"
+
+
+def test_failed_role_is_read_from_a_role_locator_only():
+    assert failed_role('get_by_role("button", name="Sign Up", exact=True)') == "button"
+    assert failed_role("get_by_role('link', name='x')") == "link"
+    assert failed_role('locator("#amt")') is None and failed_role(None) is None
+    assert failed_role('get_by_role("table").get_by_role("link", name="x")') == "table"
+
+
+def test_unique_element_of_the_wrong_role_is_rejected_when_the_failed_locator_named_a_role(snapshot_page):
+    ctx = load("button_text_changed")  # failed locator was a button; the page also has a unique "Home" link etc.
+    page = snapshot_page(ctx)
+    link = S(strategy="role", role="link", name="Log Out", exact=True)
+    v = validate_suggestion(page, link, ctx.error.locator, "click", role="button")
+    assert not v.ok and v.count == 1 and "asked for a button" in v.reason
+    button = S(strategy="role", role="button", name="Transfer", exact=True)
+    assert validate_suggestion(page, button, ctx.error.locator, "click", role="button").ok
