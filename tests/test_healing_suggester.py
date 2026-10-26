@@ -53,7 +53,7 @@ def test_guard_allows_only_locator_failures_by_default():
 def test_prompt_contains_what_the_model_needs_and_no_placeholders_left():
     p = build_prompt(load("id_renamed"))
     assert 'locator("#amt")' in p and "fill" in p and "self.fill(self.amount, amount)" in p
-    assert "ParaBank | Transfer Funds" in p and "textbox, NO accessible name id='amount'" in p
+    assert "ParaBank | Transfer Funds" in p and "textbox, NO accessible name; css=#amount" in p
     for placeholder in ("{locator}", "{action}", "{frames}", "{title}", "{url}", "{elements}"):
         assert placeholder not in p
 
@@ -71,13 +71,31 @@ def test_format_elements_describes_role_and_accessible_name():
         {"tag": "h1", "text": "Transfer Funds", "visible": True},
     ])
     assert out.splitlines() == [
-        "- textbox, NO accessible name id='amount'",
+        "- textbox, NO accessible name; css=#amount",
         "- button name='Transfer'",
         "- link name='Log Out'",
-        "- combobox, NO accessible name id='fromAccountId'",   # the option text '393852' must not become its name
-        "- textbox name='Search' id='q'",
+        "- combobox, NO accessible name; css=#fromAccountId",   # the option text '393852' must not become its name
+        "- textbox name='Search'",
         "- heading name='Transfer Funds'",
     ]
+
+
+def test_css_hint_is_valid_css_for_dotted_ids_and_skips_generated_ids():
+    from framework.healing.suggester import css_hint
+    assert css_hint({"tag": "input", "id": "amount"}) == "#amount"
+    assert css_hint({"tag": "input", "id": "customer.firstName", "name": "customer.firstName"}) == "[id='customer.firstName']"
+    assert css_hint({"tag": "input", "id": "bf81510c-99d7-4022-b4c2-bb67be72ae6d", "name": "payee.phoneNumber"}) == "input[name='payee.phoneNumber']"
+    assert css_hint({"tag": "input", "name": "username"}) == "input[name='username']"
+    assert css_hint({"tag": "input"}) is None
+
+
+def test_retry_feedback_lists_everything_already_rejected(snapshot):
+    ctx = load("id_renamed")
+    client = Scripted({"strategy": "css", "css": "#nope1"}, {"strategy": "css", "css": "#nope2"}, CSS_AMOUNT)
+    r = suggest_locator(client, ctx, snapshot(ctx))
+    assert r.healed and len(r.attempts) == 3
+    assert 'Already rejected, do not repeat: locator("#nope1")' in client.prompts[1]
+    assert 'locator("#nope1"); locator("#nope2")' in client.prompts[2]
 
 
 def test_implicit_roles():
@@ -96,8 +114,8 @@ def test_candidates_are_narrowed_to_what_the_action_can_work_on():
         {"tag": "select", "type": "select-one", "id": "fromAccountId", "visible": True},
         {"tag": "input", "type": "submit", "value": "Transfer", "visible": True},
     ]
-    assert format_elements(els, action="fill").splitlines() == ["- textbox, NO accessible name id='amount'"]
-    assert format_elements(els, action="select_option").splitlines() == ["- combobox, NO accessible name id='fromAccountId'"]
+    assert format_elements(els, action="fill").splitlines() == ["- textbox, NO accessible name; css=#amount"]
+    assert format_elements(els, action="select_option").splitlines() == ["- combobox, NO accessible name; css=#fromAccountId"]
     assert format_elements(els, action="click").splitlines() == ["- link name='Transfer Funds'", "- button name='Transfer'"]
     assert len(format_elements(els, action=None).splitlines()) == 4
 
@@ -105,7 +123,7 @@ def test_candidates_are_narrowed_to_what_the_action_can_work_on():
 def test_prompt_for_a_fill_lists_only_inputs():
     p = build_prompt(load("id_renamed"))
     listed = p.split("## Candidate elements on the page")[1].split("## Rules")[0]
-    assert "id='amount'" in listed and "About Us" not in listed and "fromAccountId" not in listed
+    assert "css=#amount" in listed and "About Us" not in listed and "fromAccountId" not in listed
 
 
 def test_heals_on_first_valid_suggestion(snapshot):

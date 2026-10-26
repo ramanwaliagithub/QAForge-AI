@@ -1,0 +1,94 @@
+{
+  "summary": {
+    "label": "day14_heldout_t0",
+    "temperature": 0.0,
+    "runs": 1,
+    "heldout": {
+      "cases": 4,
+      "correct": 2,
+      "healed_wrong_element": 0,
+      "not_healed": 2,
+      "first_try_valid": 2
+    }
+  },
+  "rows": [
+    {
+      "set": "heldout",
+      "sample": "username_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": false,
+      "correct": false,
+      "attempts": 3,
+      "suggestion": null,
+      "element": null,
+      "rejections": [
+        "Matches no element on the page.",
+        "Matches no element on the page.",
+        "Matches no element on the page."
+      ],
+      "first_try_valid": false
+    },
+    {
+      "set": "heldout",
+      "sample": "logout_link_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "get_by_role(\"link\", name=\"Log Out\", exact=True)",
+      "element": {
+        "tag": "a",
+        "type": null,
+        "id": null,
+        "name": null,
+        "value": null,
+        "text": "Log Out"
+      },
+      "rejections": [],
+      "first_try_valid": true
+    },
+    {
+      "set": "heldout",
+      "sample": "account_type_dropdown",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "locator(\"#type\")",
+      "element": {
+        "tag": "select",
+        "type": "select-one",
+        "id": "type",
+        "name": null,
+        "value": null,
+        "text": "CHECKING SAVINGS"
+      },
+      "rejections": [],
+      "first_try_valid": true
+    },
+    {
+      "set": "heldout",
+      "sample": "first_name_field_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": false,
+      "correct": false,
+      "attempts": 3,
+      "suggestion": null,
+      "element": null,
+      "rejections": [
+        "CSS selector '#customer.firstName' is fragile (class, structure, position or XPath); use role/label/text, or an id or name attribute.",
+        "Same locator as the one that failed.",
+        "CSS selector '#customer.firstName' is fragile (class, structure, position or XPath); use role/label/text, or an id or name attribute."
+      ],
+      "first_try_valid": false
+    }
+  ]
+}

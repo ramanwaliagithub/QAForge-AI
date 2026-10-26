@@ -1,4 +1,5 @@
 """Ask an LLM for a replacement locator, validate it against the captured page, retry with feedback."""
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -49,6 +50,8 @@ def should_attempt(ctx: FailureContext, allow_maybe: bool = False) -> bool:
 
 
 _BUTTON_INPUTS = {"submit", "button", "reset", "image"}
+_SIMPLE_ID = re.compile(r"[A-Za-z_][\w-]*")
+_GENERATED_ID = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-")  # ParaBank gives some fields a random uuid id
 
 
 def implicit_role(el: dict) -> str | None:
@@ -81,6 +84,16 @@ def accessible_name(el: dict) -> str | None:
     return el.get("value") if (role == "button" and el.get("value")) else el.get("text")
 
 
+def css_hint(el: dict) -> str | None:
+    """A valid CSS selector for a control with no accessible name: its id, else its name attribute.
+    (An id with a dot, like `customer.firstName`, must be `[id='customer.firstName']`: `#a.b` means id a + class b.)"""
+    if el.get("id") and not _GENERATED_ID.match(el["id"]):
+        return f"#{el['id']}" if _SIMPLE_ID.fullmatch(el["id"]) else f"[id='{el['id']}']"
+    if el.get("name"):
+        return f"{el['tag']}[name='{el['name']}']"
+    return None
+
+
 def format_elements(elements: list[dict], limit: int = MAX_ELEMENTS, action: str | None = None) -> str:
     """Candidates a locator could target, described like the accessibility tree: role and accessible name, plus the
     id / name attribute when there is no accessible name. With an `action`, only elements it can work on are listed."""
@@ -93,14 +106,10 @@ def format_elements(elements: list[dict], limit: int = MAX_ELEMENTS, action: str
             continue
         if name:
             line = f"- {role} name={name!r}"
-        elif el.get("id") or el.get("name"):
-            line = f"- {role}, NO accessible name"
+        elif css_hint(el):
+            line = f"- {role}, NO accessible name; css={css_hint(el)}"
         else:
             continue  # nothing to identify it by
-        if not name or role in ("textbox", "combobox"):
-            for key in ("id", "name"):
-                if el.get(key):
-                    line += f" {key}={el[key]!r}"
         if line not in lines:  # footer links repeat the header ones
             lines.append(line)
     return "\n".join(lines[:limit])
@@ -126,6 +135,7 @@ def suggest_locator(client: LLMClient, ctx: FailureContext, page, max_attempts: 
     base_prompt, prompt = build_prompt(ctx), build_prompt(ctx)
     action = intended_action(ctx.error)
     result = HealResult(healed=False)
+    tried: list[str] = []
     for n in range(1, max_attempts + 1):
         reply = client.generate(prompt, temperature=temperature, json_mode=True, num_ctx=8192).text
         try:
@@ -134,16 +144,18 @@ def suggest_locator(client: LLMClient, ctx: FailureContext, page, max_attempts: 
             result.attempts.append(Attempt(None, None, None, error=str(e), rejected_because=str(e)))
             prompt = f"{base_prompt}\n\nYour previous answer was rejected: {e}\nAnswer with corrected JSON only."
             continue
-        validation = validate_suggestion(page, suggestion, ctx.error.locator, action)
         source = render_locator(suggestion)
+        validation = validate_suggestion(page, suggestion, ctx.error.locator, action)
         if validation.ok:
             result.attempts.append(Attempt(suggestion, source, validation))
             result.healed = True
             log.info("heal_suggested", extra={"test": ctx.test_id, "locator": source, "attempt": n})
             return result
         result.attempts.append(Attempt(suggestion, source, validation, rejected_because=validation.reason))
+        tried.append(source)
         prompt = (f"{base_prompt}\n\nYour previous suggestion {source} was rejected: {validation.reason}\n"
-                  "Propose a different locator, as JSON only.")
+                  f"Already rejected, do not repeat: {'; '.join(tried)}\n"
+                  "Choose one of the candidates listed above and answer with different JSON only.")
     return result
 
 

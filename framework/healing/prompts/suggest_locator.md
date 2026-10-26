@@ -17,7 +17,7 @@ lines (for example `self.amount`, `self.from_account`, `self.submit_button`) and
 - A candidate line shows its ARIA role and accessible name. If it has a name, use strategy "role" with that role and name
   (set `exact: true` for buttons and links).
 - If a candidate says "NO accessible name" (typical for form inputs and dropdowns), role/label/text cannot find it:
-  use strategy "css" with its id (`#amountId`) or name attribute (`[name='x']`) exactly as listed.
+  use strategy "css" and copy the `css=` value shown on that line exactly.
 - Never use classes, XPath, positions (nth) or href fragments. Use only candidates listed above; do not invent names or ids.
 - The locator must match exactly ONE element on this page.
 
