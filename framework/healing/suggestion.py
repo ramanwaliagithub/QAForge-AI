@@ -65,6 +65,19 @@ def parse_suggestion(text: str) -> LocatorSuggestion:
         raise SuggestionParseError(f"Suggestion does not match the schema: {problems}") from e
 
 
+_DOTTED_ID = re.compile(r"^#([A-Za-z_][\w-]*(?:\.[\w-]+)+)$")
+
+
+def repair_dotted_id(s: LocatorSuggestion, elements: list[dict]) -> LocatorSuggestion:
+    """`#customer.lastName` means id "customer" + class "lastName" in CSS. If the page really has an element whose id is
+    "customer.lastName", the model's intent is unambiguous: rewrite it as `[id='customer.lastName']`. Anything else is left alone,
+    and the result is still validated (exactly one match) like any other suggestion."""
+    m = _DOTTED_ID.match(s.css or "") if s.strategy == "css" else None
+    if m and any(el.get("id") == m.group(1) for el in elements):
+        return s.model_copy(update={"css": f"[id='{m.group(1)}']"})
+    return s
+
+
 def render_locator(s: LocatorSuggestion, prefix: str = "") -> str:
     """Python source for the locator, e.g. `get_by_role("button", name="Transfer", exact=True)`."""
     q = json.dumps

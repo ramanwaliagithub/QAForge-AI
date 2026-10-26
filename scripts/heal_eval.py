@@ -48,12 +48,15 @@ with sync_playwright() as p:
                 result = suggest_locator(client, ctx, page, max_attempts=3, temperature=TEMPERATURE)  # guard bypassed on purpose
                 context.close()
                 first = result.attempts[0] if result.attempts else None
+                repaired = [a.repaired_from for a in result.attempts if a.repaired_from]
                 rows.append({
                     "set": set_name, "sample": name, "kind": ctx.error.kind, "guard_attempts": should_attempt(ctx), "run": run + 1,
                     "healed": result.healed, "correct": bool(result.healed and truth and matches(result.element, truth)),
                     "attempts": len(result.attempts), "suggestion": result.source, "element": result.element,
                     "rejections": [a.rejected_because for a in result.attempts if a.rejected_because],
                     "first_try_valid": bool(first and first.validation and first.validation.ok),
+                    "needed_repair": bool(result.healed and result.attempts[-1].repaired_from),
+                    "repairs": repaired,
                 })
     browser.close()
 
@@ -63,6 +66,7 @@ def summarize(set_name):
     return {
         "cases": len(r), "correct": sum(x["correct"] for x in r),
         "healed_wrong_element": sum(x["healed"] and not x["correct"] for x in r),
+        "needed_mechanical_repair": sum(x["needed_repair"] for x in r),
         "not_healed": sum(not x["healed"] for x in r), "first_try_valid": sum(x["first_try_valid"] for x in r),
     }
 

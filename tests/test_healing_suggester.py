@@ -193,3 +193,18 @@ def test_wrong_role_suggestion_is_not_healed_and_feedback_says_why(snapshot):
     r = suggest_locator(client, ctx, snapshot(ctx))
     assert r.healed and len(r.attempts) == 2 and "asked for a button" in r.attempts[0].rejected_because
     assert "asked for a button" in client.prompts[1]
+
+
+def test_dotted_id_is_repaired_and_the_repair_is_recorded(browser):
+    ctx = load("id_renamed")
+    # pretend the page has an element with a dotted id, to exercise the loop end to end
+    page_html = '<html><body><input id="customer.lastName" name="customer.lastName"></body></html>'
+    from dataclasses import replace
+    ctx = replace(ctx, page=replace(ctx.page, html=page_html, elements=[{"tag": "input", "id": "customer.lastName", "visible": True}]))
+    context, page = open_snapshot(browser, ctx)
+    try:
+        r = suggest_locator(Scripted({"strategy": "css", "css": "#customer.lastName"}), ctx, page)
+    finally:
+        context.close()
+    assert r.healed and r.source == "locator(\"[id='customer.lastName']\")"
+    assert r.attempts[0].repaired_from == 'locator("#customer.lastName")'

@@ -5,7 +5,7 @@ import pytest
 
 from framework.healing.collector import load_failure_context
 from framework.healing.suggestion import (
-    failed_role, LocatorSuggestion, SuggestionParseError, build_locator, intended_action, parse_suggestion, render_locator,
+    repair_dotted_id, failed_role, LocatorSuggestion, SuggestionParseError, build_locator, intended_action, parse_suggestion, render_locator,
     validate_suggestion,
 )
 
@@ -162,3 +162,17 @@ def test_unique_element_of_the_wrong_role_is_rejected_when_the_failed_locator_na
     assert not v.ok and v.count == 1 and "asked for a button" in v.reason
     button = S(strategy="role", role="button", name="Transfer", exact=True)
     assert validate_suggestion(page, button, ctx.error.locator, "click", role="button").ok
+
+
+ELEMENTS = [{"id": "customer.lastName"}, {"id": "amount"}, {"id": "a.b"}]
+
+
+def test_repair_dotted_id_only_when_an_element_has_exactly_that_id():
+    fixed = repair_dotted_id(S(strategy="css", css="#customer.lastName"), ELEMENTS)
+    assert fixed.css == "[id='customer.lastName']"
+    # an id that does not exist on the page: leave it alone (validation will reject it as zero matches / fragile)
+    assert repair_dotted_id(S(strategy="css", css="#customer.surname"), ELEMENTS).css == "#customer.surname"
+    # not a dotted id, or not css at all
+    assert repair_dotted_id(S(strategy="css", css="#amount"), ELEMENTS).css == "#amount"
+    role = S(strategy="role", role="button", name="x")
+    assert repair_dotted_id(role, ELEMENTS) is role

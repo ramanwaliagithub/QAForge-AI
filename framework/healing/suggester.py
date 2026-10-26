@@ -5,7 +5,7 @@ from pathlib import Path
 
 from framework.healing.collector import FailureContext
 from framework.healing.suggestion import (
-    action_compatible, failed_role, LocatorSuggestion, SuggestionParseError, Validation, intended_action, parse_suggestion, render_locator,
+    action_compatible, failed_role, repair_dotted_id, LocatorSuggestion, SuggestionParseError, Validation, intended_action, parse_suggestion, render_locator,
     validate_suggestion,
 )
 from framework.llm_client import LLMClient
@@ -23,6 +23,7 @@ class Attempt:
     validation: Validation | None
     error: str | None = None      # parse error, when the model's answer was not usable
     rejected_because: str | None = None
+    repaired_from: str | None = None   # what the model wrote before a mechanical repair (e.g. a dotted id)
 
 
 @dataclass
@@ -145,14 +146,18 @@ def suggest_locator(client: LLMClient, ctx: FailureContext, page, max_attempts: 
             result.attempts.append(Attempt(None, None, None, error=str(e), rejected_because=str(e)))
             prompt = f"{base_prompt}\n\nYour previous answer was rejected: {e}\nAnswer with corrected JSON only."
             continue
+        original = render_locator(suggestion)
+        suggestion = repair_dotted_id(suggestion, ctx.page.elements)
         source = render_locator(suggestion)
+        repaired_from = original if source != original else None
         validation = validate_suggestion(page, suggestion, ctx.error.locator, action, role=failed_role(ctx.error.locator))
         if validation.ok:
-            result.attempts.append(Attempt(suggestion, source, validation))
+            result.attempts.append(Attempt(suggestion, source, validation, repaired_from=repaired_from))
             result.healed = True
             log.info("heal_suggested", extra={"test": ctx.test_id, "locator": source, "attempt": n})
             return result
-        result.attempts.append(Attempt(suggestion, source, validation, rejected_because=validation.reason))
+        result.attempts.append(Attempt(suggestion, source, validation, rejected_because=validation.reason,
+                                       repaired_from=repaired_from))
         tried.append(source)
         prompt = (f"{base_prompt}\n\nYour previous suggestion {source} was rejected: {validation.reason}\n"
                   f"Already rejected, do not repeat: {'; '.join(tried)}\n"

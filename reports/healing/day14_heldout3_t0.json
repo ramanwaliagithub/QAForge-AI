@@ -1,0 +1,91 @@
+{
+  "summary": {
+    "label": "day14_heldout3_t0",
+    "temperature": 0.0,
+    "runs": 1,
+    "heldout3": {
+      "cases": 4,
+      "correct": 1,
+      "healed_wrong_element": 0,
+      "not_healed": 3,
+      "first_try_valid": 1
+    }
+  },
+  "rows": [
+    {
+      "set": "heldout3",
+      "sample": "login_button_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "get_by_role(\"button\", name=\"Log In\", exact=True)",
+      "element": {
+        "tag": "input",
+        "type": "submit",
+        "id": null,
+        "name": null,
+        "value": "Log In",
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true
+    },
+    {
+      "set": "heldout3",
+      "sample": "last_name_field_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": false,
+      "correct": false,
+      "attempts": 3,
+      "suggestion": null,
+      "element": null,
+      "rejections": [
+        "CSS selector '#customer.lastName' is fragile (class, structure, position or XPath); use role/label/text, or an id or name attribute.",
+        "CSS selector '#customer.lastName' is fragile (class, structure, position or XPath); use role/label/text, or an id or name attribute.",
+        "CSS selector '#customer.lastName' is fragile (class, structure, position or XPath); use role/label/text, or an id or name attribute."
+      ],
+      "first_try_valid": false
+    },
+    {
+      "set": "heldout3",
+      "sample": "phone_field_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": false,
+      "correct": false,
+      "attempts": 3,
+      "suggestion": null,
+      "element": null,
+      "rejections": [
+        "Same locator as the one that failed.",
+        "CSS selector '#customer.phoneNumber' is fragile (class, structure, position or XPath); use role/label/text, or an id or name attribute.",
+        "CSS selector '#customer.phoneNumber' is fragile (class, structure, position or XPath); use role/label/text, or an id or name attribute."
+      ],
+      "first_try_valid": false
+    },
+    {
+      "set": "heldout3",
+      "sample": "funding_account_renamed",
+      "kind": "page_object_precondition",
+      "guard_attempts": false,
+      "run": 1,
+      "healed": false,
+      "correct": false,
+      "attempts": 3,
+      "suggestion": null,
+      "element": null,
+      "rejections": [
+        "Matches no element on the page.",
+        "Matches no element on the page.",
+        "Matches no element on the page."
+      ],
+      "first_try_valid": false
+    }
+  ]
+}
