@@ -14,11 +14,12 @@ lines (for example `self.amount`, `self.from_account`, `self.submit_button`) and
 {elements}
 
 ## Rules
-- Prefer, in this order: role + accessible name, label, visible text, then CSS on an id or a `name` attribute.
-- Use CSS only when the element has no accessible name. Never use classes, XPath, positions (nth) or href fragments.
-- For buttons use `exact: true` on the role name when one name is a prefix of another.
+- A candidate line shows its ARIA role and accessible name. If it has a name, use strategy "role" with that role and name
+  (set `exact: true` for buttons and links).
+- If a candidate says "NO accessible name" (typical for form inputs and dropdowns), role/label/text cannot find it:
+  use strategy "css" with its id (`#amountId`) or name attribute (`[name='x']`) exactly as listed.
+- Never use classes, XPath, positions (nth) or href fragments. Use only candidates listed above; do not invent names or ids.
 - The locator must match exactly ONE element on this page.
-- Use only elements listed above. Do not invent ids, names or text.
 
 Answer with ONE JSON object and nothing else. "strategy" must be exactly one of: role, label, text, placeholder, css.
 Include only the fields that strategy needs, plus "reason" (one sentence) and "confidence" (0 to 1).

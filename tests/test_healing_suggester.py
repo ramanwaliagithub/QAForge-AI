@@ -53,19 +53,40 @@ def test_guard_allows_only_locator_failures_by_default():
 def test_prompt_contains_what_the_model_needs_and_no_placeholders_left():
     p = build_prompt(load("id_renamed"))
     assert 'locator("#amt")' in p and "fill" in p and "self.fill(self.amount, amount)" in p
-    assert "ParaBank | Transfer Funds" in p and "id='amount'" in p
+    assert "ParaBank | Transfer Funds" in p and "textbox, NO accessible name id='amount'" in p
     for placeholder in ("{locator}", "{action}", "{frames}", "{title}", "{url}", "{elements}"):
         assert placeholder not in p
 
 
-def test_format_elements_skips_hidden_and_unidentifiable():
+def test_format_elements_describes_role_and_accessible_name():
     out = format_elements([
         {"tag": "input", "type": "text", "id": "amount", "visible": True},
         {"tag": "input", "id": "hidden_one", "visible": False},
         {"tag": "div", "visible": True},
         {"tag": "input", "type": "submit", "value": "Transfer", "visible": True},
+        {"tag": "a", "text": "Log Out", "visible": True},
+        {"tag": "a", "text": "Log Out", "visible": True},  # duplicate footer link
+        {"tag": "select", "type": "select-one", "id": "fromAccountId", "text": "393852", "visible": True},
+        {"tag": "input", "type": "text", "placeholder": "Search", "id": "q", "visible": True},
+        {"tag": "h1", "text": "Transfer Funds", "visible": True},
     ])
-    assert out.splitlines() == ["- input[text] id='amount'", "- input[submit] value='Transfer'"]
+    assert out.splitlines() == [
+        "- textbox, NO accessible name id='amount'",
+        "- button name='Transfer'",
+        "- link name='Log Out'",
+        "- combobox, NO accessible name id='fromAccountId'",   # the option text '393852' must not become its name
+        "- textbox name='Search' id='q'",
+        "- heading name='Transfer Funds'",
+    ]
+
+
+def test_implicit_roles():
+    from framework.healing.suggester import implicit_role
+    assert implicit_role({"tag": "input", "type": "submit"}) == "button"
+    assert implicit_role({"tag": "input", "type": "text"}) == "textbox" and implicit_role({"tag": "input"}) == "textbox"
+    assert implicit_role({"tag": "input", "type": "checkbox"}) == "checkbox"
+    assert implicit_role({"tag": "select"}) == "combobox" and implicit_role({"tag": "a"}) == "link"
+    assert implicit_role({"tag": "div", "role": "alert"}) == "alert" and implicit_role({"tag": "div"}) is None
 
 
 def test_candidates_are_narrowed_to_what_the_action_can_work_on():
@@ -75,16 +96,16 @@ def test_candidates_are_narrowed_to_what_the_action_can_work_on():
         {"tag": "select", "type": "select-one", "id": "fromAccountId", "visible": True},
         {"tag": "input", "type": "submit", "value": "Transfer", "visible": True},
     ]
-    assert format_elements(els, action="fill").splitlines() == ["- input[text] id='amount'"]
-    assert format_elements(els, action="select_option").splitlines() == ["- select[select-one] id='fromAccountId'"]
-    assert format_elements(els, action="click").splitlines() == ["- a text='Transfer Funds'", "- input[submit] value='Transfer'"]
+    assert format_elements(els, action="fill").splitlines() == ["- textbox, NO accessible name id='amount'"]
+    assert format_elements(els, action="select_option").splitlines() == ["- combobox, NO accessible name id='fromAccountId'"]
+    assert format_elements(els, action="click").splitlines() == ["- link name='Transfer Funds'", "- button name='Transfer'"]
     assert len(format_elements(els, action=None).splitlines()) == 4
 
 
 def test_prompt_for_a_fill_lists_only_inputs():
     p = build_prompt(load("id_renamed"))
     listed = p.split("## Candidate elements on the page")[1].split("## Rules")[0]
-    assert "id='amount'" in listed and "text='About Us'" not in listed and "fromAccountId" not in listed
+    assert "id='amount'" in listed and "About Us" not in listed and "fromAccountId" not in listed
 
 
 def test_heals_on_first_valid_suggestion(snapshot):

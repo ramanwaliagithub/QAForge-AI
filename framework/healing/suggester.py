@@ -48,24 +48,61 @@ def should_attempt(ctx: FailureContext, allow_maybe: bool = False) -> bool:
     return ctx.error.heal_hint == "locator" or (allow_maybe and ctx.error.heal_hint == "maybe")
 
 
+_BUTTON_INPUTS = {"submit", "button", "reset", "image"}
+
+
+def implicit_role(el: dict) -> str | None:
+    """ARIA role an element has by default (what Playwright's get_by_role matches)."""
+    tag, typ = el.get("tag"), el.get("type") or ""
+    if el.get("role"):
+        return el["role"]
+    if tag == "a":
+        return "link"
+    if tag == "button" or (tag == "input" and typ in _BUTTON_INPUTS):
+        return "button"
+    if tag == "select":
+        return "combobox"
+    if tag == "textarea" or (tag == "input" and typ not in _BUTTON_INPUTS | {"checkbox", "radio", "hidden"}):
+        return "textbox"
+    if tag == "input" and typ in ("checkbox", "radio"):
+        return typ
+    if tag in ("h1", "h2", "h3"):
+        return "heading"
+    return None
+
+
+def accessible_name(el: dict) -> str | None:
+    """Approximation of the accessible name from what the collector captured (no label association is captured)."""
+    role = implicit_role(el)
+    if el.get("aria_label"):
+        return el["aria_label"]
+    if role in ("textbox", "combobox"):
+        return el.get("placeholder")  # form controls get their name from a label or placeholder; ParaBank has neither
+    return el.get("value") if (role == "button" and el.get("value")) else el.get("text")
+
+
 def format_elements(elements: list[dict], limit: int = MAX_ELEMENTS, action: str | None = None) -> str:
-    """Compact list of the visible, identifiable elements a locator could target.
-    With an `action`, only elements that action can work on are listed (a fill can only mean a text input)."""
+    """Candidates a locator could target, described like the accessibility tree: role and accessible name, plus the
+    id / name attribute when there is no accessible name. With an `action`, only elements it can work on are listed."""
     lines = []
     for el in elements:
-        if not el.get("visible", True):
+        if not el.get("visible", True) or (action and not action_compatible(action, el)):
             continue
-        if action and not action_compatible(action, el):
+        role, name = implicit_role(el), accessible_name(el)
+        if not role:
             continue
-        parts = [el["tag"] + (f"[{el['type']}]" if el.get("type") else "")]
-        for key in ("id", "name", "value", "aria_label", "placeholder", "role"):
-            if el.get(key):
-                parts.append(f'{key}={el[key]!r}')
-        if el.get("text"):
-            parts.append(f'text={el["text"]!r}')
-        if len(parts) == 1:  # a bare element with nothing to identify it
-            continue
-        lines.append("- " + " ".join(parts))
+        if name:
+            line = f"- {role} name={name!r}"
+        elif el.get("id") or el.get("name"):
+            line = f"- {role}, NO accessible name"
+        else:
+            continue  # nothing to identify it by
+        if not name or role in ("textbox", "combobox"):
+            for key in ("id", "name"):
+                if el.get(key):
+                    line += f" {key}={el[key]!r}"
+        if line not in lines:  # footer links repeat the header ones
+            lines.append(line)
     return "\n".join(lines[:limit])
 
 
