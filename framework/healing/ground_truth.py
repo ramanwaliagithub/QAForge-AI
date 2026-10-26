@@ -25,6 +25,14 @@ HELDOUT2 = {
     "to_account_id_renamed": {"id": "toAccountId"},
 }
 
+# Set 3: written after sets 1 and 2 had been used to diagnose and fix the suggester. The unbiased one.
+HELDOUT3 = {
+    "login_button_renamed": {"tag": "input", "type": "submit", "value": "Log In"},
+    "last_name_field_renamed": {"name": "customer.lastName"},
+    "phone_field_renamed": {"name": "customer.phoneNumber"},
+    "funding_account_renamed": {"id": "fromAccountId"},
+}
+
 # Controls where no locator change is the right answer (an assertion failed, or the element legitimately changed).
 CONTROLS = ["expect_on_missing_element", "wrong_text_on_found_element"]
 

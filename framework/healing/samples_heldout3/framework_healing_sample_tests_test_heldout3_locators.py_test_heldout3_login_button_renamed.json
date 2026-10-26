@@ -1,0 +1,259 @@
+{
+  "schema": 1,
+  "test_id": "framework/healing/sample_tests/test_heldout3_locators.py::test_heldout3_login_button_renamed",
+  "collected_at": "2026-10-26T06:00:54+00:00",
+  "error": {
+    "type": "playwright._impl._errors.TimeoutError",
+    "message": "Locator.wait_for: Timeout 3000ms exceeded.\nCall log:\n  - waiting for get_by_role(\"button\", name=\"Sign In\", exact=True) to be visible",
+    "kind": "locator_not_found",
+    "heal_hint": "locator",
+    "locator": "get_by_role(\"button\", name=\"Sign In\", exact=True)",
+    "action": "wait_for",
+    "timeout_ms": 3000,
+    "frames": [
+      {
+        "file": "framework/healing/sample_tests/test_heldout3_locators.py",
+        "line": 40,
+        "function": "test_heldout3_login_button_renamed",
+        "code": "LoginButtonRenamed(page, base_url).open().login(\"someone\", \"Passw0rd!\")"
+      },
+      {
+        "file": "framework/pages/login_page.py",
+        "line": 26,
+        "function": "login",
+        "code": "self.click(self.submit)"
+      },
+      {
+        "file": "framework/pages/base_page.py",
+        "line": 25,
+        "function": "click",
+        "code": "locator.wait_for(state=\"visible\")"
+      }
+    ],
+    "raised_in": "page_object"
+  },
+  "page": {
+    "url": "http://localhost:8080/parabank/index.htm",
+    "title": "ParaBank | Welcome | Online Banking",
+    "aria_snapshot": "- link:\n  - /url: admin.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\n  - img\n- link \"ParaBank\":\n  - /url: index.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\n  - img \"ParaBank\"\n- paragraph: Experience the difference\n- list:\n  - listitem: Solutions\n  - listitem:\n    - link \"About Us\":\n      - /url: about.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\n  - listitem:\n    - link \"Services\":\n      - /url: services.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\n  - listitem:\n    - link \"Products\":\n      - /url: http://www.parasoft.com/jsp/products.jsp\n  - listitem:\n    - link \"Locations\":\n      - /url: http://www.parasoft.com/jsp/pr/contacts.jsp\n  - listitem:\n    - link \"Admin Page\":\n      - /url: admin.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\n- list:\n  - listitem:\n    - link \"home\":\n      - /url: index.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\n  - listitem:\n    - link \"about\":\n      - /url: about.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\n  - listitem:\n    - link \"contact\":\n      - /url: contact.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\n- heading \"Customer Login\" [level=2]\n- paragraph: Username\n- textbox: someone\n- paragraph: Password\n- textbox: Passw0rd!\n- button \"Log In\"\n- paragraph:\n  - link \"Forgot login info?\":\n    - /url: lookup.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\n- paragraph:\n  - link \"Register\":\n    - /url: register.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\n- list:\n  - listitem: ATM Services\n  - listitem:\n    - link \"Withdraw Funds\":\n      - /url: services/ParaBank;jsessionid=B76EE6416055619EF99937ABE86629DE?wsdl\n  - listitem:\n    - link \"Transfer Funds\":\n      - /url: services/ParaBank;jsessionid=B76EE6416055619EF99937ABE86629DE?wsdl\n  - listitem:\n    - link \"Check Balances\":\n      - /url: services/ParaBank;jsessionid=B76EE6416055619EF99937ABE86629DE?wsdl\n  - listitem:\n    - link \"Make Deposits\":\n      - /url: services/ParaBank;jsessionid=B76EE6416055619EF99937ABE86629DE?wsdl\n- list:\n  - listitem: Online Services\n  - listitem:\n    - link \"Bill Pay\":\n      - /url: services/bank;jsessionid=B76EE6416055619EF99937ABE86629DE?_wadl&_type=xml\n  - listitem:\n    - link \"Account History\":\n      - /url: services/bank;jsessionid=B76EE6416055619EF99937ABE86629DE?_wadl&_type=xml\n  - listitem:\n    - link \"Transfer Funds\":\n      - /url: services/bank;jsessionid=B76EE6416055619EF99937ABE86629DE?_wadl&_type=xml\n- paragraph:\n  - link \"Read More\":\n    - /url: services.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\n- heading \"Latest News\" [level=4]\n- list:\n  - listitem: 10/15/2026\n  - listitem:\n    - link \"ParaBank Is Now Re-Opened\":\n      - /url: news.htm;jsessionid=B76EE6416055619EF99937ABE86629DE#6\n  - listitem:\n    - link \"New! Online Bill Pay\":\n      - /url: news.htm;jsessionid=B76EE6416055619EF99937ABE86629DE#5\n  - listitem:\n    - link \"New! Online Account Transfers\":\n      - /url: news.htm;jsessionid=B76EE6416055619EF99937ABE86629DE#4\n- paragraph:\n  - link \"Read More\":\n    - /url: news.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\n- list:\n  - listitem:\n    - link \"Home\":\n      - /url: index.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\n    - text: \"|\"\n  - listitem:\n    - link \"About Us\":\n      - /url: about.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\n    - text: \"|\"\n  - listitem:\n    - link \"Services\":\n      - /url: services.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\n    - text: \"|\"\n  - listitem:\n    - link \"Products\":\n      - /url: http://www.parasoft.com/jsp/products.jsp\n    - text: \"|\"\n  - listitem:\n    - link \"Locations\":\n      - /url: http://www.parasoft.com/jsp/pr/contacts.jsp\n    - text: \"|\"\n  - listitem:\n    - link \"Site Map\":\n      - /url: sitemap.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\n    - text: \"|\"\n  - listitem:\n    - link \"Contact Us\":\n      - /url: contact.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\n- paragraph: \u00a9 Parasoft. All rights reserved.\n- list:\n  - listitem: \"Visit us at:\"\n  - listitem:\n    - link \"www.parasoft.com\":\n      - /url: http://www.parasoft.com/",
+    "elements": [
+      {
+        "tag": "a",
+        "href": "admin.htm;jsessionid=B76EE6416055619EF99937ABE86629DE",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "href": "index.htm;jsessionid=B76EE6416055619EF99937ABE86629DE",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "About Us",
+        "href": "about.htm;jsessionid=B76EE6416055619EF99937ABE86629DE",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Services",
+        "href": "services.htm;jsessionid=B76EE6416055619EF99937ABE86629DE",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Products",
+        "href": "http://www.parasoft.com/jsp/products.jsp",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Locations",
+        "href": "http://www.parasoft.com/jsp/pr/contacts.jsp",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Admin Page",
+        "href": "admin.htm;jsessionid=B76EE6416055619EF99937ABE86629DE",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "home",
+        "href": "index.htm;jsessionid=B76EE6416055619EF99937ABE86629DE",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "about",
+        "href": "about.htm;jsessionid=B76EE6416055619EF99937ABE86629DE",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "contact",
+        "href": "contact.htm;jsessionid=B76EE6416055619EF99937ABE86629DE",
+        "visible": true
+      },
+      {
+        "tag": "h2",
+        "text": "Customer Login",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "name": "username",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "password",
+        "name": "password",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "submit",
+        "value": "Log In",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Forgot login info?",
+        "href": "lookup.htm;jsessionid=B76EE6416055619EF99937ABE86629DE",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Register",
+        "href": "register.htm;jsessionid=B76EE6416055619EF99937ABE86629DE",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Withdraw Funds",
+        "href": "services/ParaBank;jsessionid=B76EE6416055619EF99937ABE86629DE?wsdl",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Transfer Funds",
+        "href": "services/ParaBank;jsessionid=B76EE6416055619EF99937ABE86629DE?wsdl",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Check Balances",
+        "href": "services/ParaBank;jsessionid=B76EE6416055619EF99937ABE86629DE?wsdl",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Make Deposits",
+        "href": "services/ParaBank;jsessionid=B76EE6416055619EF99937ABE86629DE?wsdl",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Bill Pay",
+        "href": "services/bank;jsessionid=B76EE6416055619EF99937ABE86629DE?_wadl&_type=xml",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Account History",
+        "href": "services/bank;jsessionid=B76EE6416055619EF99937ABE86629DE?_wadl&_type=xml",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Transfer Funds",
+        "href": "services/bank;jsessionid=B76EE6416055619EF99937ABE86629DE?_wadl&_type=xml",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "READ MORE",
+        "href": "services.htm;jsessionid=B76EE6416055619EF99937ABE86629DE",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "ParaBank Is Now Re-Opened",
+        "href": "news.htm;jsessionid=B76EE6416055619EF99937ABE86629DE#6",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "New! Online Bill Pay",
+        "href": "news.htm;jsessionid=B76EE6416055619EF99937ABE86629DE#5",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "New! Online Account Transfers",
+        "href": "news.htm;jsessionid=B76EE6416055619EF99937ABE86629DE#4",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "READ MORE",
+        "href": "news.htm;jsessionid=B76EE6416055619EF99937ABE86629DE",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Home",
+        "href": "index.htm;jsessionid=B76EE6416055619EF99937ABE86629DE",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "About Us",
+        "href": "about.htm;jsessionid=B76EE6416055619EF99937ABE86629DE",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Services",
+        "href": "services.htm;jsessionid=B76EE6416055619EF99937ABE86629DE",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Products",
+        "href": "http://www.parasoft.com/jsp/products.jsp",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Locations",
+        "href": "http://www.parasoft.com/jsp/pr/contacts.jsp",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Site Map",
+        "href": "sitemap.htm;jsessionid=B76EE6416055619EF99937ABE86629DE",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Contact Us",
+        "href": "contact.htm;jsessionid=B76EE6416055619EF99937ABE86629DE",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "www.parasoft.com",
+        "href": "http://www.parasoft.com/",
+        "visible": true
+      }
+    ],
+    "html": "<!DOCTYPE html><html><head>\n\t\t<meta charset=\"UTF-8\">\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n\t\t<title>ParaBank | Welcome | Online Banking</title>\n\t\t<link href=\"template.css;jsessionid=B76EE6416055619EF99937ABE86629DE\" rel=\"stylesheet\" type=\"text/css\">\n\t\t<link href=\"style.css;jsessionid=B76EE6416055619EF99937ABE86629DE\" rel=\"stylesheet\" type=\"text/css\">\n\t\t<script src=\"webjars/jquery/4.0.0/jquery.min.js;jsessionid=B76EE6416055619EF99937ABE86629DE\"></script>\n\t</head>\n\n\t<body onload=\"document.login.username.focus();\">\n\t\t<div id=\"mainPanel\">\n\t\t\t\n\t\t\t\t\n\t\t\t\t\t\n\n\n\n<div id=\"topPanel\">\n  <a href=\"admin.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\"><img src=\"images/clear.gif;jsessionid=B76EE6416055619EF99937ABE86629DE\" width=\"56\" height=\"42\" border=\"0\" class=\"admin\"></a>\n  <a href=\"index.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\"><img src=\"images/logo.gif;jsessionid=B76EE6416055619EF99937ABE86629DE\" alt=\"ParaBank\" width=\"136\" height=\"31\" border=\"0\" class=\"logo\" title=\"ParaBank\"></a>\n  <p class=\"caption\">Experience the difference</p>\n</div>\n<div id=\"headerPanel\" style=\"background: url(images/header-main.jpg;jsessionid=B76EE6416055619EF99937ABE86629DE) 0 0 no-repeat;\">\n  \n\n\n<ul class=\"leftmenu\">\n  <li class=\"Solutions\">Solutions</li>\n  <li><a href=\"about.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\">About Us</a></li>\n  <li><a href=\"services.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\">Services</a></li>\n  <li><a href=\"http://www.parasoft.com/jsp/products.jsp\">Products</a></li>\n  <li><a href=\"http://www.parasoft.com/jsp/pr/contacts.jsp\">Locations</a></li>\n  <li><a href=\"admin.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\">Admin Page</a></li>\n  \n</ul>\n  \n\n\n<ul class=\"button\">\n  <li class=\"home\"><a href=\"index.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\">home</a></li>\n  <li class=\"aboutus\"><a href=\"about.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\">about</a></li>\n  <li class=\"contact\"><a href=\"contact.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\">contact</a></li>\n</ul>\n</div>\n\t\t\t\t\n\t\t\t\t\n\t\t\t\n\t\t\t<div id=\"bodyPanel\">\n\t\t\t\t<div id=\"leftPanel\">\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\n\n<h2>Customer Login</h2>\n<div id=\"loginPanel\">\n  <form name=\"login\" action=\"login.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\" method=\"POST\">\n    \n    <p><b>Username</b></p>\n    <div class=\"login\"><input type=\"text\" class=\"input\" name=\"username\"></div>\n    <p><b>Password</b></p>\n    <div class=\"login\"><input type=\"password\" class=\"input\" name=\"password\"></div>\n    <div class=\"login\"><input type=\"submit\" class=\"button\" value=\"Log In\"></div>\n  </form>\n  <p><a href=\"lookup.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\">Forgot login info?</a></p>\n  <p><a href=\"register.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\">Register</a></p>\n</div>\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t\t<div id=\"rightPanel\">\n\t\t\t\t\t\n\n\n<span class=\"services\">&nbsp;</span>\n<ul class=\"services\">\n  \n  <li class=\"captionone\">ATM Services</li>\n  <li><a href=\"services/ParaBank;jsessionid=B76EE6416055619EF99937ABE86629DE?wsdl\">Withdraw Funds</a></li>\n  <li><a href=\"services/ParaBank;jsessionid=B76EE6416055619EF99937ABE86629DE?wsdl\">Transfer Funds</a></li>\n  <li><a href=\"services/ParaBank;jsessionid=B76EE6416055619EF99937ABE86629DE?wsdl\">Check Balances</a></li>\n  <li><a href=\"services/ParaBank;jsessionid=B76EE6416055619EF99937ABE86629DE?wsdl\">Make Deposits</a></li>\n</ul>\n<ul class=\"servicestwo\">\n  \n  <li class=\"captiontwo\">Online Services</li>\n  <li><a href=\"services/bank;jsessionid=B76EE6416055619EF99937ABE86629DE?_wadl&amp;_type=xml\">Bill Pay</a></li>\n  <li><a href=\"services/bank;jsessionid=B76EE6416055619EF99937ABE86629DE?_wadl&amp;_type=xml\">Account History</a></li>\n  <li><a href=\"services/bank;jsessionid=B76EE6416055619EF99937ABE86629DE?_wadl&amp;_type=xml\">Transfer Funds</a></li>\n</ul>\n<p class=\"more\"><a href=\"services.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\">Read More</a></p>\n<h4>Latest News</h4>\n<ul class=\"events\">\n  <li class=\"captionthree\">10/15/2026</li>\n  \n    <li><a href=\"news.htm;jsessionid=B76EE6416055619EF99937ABE86629DE#6\">ParaBank Is Now Re-Opened</a></li>\n  \n    <li><a href=\"news.htm;jsessionid=B76EE6416055619EF99937ABE86629DE#5\">New! Online Bill Pay</a></li>\n  \n    <li><a href=\"news.htm;jsessionid=B76EE6416055619EF99937ABE86629DE#4\">New! Online Account Transfers</a></li>\n  \n</ul>\n<p class=\"more\"><a href=\"news.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\">Read More</a></p>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t\n\n\n<div id=\"footermainPanel\">\n  <div id=\"footerPanel\">\n    <ul>\n      <li><a href=\"index.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\">Home</a>| </li>\n      <li><a href=\"about.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\">About Us</a>| </li>\n      <li><a href=\"services.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\">Services</a>| </li>\n      <li><a href=\"http://www.parasoft.com/jsp/products.jsp\">Products</a>| </li>\n      <li><a href=\"http://www.parasoft.com/jsp/pr/contacts.jsp\">Locations</a>| </li>\n      <li><a href=\"sitemap.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\">Site Map</a>| </li>\n      <li><a href=\"contact.htm;jsessionid=B76EE6416055619EF99937ABE86629DE\">Contact Us</a></li>\n    </ul>\n    <p class=\"copyright\">\u00a9 Parasoft. All rights reserved.</p>\n    <ul class=\"visit\">\n      <li>Visit us at:</li>\n      <li><a href=\"http://www.parasoft.com/\" target=\"_blank\">www.parasoft.com</a></li>\n    </ul>\n  </div>\n</div>\n\t\n\n</body></html>",
+    "html_truncated": false,
+    "capture_errors": []
+  },
+  "screenshot": "framework_healing_sample_tests_test_heldout3_locators.py_test_heldout3_login_button_renamed.png"
+}
