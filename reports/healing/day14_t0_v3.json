@@ -1,0 +1,111 @@
+{
+  "summary": {
+    "label": "day14_t0_v3",
+    "temperature": 0.0,
+    "runs": 1,
+    "locator_cases": 3,
+    "healed_correctly": 1,
+    "healed_wrong_element": 0,
+    "not_healed": 2,
+    "first_try_valid": 1,
+    "controls": 2,
+    "controls_falsely_healed_if_guard_off": 2,
+    "controls_attempted_with_guard": 0
+  },
+  "rows": [
+    {
+      "sample": "id_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "locator(\"#amount\")",
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "amount",
+        "name": "input",
+        "value": null,
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true
+    },
+    {
+      "sample": "button_text_changed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": false,
+      "correct": false,
+      "attempts": 3,
+      "suggestion": null,
+      "element": null,
+      "rejections": [
+        "Matches 2 elements; it must match exactly one. Be more specific.",
+        "Matches 5 elements; it must match exactly one. Be more specific.",
+        "Matches no element on the page."
+      ],
+      "first_try_valid": false
+    },
+    {
+      "sample": "locator_too_generic",
+      "kind": "strict_mode_violation",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": false,
+      "correct": false,
+      "attempts": 3,
+      "suggestion": null,
+      "element": null,
+      "rejections": [
+        "Matches 2 elements; it must match exactly one. Be more specific.",
+        "Matches 2 elements; it must match exactly one. Be more specific.",
+        "Matches 2 elements; it must match exactly one. Be more specific."
+      ],
+      "first_try_valid": false
+    },
+    {
+      "sample": "expect_on_missing_element",
+      "kind": "assertion_element_missing",
+      "guard_attempts": false,
+      "run": 1,
+      "healed": true,
+      "correct": false,
+      "attempts": 1,
+      "suggestion": "get_by_text(\"Transfer Complete!\")",
+      "element": {
+        "tag": "h1",
+        "type": null,
+        "id": null,
+        "name": null,
+        "value": null,
+        "text": "Transfer Complete!"
+      },
+      "rejections": [],
+      "first_try_valid": true
+    },
+    {
+      "sample": "wrong_text_on_found_element",
+      "kind": "assertion",
+      "guard_attempts": false,
+      "run": 1,
+      "healed": true,
+      "correct": false,
+      "attempts": 1,
+      "suggestion": "get_by_text(\"Transfer Complete!\")",
+      "element": {
+        "tag": "h1",
+        "type": null,
+        "id": null,
+        "name": null,
+        "value": null,
+        "text": "Transfer Complete!"
+      },
+      "rejections": [],
+      "first_try_valid": true
+    }
+  ]
+}

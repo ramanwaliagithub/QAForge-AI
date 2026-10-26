@@ -1,0 +1,221 @@
+{
+  "schema": 1,
+  "test_id": "framework/healing/sample_tests/test_heldout_locators.py::test_heldout_logout_link_renamed",
+  "collected_at": "2026-10-26T05:56:26+00:00",
+  "error": {
+    "type": "playwright._impl._errors.TimeoutError",
+    "message": "Locator.wait_for: Timeout 3000ms exceeded.\nCall log:\n  - waiting for get_by_role(\"link\", name=\"Sign Out\", exact=True) to be visible",
+    "kind": "locator_not_found",
+    "heal_hint": "locator",
+    "locator": "get_by_role(\"link\", name=\"Sign Out\", exact=True)",
+    "action": "wait_for",
+    "timeout_ms": 3000,
+    "frames": [
+      {
+        "file": "framework/healing/sample_tests/test_heldout_locators.py",
+        "line": 48,
+        "function": "test_heldout_logout_link_renamed",
+        "code": "LogoutLinkRenamed(logged_in_page, base_url).logout()"
+      },
+      {
+        "file": "framework/pages/login_page.py",
+        "line": 30,
+        "function": "logout",
+        "code": "self.click(self.logout_link)"
+      },
+      {
+        "file": "framework/pages/base_page.py",
+        "line": 25,
+        "function": "click",
+        "code": "locator.wait_for(state=\"visible\")"
+      }
+    ],
+    "raised_in": "page_object"
+  },
+  "page": {
+    "url": "http://localhost:8080/parabank/overview.htm",
+    "title": "ParaBank | Accounts Overview",
+    "aria_snapshot": "- link:\n  - /url: admin.htm\n  - img\n- link \"ParaBank\":\n  - /url: index.htm\n  - img \"ParaBank\"\n- paragraph: Experience the difference\n- list:\n  - listitem: Solutions\n  - listitem:\n    - link \"About Us\":\n      - /url: about.htm\n  - listitem:\n    - link \"Services\":\n      - /url: services.htm\n  - listitem:\n    - link \"Products\":\n      - /url: http://www.parasoft.com/jsp/products.jsp\n  - listitem:\n    - link \"Locations\":\n      - /url: http://www.parasoft.com/jsp/pr/contacts.jsp\n  - listitem:\n    - link \"Admin Page\":\n      - /url: admin.htm\n- list:\n  - listitem:\n    - link \"home\":\n      - /url: index.htm\n  - listitem:\n    - link \"about\":\n      - /url: about.htm\n  - listitem:\n    - link \"contact\":\n      - /url: contact.htm\n- paragraph: Welcome Qa Forge\n- heading \"Account Services\" [level=2]\n- list:\n  - listitem:\n    - link \"Open New Account\":\n      - /url: openaccount.htm\n  - listitem:\n    - link \"Accounts Overview\":\n      - /url: overview.htm\n  - listitem:\n    - link \"Transfer Funds\":\n      - /url: transfer.htm\n  - listitem:\n    - link \"Bill Pay\":\n      - /url: billpay.htm\n  - listitem:\n    - link \"Find Transactions\":\n      - /url: findtrans.htm\n  - listitem:\n    - link \"Update Contact Info\":\n      - /url: updateprofile.htm\n  - listitem:\n    - link \"Request Loan\":\n      - /url: requestloan.htm\n  - listitem:\n    - link \"Log Out\":\n      - /url: logout.htm\n- heading \"Accounts Overview\" [level=1]\n- table:\n  - rowgroup:\n    - row \"Account Balance* Available Amount\":\n      - columnheader \"Account\"\n      - columnheader \"Balance*\"\n      - columnheader \"Available Amount\"\n  - rowgroup:\n    - row \"396516 $515.50 $515.50\":\n      - cell \"396516\":\n        - link \"396516\":\n          - /url: activity.htm?id=396516\n      - cell \"$515.50\"\n      - cell \"$515.50\"\n    - row \"Total $515.50\":\n      - cell \"Total\"\n      - cell \"$515.50\"\n      - cell\n  - rowgroup:\n    - row \"*Balance includes deposits that may be subject to holds\":\n      - cell \"*Balance includes deposits that may be subject to holds\"\n- list:\n  - listitem:\n    - link \"Home\":\n      - /url: index.htm\n    - text: \"|\"\n  - listitem:\n    - link \"About Us\":\n      - /url: about.htm\n    - text: \"|\"\n  - listitem:\n    - link \"Services\":\n      - /url: services.htm\n    - text: \"|\"\n  - listitem:\n    - link \"Products\":\n      - /url: http://www.parasoft.com/jsp/products.jsp\n    - text: \"|\"\n  - listitem:\n    - link \"Locations\":\n      - /url: http://www.parasoft.com/jsp/pr/contacts.jsp\n    - text: \"|\"\n  - listitem:\n    - link \"Site Map\":\n      - /url: sitemap.htm\n    - text: \"|\"\n  - listitem:\n    - link \"Contact Us\":\n      - /url: contact.htm\n- paragraph: \u00a9 Parasoft. All rights reserved.\n- list:\n  - listitem: \"Visit us at:\"\n  - listitem:\n    - link \"www.parasoft.com\":\n      - /url: http://www.parasoft.com/",
+    "elements": [
+      {
+        "tag": "a",
+        "href": "admin.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "href": "index.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "About Us",
+        "href": "about.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Services",
+        "href": "services.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Products",
+        "href": "http://www.parasoft.com/jsp/products.jsp",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Locations",
+        "href": "http://www.parasoft.com/jsp/pr/contacts.jsp",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Admin Page",
+        "href": "admin.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "home",
+        "href": "index.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "about",
+        "href": "about.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "contact",
+        "href": "contact.htm",
+        "visible": true
+      },
+      {
+        "tag": "h2",
+        "text": "Account Services",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Open New Account",
+        "href": "openaccount.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Accounts Overview",
+        "href": "overview.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Transfer Funds",
+        "href": "transfer.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Bill Pay",
+        "href": "billpay.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Find Transactions",
+        "href": "findtrans.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Update Contact Info",
+        "href": "updateprofile.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Request Loan",
+        "href": "requestloan.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Log Out",
+        "href": "logout.htm",
+        "visible": true
+      },
+      {
+        "tag": "h1",
+        "text": "Accounts Overview",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "396516",
+        "href": "activity.htm?id=396516",
+        "visible": true
+      },
+      {
+        "tag": "h1",
+        "text": "Error!",
+        "visible": false
+      },
+      {
+        "tag": "a",
+        "text": "Home",
+        "href": "index.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "About Us",
+        "href": "about.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Services",
+        "href": "services.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Products",
+        "href": "http://www.parasoft.com/jsp/products.jsp",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Locations",
+        "href": "http://www.parasoft.com/jsp/pr/contacts.jsp",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Site Map",
+        "href": "sitemap.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Contact Us",
+        "href": "contact.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "www.parasoft.com",
+        "href": "http://www.parasoft.com/",
+        "visible": true
+      }
+    ],
+    "html": "<!DOCTYPE html><html><head>\n\t\t<meta charset=\"UTF-8\">\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n\t\t<title>ParaBank | Accounts Overview</title>\n\t\t<link href=\"template.css\" rel=\"stylesheet\" type=\"text/css\">\n\t\t<link href=\"style.css\" rel=\"stylesheet\" type=\"text/css\">\n\t\t<script src=\"webjars/jquery/4.0.0/jquery.min.js\"></script>\n\t</head>\n\n\t<body>\n\t\t<div id=\"mainPanel\">\n\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\n\n\n\n<div id=\"topPanel\">\n  <a href=\"admin.htm\"><img src=\"images/clear.gif\" width=\"56\" height=\"42\" border=\"0\" class=\"admin\"></a>\n  <a href=\"index.htm\"><img src=\"images/logo.gif\" alt=\"ParaBank\" width=\"136\" height=\"31\" border=\"0\" class=\"logo\" title=\"ParaBank\"></a>\n  <p class=\"caption\">Experience the difference</p>\n</div>\n<div id=\"headerPanel\" style=\"background: url(images/header-customer.jpg) 0 0 no-repeat;\">\n  \n\n\n<ul class=\"leftmenu\">\n  <li class=\"Solutions\">Solutions</li>\n  <li><a href=\"about.htm\">About Us</a></li>\n  <li><a href=\"services.htm\">Services</a></li>\n  <li><a href=\"http://www.parasoft.com/jsp/products.jsp\">Products</a></li>\n  <li><a href=\"http://www.parasoft.com/jsp/pr/contacts.jsp\">Locations</a></li>\n  <li><a href=\"admin.htm\">Admin Page</a></li>\n  \n</ul>\n  \n\n\n<ul class=\"button\">\n  <li class=\"home\"><a href=\"index.htm\">home</a></li>\n  <li class=\"aboutus\"><a href=\"about.htm\">about</a></li>\n  <li class=\"contact\"><a href=\"contact.htm\">contact</a></li>\n</ul>\n</div>\n\t\t\t\t\n\t\t\t\n\t\t\t<div id=\"bodyPanel\">\n\t\t\t\t<div id=\"leftPanel\">\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\n\n<p class=\"smallText\"><b>Welcome</b> Qa Forge</p>\n\n<h2>Account Services</h2>\n\n\n\n<ul>\n  <li><a href=\"openaccount.htm\">Open New Account</a></li>\n  <li><a href=\"overview.htm\">Accounts Overview</a></li>\n  <li><a href=\"transfer.htm\">Transfer Funds</a></li>\n  <li><a href=\"billpay.htm\">Bill Pay</a></li>\n  <li><a href=\"findtrans.htm\">Find Transactions</a></li>\n  <li><a href=\"updateprofile.htm\">Update Contact Info</a></li>\n  <li><a href=\"requestloan.htm\">Request Loan</a></li>\n  <li><a href=\"logout.htm\">Log Out</a></li>\n</ul>\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t\t<div id=\"rightPanel\">\n\t\t\t\t\t\n\n\n<div id=\"overviewAccountsApp\">\n\t<div id=\"showOverview\">\n\t\t<h1 class=\"title\">\n\t\t\tAccounts Overview\n\t\t</h1>\n\t\t<table id=\"accountTable\" class=\"gradient-style\">\n\t\t\t<thead>\n\t\t\t\t<tr>\n\t\t\t\t\t<th>Account</th>\n\t\t\t\t\t<th>Balance*</th>\n\t\t\t\t\t<th>Available Amount</th>\n\t\t\t\t</tr>\n\t\t\t</thead>\n\t\t\t<tbody><tr><td><a href=\"activity.htm?id=396516\">396516</a></td><td>$515.50</td><td>$515.50</td></tr><tr><td align=\"right\"><b>Total</b></td><td><b>$515.50</b></td><td>&nbsp;</td></tr></tbody>\n\t\t\t<tfoot>\n\t\t\t\t<tr>\n\t\t\t\t\t<td colspan=\"3\">*Balance includes deposits that may be subject to holds</td>\n\t\t\t\t</tr>\n\t\t\t</tfoot>\n\t\t</table>\n\t</div>\n\n\t<div id=\"showError\" style=\"display: none\">\n\t\t<h1 class=\"title\">\n\t\t\tError!\n\t\t</h1>\n\t\t<p class=\"error\">\n\t\t\tAn internal error has occurred and has been logged.\n\t\t</p>\n\t</div>\n</div>\n\n<script>\n$(document).ready(function() {\n      \n      function formatCurrency(amount) {\n      \tif (amount == null) {\n      \t\treturn \"$0.00\";\n      \t}\n          amount = parseFloat(amount);\n          var isNegative = amount < 0;\n          amount = Math.abs(amount);\n          var formattedAmount = amount.toFixed(2);\n          formattedAmount = (isNegative ? '-$' : '$') + formattedAmount;\n          return formattedAmount;\n      }\n    \n    var $overviewTable = $('#accountTable tbody');\n    var $showOverview = $('#showOverview');\n    var $showError = $('#showError');\n\n    $.ajax({\n        url: \"services_proxy/bank/customers/\" + 267512 + \"/accounts\",\n        type: \"GET\",\n        timeout: 30000,\n        success: function(response) {\n            var accounts = response;\n            var totalBalance = 0;\n            \n            $.each(accounts, function(index, account) {\n                var availableBalance = account.balance < 0 ? 0 : account.balance;\n                totalBalance += parseFloat(account.balance);\n                \n                var row = '<tr>' +\n                            '<td><a href=\"activity.htm?id=' + account.id + '\">' + account.id + '</a></td>' +\n                            '<td>' + formatCurrency(account.balance) + '</td>' +\n                            '<td>' + formatCurrency(availableBalance) + '</td>' +\n                          '</tr>';\n                          \n                $overviewTable.append(row);\n            });\n            \n            var totalRow = '<tr>' +\n                              '<td align=\"right\"><b>Total</b></td>' +\n                              '<td><b>' + formatCurrency(totalBalance) + '</b></td>' +\n                              '<td>&nbsp;</td>' +\n                            '</tr>';\n                            \n            $overviewTable.append(totalRow);\n            \n            $showOverview.show();\n        },\n        error: function(xhr, status, error) {\n            $showOverview.hide();\n            $showError.show();\n            console.error(\"Server returned \" + status + \": \" + error);\n        }\n    });\n});\n</script>\n\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t\n\n\n<div id=\"footermainPanel\">\n  <div id=\"footerPanel\">\n    <ul>\n      <li><a href=\"index.htm\">Home</a>| </li>\n      <li><a href=\"about.htm\">About Us</a>| </li>\n      <li><a href=\"services.htm\">Services</a>| </li>\n      <li><a href=\"http://www.parasoft.com/jsp/products.jsp\">Products</a>| </li>\n      <li><a href=\"http://www.parasoft.com/jsp/pr/contacts.jsp\">Locations</a>| </li>\n      <li><a href=\"sitemap.htm\">Site Map</a>| </li>\n      <li><a href=\"contact.htm\">Contact Us</a></li>\n    </ul>\n    <p class=\"copyright\">\u00a9 Parasoft. All rights reserved.</p>\n    <ul class=\"visit\">\n      <li>Visit us at:</li>\n      <li><a href=\"http://www.parasoft.com/\" target=\"_blank\">www.parasoft.com</a></li>\n    </ul>\n  </div>\n</div>\n\t\n\n</body></html>",
+    "html_truncated": false,
+    "capture_errors": []
+  },
+  "screenshot": "framework_healing_sample_tests_test_heldout_locators.py_test_heldout_logout_link_renamed.png"
+}

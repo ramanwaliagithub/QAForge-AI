@@ -181,10 +181,10 @@ qaforge-ai/
 - Commit: `feat: failure context collector`
 
 ### Day 14: Healing suggester
-- [ ] Prompt the LLM with failure context to propose a new locator
-- [ ] Validate the suggestion by checking it matches exactly one element
-- [ ] Reject suggestions that match zero or many
-- [ ] Measure: how many of your 3 broken locators were healed
+- [x] Prompt the LLM with failure context to propose a new locator
+- [x] Validate the suggestion by checking it matches exactly one element
+- [x] Reject suggestions that match zero or many
+- [x] Measure: how many of your 3 broken locators were healed
 - Commit: `feat: LLM locator suggestion with validation`
 
 ### Day 15: Safe self-healing loop

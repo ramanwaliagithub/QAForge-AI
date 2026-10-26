@@ -22,6 +22,7 @@ KIND_HINT = {
     "strict_mode_violation": "locator",   # matched several elements; needs to be more specific
     "assertion_element_missing": "maybe",  # expect() on an element that does not exist: renamed, or removed on purpose?
     "not_actionable": "maybe",            # matched, but wrong element type or not enabled/visible
+    "page_object_precondition": "maybe",  # an expect() raised INSIDE a page object: its own locators are probably stale
     "assertion": "no",                    # element found, value differs: a possible product bug
     "timeout_other": "no",                # navigation / url / load waits
     "other": "no",
@@ -105,5 +106,10 @@ def analyze_exception(exc: BaseException, root: Path | None = None) -> ErrorInfo
     message = clean_message(str(exc))
     kind, locator, action, timeout_ms = classify_message(exc_type, message)
     frames = project_frames(exc.__traceback__, root)
+    where = raised_in(frames)
+    if kind in ("assertion", "assertion_element_missing") and where == "page_object":
+        # Page objects only assert preconditions on their own locators (e.g. "the dropdown has N options"), so this is
+        # not a product assertion: a stale locator inside the page object is the likely cause.
+        kind = "page_object_precondition"
     return ErrorInfo(type=exc_type, message=message, kind=kind, heal_hint=KIND_HINT[kind], locator=locator,
-                     action=action, timeout_ms=timeout_ms, frames=frames, raised_in=raised_in(frames))
+                     action=action, timeout_ms=timeout_ms, frames=frames, raised_in=where)

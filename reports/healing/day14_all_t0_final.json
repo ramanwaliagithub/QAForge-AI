@@ -1,0 +1,450 @@
+{
+  "summary": {
+    "label": "day14_all_t0_final",
+    "temperature": 0.0,
+    "runs": 1,
+    "tuned": {
+      "cases": 3,
+      "correct": 3,
+      "healed_wrong_element": 0,
+      "needed_mechanical_repair": 0,
+      "not_healed": 0,
+      "first_try_valid": 3
+    },
+    "heldout": {
+      "cases": 4,
+      "correct": 4,
+      "healed_wrong_element": 0,
+      "needed_mechanical_repair": 1,
+      "not_healed": 0,
+      "first_try_valid": 3
+    },
+    "heldout2": {
+      "cases": 4,
+      "correct": 4,
+      "healed_wrong_element": 0,
+      "needed_mechanical_repair": 1,
+      "not_healed": 0,
+      "first_try_valid": 2
+    },
+    "heldout3": {
+      "cases": 4,
+      "correct": 3,
+      "healed_wrong_element": 0,
+      "needed_mechanical_repair": 2,
+      "not_healed": 1,
+      "first_try_valid": 2
+    },
+    "controls": {
+      "cases": 2,
+      "falsely_healed_if_guard_off": 2,
+      "attempted_with_guard_on": 0
+    }
+  },
+  "rows": [
+    {
+      "set": "tuned",
+      "sample": "id_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "locator(\"#amount\")",
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "amount",
+        "name": "input",
+        "value": null,
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "tuned",
+      "sample": "button_text_changed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "get_by_role(\"button\", name=\"Transfer\", exact=True)",
+      "element": {
+        "tag": "input",
+        "type": "submit",
+        "id": null,
+        "name": null,
+        "value": "Transfer",
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "tuned",
+      "sample": "locator_too_generic",
+      "kind": "strict_mode_violation",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "locator(\"#fromAccountId\")",
+      "element": {
+        "tag": "select",
+        "type": "select-one",
+        "id": "fromAccountId",
+        "name": null,
+        "value": null,
+        "text": "393852"
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "controls",
+      "sample": "expect_on_missing_element",
+      "kind": "assertion_element_missing",
+      "guard_attempts": false,
+      "run": 1,
+      "healed": true,
+      "correct": false,
+      "attempts": 1,
+      "suggestion": "get_by_role(\"heading\", name=\"Transfer Complete!\", exact=True)",
+      "element": {
+        "tag": "h1",
+        "type": null,
+        "id": null,
+        "name": null,
+        "value": null,
+        "text": "Transfer Complete!"
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "controls",
+      "sample": "wrong_text_on_found_element",
+      "kind": "assertion",
+      "guard_attempts": false,
+      "run": 1,
+      "healed": true,
+      "correct": false,
+      "attempts": 1,
+      "suggestion": "get_by_role(\"heading\", name=\"Transfer Complete!\", exact=True)",
+      "element": {
+        "tag": "h1",
+        "type": null,
+        "id": null,
+        "name": null,
+        "value": null,
+        "text": "Transfer Complete!"
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout",
+      "sample": "username_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 2,
+      "suggestion": "locator(\"input[name='username']\")",
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": null,
+        "name": "username",
+        "value": null,
+        "text": null
+      },
+      "rejections": [
+        "Same locator as the one that failed."
+      ],
+      "first_try_valid": false,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout",
+      "sample": "logout_link_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "get_by_role(\"link\", name=\"Log Out\", exact=True)",
+      "element": {
+        "tag": "a",
+        "type": null,
+        "id": null,
+        "name": null,
+        "value": null,
+        "text": "Log Out"
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout",
+      "sample": "account_type_dropdown",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "locator(\"#type\")",
+      "element": {
+        "tag": "select",
+        "type": "select-one",
+        "id": "type",
+        "name": null,
+        "value": null,
+        "text": "CHECKING SAVINGS"
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout",
+      "sample": "first_name_field_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "locator(\"[id='customer.firstName']\")",
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.firstName",
+        "name": "customer.firstName",
+        "value": "",
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": true,
+      "repairs": [
+        "locator(\"#customer.firstName\")"
+      ]
+    },
+    {
+      "set": "heldout2",
+      "sample": "password_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "locator(\"input[name='password']\")",
+      "element": {
+        "tag": "input",
+        "type": "password",
+        "id": null,
+        "name": "password",
+        "value": null,
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout2",
+      "sample": "register_button_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "get_by_role(\"button\", name=\"Register\", exact=True)",
+      "element": {
+        "tag": "input",
+        "type": "submit",
+        "id": null,
+        "name": null,
+        "value": "Register",
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout2",
+      "sample": "state_field_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 2,
+      "suggestion": "locator(\"[id='customer.address.state']\")",
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.address.state",
+        "name": "customer.address.state",
+        "value": "",
+        "text": null
+      },
+      "rejections": [
+        "Same locator as the one that failed."
+      ],
+      "first_try_valid": false,
+      "needed_repair": true,
+      "repairs": [
+        "locator(\"#customer.address.state\")"
+      ]
+    },
+    {
+      "set": "heldout2",
+      "sample": "to_account_id_renamed",
+      "kind": "page_object_precondition",
+      "guard_attempts": false,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 2,
+      "suggestion": "locator(\"#toAccountId\")",
+      "element": {
+        "tag": "select",
+        "type": "select-one",
+        "id": "toAccountId",
+        "name": null,
+        "value": null,
+        "text": "396849"
+      },
+      "rejections": [
+        "Matches no element on the page."
+      ],
+      "first_try_valid": false,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout3",
+      "sample": "login_button_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "get_by_role(\"button\", name=\"Log In\", exact=True)",
+      "element": {
+        "tag": "input",
+        "type": "submit",
+        "id": null,
+        "name": null,
+        "value": "Log In",
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout3",
+      "sample": "last_name_field_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "locator(\"[id='customer.lastName']\")",
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.lastName",
+        "name": "customer.lastName",
+        "value": "",
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": true,
+      "repairs": [
+        "locator(\"#customer.lastName\")"
+      ]
+    },
+    {
+      "set": "heldout3",
+      "sample": "phone_field_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 2,
+      "suggestion": "locator(\"[id='customer.phoneNumber']\")",
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.phoneNumber",
+        "name": "customer.phoneNumber",
+        "value": "",
+        "text": null
+      },
+      "rejections": [
+        "Same locator as the one that failed."
+      ],
+      "first_try_valid": false,
+      "needed_repair": true,
+      "repairs": [
+        "locator(\"#customer.phoneNumber\")"
+      ]
+    },
+    {
+      "set": "heldout3",
+      "sample": "funding_account_renamed",
+      "kind": "page_object_precondition",
+      "guard_attempts": false,
+      "run": 1,
+      "healed": false,
+      "correct": false,
+      "attempts": 3,
+      "suggestion": null,
+      "element": null,
+      "rejections": [
+        "Matches no element on the page.",
+        "Matches no element on the page.",
+        "Matches no element on the page."
+      ],
+      "first_try_valid": false,
+      "needed_repair": false,
+      "repairs": []
+    }
+  ]
+}
