@@ -8,8 +8,9 @@ Propose ONE replacement locator for the element the test meant.
 {frames}
 - Page: {title} ({url})
 
-## Elements currently on the page
-Only these exist. Pick the one the test meant, from the code above and its names.
+## Candidate elements on the page
+Only elements this action can work on are listed. Pick the one the test meant: use the names in the failing source
+lines (for example `self.amount`, `self.from_account`, `self.submit_button`) and the old locator to decide.
 {elements}
 
 ## Rules
@@ -19,6 +20,10 @@ Only these exist. Pick the one the test meant, from the code above and its names
 - The locator must match exactly ONE element on this page.
 - Use only elements listed above. Do not invent ids, names or text.
 
-Answer with JSON only, in exactly this shape (leave unused fields out):
-{"strategy": "role | label | text | placeholder | css", "role": "button", "name": "Transfer", "exact": true,
- "text": "...", "css": "#id", "reason": "one sentence", "confidence": 0.0}
+Answer with ONE JSON object and nothing else. "strategy" must be exactly one of: role, label, text, placeholder, css.
+Include only the fields that strategy needs, plus "reason" (one sentence) and "confidence" (0 to 1).
+
+Examples (for a different page; do not copy their values):
+{"strategy": "role", "role": "button", "name": "Place order", "exact": true, "reason": "submit button", "confidence": 0.9}
+{"strategy": "label", "text": "Email address", "reason": "labelled input", "confidence": 0.8}
+{"strategy": "css", "css": "#coupon", "reason": "input without an accessible name; stable id", "confidence": 0.7}

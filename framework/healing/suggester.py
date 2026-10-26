@@ -4,7 +4,7 @@ from pathlib import Path
 
 from framework.healing.collector import FailureContext
 from framework.healing.suggestion import (
-    LocatorSuggestion, SuggestionParseError, Validation, intended_action, parse_suggestion, render_locator,
+    action_compatible, LocatorSuggestion, SuggestionParseError, Validation, intended_action, parse_suggestion, render_locator,
     validate_suggestion,
 )
 from framework.llm_client import LLMClient
@@ -48,11 +48,14 @@ def should_attempt(ctx: FailureContext, allow_maybe: bool = False) -> bool:
     return ctx.error.heal_hint == "locator" or (allow_maybe and ctx.error.heal_hint == "maybe")
 
 
-def format_elements(elements: list[dict], limit: int = MAX_ELEMENTS) -> str:
-    """Compact list of the visible, identifiable elements (the ones a locator could target)."""
+def format_elements(elements: list[dict], limit: int = MAX_ELEMENTS, action: str | None = None) -> str:
+    """Compact list of the visible, identifiable elements a locator could target.
+    With an `action`, only elements that action can work on are listed (a fill can only mean a text input)."""
     lines = []
     for el in elements:
         if not el.get("visible", True):
+            continue
+        if action and not action_compatible(action, el):
             continue
         parts = [el["tag"] + (f"[{el['type']}]" if el.get("type") else "")]
         for key in ("id", "name", "value", "aria_label", "placeholder", "role"):
@@ -72,12 +75,13 @@ def format_frames(frames: list[dict], limit: int = 4) -> str:
 
 def build_prompt(ctx: FailureContext) -> str:
     e = ctx.error
+    action = intended_action(e)
     return (PROMPT_PATH.read_text()
             .replace("{locator}", e.locator or "(unknown)")
-            .replace("{action}", intended_action(e) or "(unknown)")
+            .replace("{action}", action or "(unknown)")
             .replace("{frames}", format_frames(e.frames))
             .replace("{title}", ctx.page.title).replace("{url}", ctx.page.url)
-            .replace("{elements}", format_elements(ctx.page.elements)))
+            .replace("{elements}", format_elements(ctx.page.elements, action=action)))
 
 
 def suggest_locator(client: LLMClient, ctx: FailureContext, page, max_attempts: int = 3, temperature: float = 0.0) -> HealResult:

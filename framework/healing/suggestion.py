@@ -125,6 +125,14 @@ def validate_suggestion(page, s: LocatorSuggestion, failed_locator: str | None =
     return Validation(True, 1, "Matches exactly one element.", element)
 
 
+def action_compatible(action: str | None, el: dict) -> bool:
+    """Can `action` work on this element description ({tag, type, ...})? Used to narrow candidates before prompting."""
+    el = {"tag": el.get("tag"), "type": el.get("type")}
+    if action == "click":
+        return el["tag"] in ("button", "a") or (el["tag"] == "input" and el["type"] in ("submit", "button", "image", "reset", "checkbox", "radio"))
+    return _incompatible(action, el) is None
+
+
 def _incompatible(action: str | None, el: dict) -> str | None:
     if action in ("fill", "type", "press") and not (
             el["tag"] == "textarea" or (el["tag"] == "input" and (el["type"] or "text") not in _NOT_TEXT_INPUT_TYPES)):

@@ -68,6 +68,25 @@ def test_format_elements_skips_hidden_and_unidentifiable():
     assert out.splitlines() == ["- input[text] id='amount'", "- input[submit] value='Transfer'"]
 
 
+def test_candidates_are_narrowed_to_what_the_action_can_work_on():
+    els = [
+        {"tag": "a", "text": "Transfer Funds", "visible": True},
+        {"tag": "input", "type": "text", "id": "amount", "visible": True},
+        {"tag": "select", "type": "select-one", "id": "fromAccountId", "visible": True},
+        {"tag": "input", "type": "submit", "value": "Transfer", "visible": True},
+    ]
+    assert format_elements(els, action="fill").splitlines() == ["- input[text] id='amount'"]
+    assert format_elements(els, action="select_option").splitlines() == ["- select[select-one] id='fromAccountId'"]
+    assert format_elements(els, action="click").splitlines() == ["- a text='Transfer Funds'", "- input[submit] value='Transfer'"]
+    assert len(format_elements(els, action=None).splitlines()) == 4
+
+
+def test_prompt_for_a_fill_lists_only_inputs():
+    p = build_prompt(load("id_renamed"))
+    listed = p.split("## Candidate elements on the page")[1].split("## Rules")[0]
+    assert "id='amount'" in listed and "text='About Us'" not in listed and "fromAccountId" not in listed
+
+
 def test_heals_on_first_valid_suggestion(snapshot):
     ctx = load("id_renamed")
     client = Scripted(CSS_AMOUNT)

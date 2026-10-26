@@ -1,0 +1,112 @@
+{
+  "summary": {
+    "label": "day14_t0",
+    "temperature": 0.0,
+    "runs": 1,
+    "locator_cases": 3,
+    "healed_correctly": 0,
+    "healed_wrong_element": 0,
+    "not_healed": 3,
+    "first_try_valid": 0,
+    "controls": 2,
+    "controls_falsely_healed_if_guard_off": 2,
+    "controls_attempted_with_guard": 0
+  },
+  "rows": [
+    {
+      "sample": "id_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": false,
+      "correct": false,
+      "attempts": 3,
+      "suggestion": null,
+      "element": null,
+      "rejections": [
+        "Suggestion does not match the schema: strategy: Input should be 'role', 'label', 'text', 'placeholder' or 'css'",
+        "Matches 2 elements; it must match exactly one. Be more specific.",
+        "Suggestion does not match the schema: strategy: Input should be 'role', 'label', 'text', 'placeholder' or 'css'"
+      ],
+      "first_try_valid": false
+    },
+    {
+      "sample": "button_text_changed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": false,
+      "correct": false,
+      "attempts": 3,
+      "suggestion": null,
+      "element": null,
+      "rejections": [
+        "Suggestion does not match the schema: strategy: Input should be 'role', 'label', 'text', 'placeholder' or 'css'",
+        "Suggestion does not match the schema: strategy: Input should be 'role', 'label', 'text', 'placeholder' or 'css'",
+        "Suggestion does not match the schema: strategy: Input should be 'role', 'label', 'text', 'placeholder' or 'css'"
+      ],
+      "first_try_valid": false
+    },
+    {
+      "sample": "locator_too_generic",
+      "kind": "strict_mode_violation",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": false,
+      "correct": false,
+      "attempts": 3,
+      "suggestion": null,
+      "element": null,
+      "rejections": [
+        "Suggestion does not match the schema: strategy: Input should be 'role', 'label', 'text', 'placeholder' or 'css'",
+        "Matches 2 elements; it must match exactly one. Be more specific.",
+        "Suggestion does not match the schema: strategy: Input should be 'role', 'label', 'text', 'placeholder' or 'css'"
+      ],
+      "first_try_valid": false
+    },
+    {
+      "sample": "expect_on_missing_element",
+      "kind": "assertion_element_missing",
+      "guard_attempts": false,
+      "run": 1,
+      "healed": true,
+      "correct": false,
+      "attempts": 2,
+      "suggestion": "get_by_text(\"Transfer Complete!\")",
+      "element": {
+        "tag": "h1",
+        "type": null,
+        "id": null,
+        "name": null,
+        "value": null,
+        "text": "Transfer Complete!"
+      },
+      "rejections": [
+        "Suggestion does not match the schema: strategy: Input should be 'role', 'label', 'text', 'placeholder' or 'css'"
+      ],
+      "first_try_valid": false
+    },
+    {
+      "sample": "wrong_text_on_found_element",
+      "kind": "assertion",
+      "guard_attempts": false,
+      "run": 1,
+      "healed": true,
+      "correct": false,
+      "attempts": 2,
+      "suggestion": "get_by_text(\"Transfer Complete!\")",
+      "element": {
+        "tag": "h1",
+        "type": null,
+        "id": null,
+        "name": null,
+        "value": null,
+        "text": "Transfer Complete!"
+      },
+      "rejections": [
+        "Suggestion does not match the schema: strategy: Input should be 'role', 'label', 'text', 'placeholder' or 'css'"
+      ],
+      "first_try_valid": false
+    }
+  ]
+}
