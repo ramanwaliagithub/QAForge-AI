@@ -94,3 +94,35 @@ def test_raised_in_uses_the_innermost_project_frame():
     assert raised_in(f("framework/healing/sample_tests/test_broken_locators.py")) == "test"
     assert raised_in(f("scripts/x.py")) == "other" and raised_in([]) == "other"
     assert analyze_exception(RuntimeError("x")).raised_in == "other"  # no traceback, no frames
+
+
+def test_assertion_raised_inside_a_page_object_is_a_precondition_not_a_product_assertion():
+    from pathlib import Path
+    import importlib.util, tempfile, textwrap
+
+    # build a real traceback whose innermost project frame is under framework/pages/
+    root = Path("framework/pages/_tmp_precondition.py")
+    root.write_text(textwrap.dedent('''
+        def check():
+            raise AssertionError("Locator expected to have count '1'\\nActual value: 0\\nCall log:\\n  - waiting for locator(\\"#gone\\")")
+    '''))
+    try:
+        spec = importlib.util.spec_from_file_location("_tmp_precondition", root)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        try:
+            mod.check()
+        except AssertionError as e:
+            info = analyze_exception(e)
+    finally:
+        root.unlink()
+    assert info.raised_in == "page_object"
+    assert info.kind == "page_object_precondition" and info.heal_hint == "maybe"
+
+
+def test_assertion_in_a_test_stays_an_assertion():
+    try:
+        raise AssertionError("Locator expected to have text 'x'\nActual value: y")
+    except AssertionError as e:
+        info = analyze_exception(e)
+    assert info.raised_in == "test" and info.kind == "assertion" and info.heal_hint == "no"

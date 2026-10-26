@@ -1,8 +1,8 @@
 """Run the deliberately broken sample tests and keep the collected failure contexts.
 
-Usage: uv run python -m scripts.make_failure_samples [heldout]
+Usage: uv run python -m scripts.make_failure_samples [tuned|heldout|heldout2]
 Writes JSON + PNG into framework/healing/samples/ (committed, used by tests and by the Day 14 suggester).
-With `heldout`: framework/healing/sample_tests/test_heldout_locators.py -> framework/healing/samples_heldout/.
+Each set writes into its own folder (samples, samples_heldout, samples_heldout2); see the test files for what each breaks.
 """
 import json
 import os
@@ -13,9 +13,15 @@ from pathlib import Path
 
 from framework.healing.collector import load_failure_context
 
-HELDOUT = "heldout" in sys.argv
-OUT = Path("framework/healing/samples_heldout" if HELDOUT else "framework/healing/samples")
-TESTS = "framework/healing/sample_tests/" + ("test_heldout_locators.py" if HELDOUT else "test_broken_locators.py")
+# which sample set to generate: (output folder, test file)
+SETS = {
+    "tuned": ("samples", "test_broken_locators.py"),
+    "heldout": ("samples_heldout", "test_heldout_locators.py"),
+    "heldout2": ("samples_heldout2", "test_heldout2_locators.py"),
+}
+WHICH = next((a for a in sys.argv[1:] if a in SETS), "tuned")
+OUT = Path("framework/healing") / SETS[WHICH][0]
+TESTS = "framework/healing/sample_tests/" + SETS[WHICH][1]
 OUT.mkdir(parents=True, exist_ok=True)
 for old in list(OUT.glob("*.json")) + list(OUT.glob("*.png")):
     old.unlink()

@@ -17,6 +17,14 @@ HELDOUT = {
     "first_name_field_renamed": {"name": "customer.firstName"},
 }
 
+# Set 2: written after set 1 had been used to diagnose the suggester, so it is the unbiased measurement.
+HELDOUT2 = {
+    "password_renamed": {"name": "password"},
+    "register_button_renamed": {"tag": "input", "type": "submit", "value": "Register"},
+    "state_field_renamed": {"name": "customer.address.state"},
+    "to_account_id_renamed": {"id": "toAccountId"},
+}
+
 # Controls where no locator change is the right answer (an assertion failed, or the element legitimately changed).
 CONTROLS = ["expect_on_missing_element", "wrong_text_on_found_element"]
 

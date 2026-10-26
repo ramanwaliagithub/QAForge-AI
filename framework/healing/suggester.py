@@ -95,8 +95,8 @@ def css_hint(el: dict) -> str | None:
 
 
 def format_elements(elements: list[dict], limit: int = MAX_ELEMENTS, action: str | None = None) -> str:
-    """Candidates a locator could target, described like the accessibility tree: role and accessible name, plus the
-    id / name attribute when there is no accessible name. With an `action`, only elements it can work on are listed."""
+    """Candidates a locator could target, described like the accessibility tree: role and accessible name, plus a
+    ready-made CSS selector when there is no accessible name. With an `action`, only elements it can work on are listed."""
     lines = []
     for el in elements:
         if not el.get("visible", True) or (action and not action_compatible(action, el)):

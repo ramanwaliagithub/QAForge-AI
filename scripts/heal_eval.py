@@ -1,10 +1,11 @@
 """Measure the locator suggester on the committed failure samples.
 
-Usage: uv run python -m scripts.heal_eval [label] [temperature] [runs] [tuned|heldout|all]
+Usage: uv run python -m scripts.heal_eval [label] [temperature] [runs] [tuned|heldout|heldout2|all]
 For every sample: would the guard attempt it, and if forced, what does the model do? A suggestion only counts as
 CORRECT if it resolves to the element a person would pick (framework/healing/ground_truth.py), not merely to some
 single element. Controls have no valid answer, so any "heal" there is a false heal.
-`tuned` samples were used while writing the prompt; `heldout` ones were not (report them separately!).
+`tuned` samples were used while writing the prompt; `heldout` was used to diagnose it afterwards; `heldout2` was written
+after that and is the unbiased one. Report them separately.
 """
 import json
 import sys
@@ -14,7 +15,7 @@ from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
 
 from framework.healing.collector import load_failure_context
-from framework.healing.ground_truth import CONTROLS, HELDOUT, TUNED, matches
+from framework.healing.ground_truth import CONTROLS, HELDOUT, HELDOUT2, TUNED, matches
 from framework.healing.suggester import open_snapshot, should_attempt, suggest_locator
 from framework.llm_client import get_client
 
@@ -30,6 +31,8 @@ if WHICH in ("tuned", "all"):
     SETS += [("tuned", "samples", {n: t for n, t in TUNED.items()}), ("controls", "samples", {n: None for n in CONTROLS})]
 if WHICH in ("heldout", "all"):
     SETS += [("heldout", "samples_heldout", {n: t for n, t in HELDOUT.items()})]
+if WHICH in ("heldout2", "all"):
+    SETS += [("heldout2", "samples_heldout2", {n: t for n, t in HELDOUT2.items()})]
 
 client = get_client()
 rows = []
@@ -63,7 +66,7 @@ def summarize(set_name):
 
 
 summary = {"label": LABEL, "temperature": TEMPERATURE, "runs": RUNS}
-for s in ("tuned", "heldout"):
+for s in ("tuned", "heldout", "heldout2"):
     if any(x["set"] == s for x in rows):
         summary[s] = summarize(s)
 if any(x["set"] == "controls" for x in rows):
