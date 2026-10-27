@@ -38,7 +38,7 @@ class AccountsPage(BasePage):
     def open_new_account(self, account_type: str = "SAVINGS"):
         """Open a new account of type CHECKING or SAVINGS; returns its account id."""
         self.page.goto(f"{self.base_url}/openaccount.htm")
-        self.account_type.select_option(account_type)
+        self.select_option(self.account_type, account_type)
         # The funding-account dropdown is populated asynchronously.
         expect(self.funding_account.get_by_role("option")).not_to_have_count(0)
         self.click(self.page.get_by_role("button", name="Open New Account"))

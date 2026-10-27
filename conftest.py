@@ -13,6 +13,8 @@ from framework.healing.collector import DEFAULT_DIR, collect_failure_context
 from framework.logging_utils import get_logger
 from framework.pages import LoginPage, RegisterPage
 
+pytest_plugins = ["framework.healing.plugin"]  # --heal: opt-in self-healing (see framework/healing/plugin.py)
+
 load_dotenv()
 log = get_logger("qaforge.tests")
 

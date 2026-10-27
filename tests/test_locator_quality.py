@@ -46,3 +46,20 @@ def test_no_xpath_or_position_dependent_locators_in_page_objects():
 
 def test_overall_score_does_not_regress():
     assert score(audit_paths(PAGES)) >= MIN_SCORE
+
+
+def test_page_objects_act_through_the_basepage_helpers_so_healing_covers_them():
+    """`self.click(locator)` / `self.fill(...)` / `self.select_option(...)` can heal a broken locator under --heal; a direct
+    `locator.click()` in a page object cannot. Only base_page.py may call Playwright's action methods on a locator."""
+    import ast
+
+    actions = {"click", "fill", "select_option", "check", "uncheck", "type", "press", "hover", "dblclick"}
+    offenders = []
+    for path in PAGES:
+        if path.name == "base_page.py":
+            continue
+        for node in ast.walk(ast.parse(path.read_text())):
+            if (isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr in actions
+                    and not (isinstance(node.func.value, ast.Name) and node.func.value.id == "self")):
+                offenders.append(f"{path.name}:{node.lineno} .{node.func.attr}(...)")
+    assert not offenders, "use self.click/self.fill/self.select_option (BasePage) so --heal can cover them:\n" + "\n".join(offenders)

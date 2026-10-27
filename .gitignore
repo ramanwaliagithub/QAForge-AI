@@ -27,3 +27,4 @@ reports/tmp/
 reports/testgen/*.xml
 .playwright-mcp/
 reports/failures/
+reports/healing.json

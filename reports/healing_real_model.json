@@ -1,0 +1,519 @@
+{
+  "generated_at": "2026-10-27T05:29:23+00:00",
+  "model": "llama3.1:8b",
+  "note": "Proposals only: no source file was changed. Review each, then fix the page object by hand.",
+  "summary": {
+    "events": 13,
+    "healed": 13
+  },
+  "events": [
+    {
+      "test_id": "framework/healing/sample_tests/test_broken_locators.py::test_sample_id_renamed",
+      "time": "2026-10-27T05:27:52+00:00",
+      "action": "fill",
+      "page_url": "http://localhost:8080/parabank/transfer.htm",
+      "failed_locator": "locator(\"#amt\")",
+      "kind": "locator_not_found",
+      "heal_hint": "locator",
+      "outcome": "healed",
+      "suggestion": "locator(\"#amount\")",
+      "strategy": "css",
+      "reason": "old locator was for an input without an accessible name; stable id",
+      "confidence": 0.9,
+      "attempts": 1,
+      "from_cache": false,
+      "repaired_from": null,
+      "rejections": [],
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "amount",
+        "name": "input",
+        "value": null,
+        "text": null
+      },
+      "verified": true,
+      "definitions": [],
+      "caller_frames": [
+        {
+          "file": "framework/pages/transfer_page.py",
+          "line": 49,
+          "function": "transfer",
+          "code": "self.fill(self.amount, amount)"
+        }
+      ],
+      "error_message": "Locator.wait_for: Timeout 4000ms exceeded.\nCall log:\n  - waiting for locator(\"#amt\") to be visible",
+      "seconds": 4.29,
+      "status": "proposed"
+    },
+    {
+      "test_id": "framework/healing/sample_tests/test_broken_locators.py::test_sample_button_text_changed",
+      "time": "2026-10-27T05:28:00+00:00",
+      "action": "click",
+      "page_url": "http://localhost:8080/parabank/transfer.htm",
+      "failed_locator": "get_by_role(\"button\", name=\"Transfer Money\", exact=True)",
+      "kind": "locator_not_found",
+      "heal_hint": "locator",
+      "outcome": "healed",
+      "suggestion": "get_by_role(\"button\", name=\"Transfer\", exact=True)",
+      "strategy": "role",
+      "reason": "submit button with matching name",
+      "confidence": 1.0,
+      "attempts": 1,
+      "from_cache": false,
+      "repaired_from": null,
+      "rejections": [],
+      "element": {
+        "tag": "input",
+        "type": "submit",
+        "id": null,
+        "name": null,
+        "value": "Transfer",
+        "text": null
+      },
+      "verified": true,
+      "definitions": [],
+      "caller_frames": [
+        {
+          "file": "framework/pages/transfer_page.py",
+          "line": 52,
+          "function": "transfer",
+          "code": "self.click(self.submit_button)"
+        }
+      ],
+      "error_message": "Locator.wait_for: Timeout 4000ms exceeded.\nCall log:\n  - waiting for get_by_role(\"button\", name=\"Transfer Money\", exact=True) to be visible",
+      "seconds": 1.44,
+      "status": "proposed"
+    },
+    {
+      "test_id": "framework/healing/sample_tests/test_broken_locators.py::test_sample_locator_too_generic",
+      "time": "2026-10-27T05:28:02+00:00",
+      "action": "select_option",
+      "page_url": "http://localhost:8080/parabank/transfer.htm",
+      "failed_locator": "locator(\"option\")",
+      "kind": "strict_mode_violation",
+      "heal_hint": "locator",
+      "outcome": "healed",
+      "suggestion": "locator(\"#fromAccountId\")",
+      "strategy": "css",
+      "reason": "The old locator was looking for an element with id 'fromAccountId', which is a combobox on the page",
+      "confidence": 0.95,
+      "attempts": 1,
+      "from_cache": false,
+      "repaired_from": null,
+      "rejections": [],
+      "element": {
+        "tag": "select",
+        "type": "select-one",
+        "id": "fromAccountId",
+        "name": null,
+        "value": null,
+        "text": "401400"
+      },
+      "verified": true,
+      "definitions": [],
+      "caller_frames": [
+        {
+          "file": "framework/pages/transfer_page.py",
+          "line": 50,
+          "function": "transfer",
+          "code": "self.select_option(self.from_account, index=from_index)"
+        }
+      ],
+      "error_message": "Locator.wait_for: Error: strict mode violation: locator(\"option\") resolved to 2 elements:\n    1) <option value=\"401400\" selected=\"true\">401400</option> aka locator(\"#fromAccountId\")\n    2) <option value=\"401400\" selected=\"true\">401400</option> aka locator(\"#toAccountId\")\n\nCall log:\n  - waiting for locator(\"option\") to be visible",
+      "seconds": 1.47,
+      "status": "proposed"
+    },
+    {
+      "test_id": "framework/healing/sample_tests/test_heldout_locators.py::test_heldout_username_renamed",
+      "time": "2026-10-27T05:28:16+00:00",
+      "action": "fill",
+      "page_url": "http://localhost:8080/parabank/index.htm",
+      "failed_locator": "locator(\"input[name='user']\")",
+      "kind": "locator_not_found",
+      "heal_hint": "locator",
+      "outcome": "healed",
+      "suggestion": "locator(\"input[name='username']\")",
+      "strategy": "css",
+      "reason": "The test was filling the username field, which has not changed",
+      "confidence": 0.95,
+      "attempts": 2,
+      "from_cache": false,
+      "repaired_from": null,
+      "rejections": [
+        "Same locator as the one that failed."
+      ],
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": null,
+        "name": "username",
+        "value": null,
+        "text": null
+      },
+      "verified": true,
+      "definitions": [],
+      "caller_frames": [
+        {
+          "file": "framework/pages/login_page.py",
+          "line": 24,
+          "function": "login",
+          "code": "self.fill(self.username, username)"
+        }
+      ],
+      "error_message": "Locator.wait_for: Timeout 4000ms exceeded.\nCall log:\n  - waiting for locator(\"input[name='user']\") to be visible",
+      "seconds": 2.45,
+      "status": "proposed"
+    },
+    {
+      "test_id": "framework/healing/sample_tests/test_heldout_locators.py::test_heldout_logout_link_renamed",
+      "time": "2026-10-27T05:28:23+00:00",
+      "action": "click",
+      "page_url": "http://localhost:8080/parabank/overview.htm",
+      "failed_locator": "get_by_role(\"link\", name=\"Sign Out\", exact=True)",
+      "kind": "locator_not_found",
+      "heal_hint": "locator",
+      "outcome": "healed",
+      "suggestion": "get_by_role(\"link\", name=\"Log Out\", exact=True)",
+      "strategy": "role",
+      "reason": "matches the failing locator's name",
+      "confidence": 1.0,
+      "attempts": 1,
+      "from_cache": false,
+      "repaired_from": null,
+      "rejections": [],
+      "element": {
+        "tag": "a",
+        "type": null,
+        "id": null,
+        "name": null,
+        "value": null,
+        "text": "Log Out"
+      },
+      "verified": true,
+      "definitions": [],
+      "caller_frames": [
+        {
+          "file": "framework/pages/login_page.py",
+          "line": 30,
+          "function": "logout",
+          "code": "self.click(self.logout_link)"
+        }
+      ],
+      "error_message": "Locator.wait_for: Timeout 4000ms exceeded.\nCall log:\n  - waiting for get_by_role(\"link\", name=\"Sign Out\", exact=True) to be visible",
+      "seconds": 1.54,
+      "status": "proposed"
+    },
+    {
+      "test_id": "framework/healing/sample_tests/test_heldout_locators.py::test_heldout_account_type_dropdown",
+      "time": "2026-10-27T05:28:29+00:00",
+      "action": "select_option",
+      "page_url": "http://localhost:8080/parabank/openaccount.htm",
+      "failed_locator": "get_by_role(\"combobox\").filter(has=get_by_role(\"option\", name=\"SAVER\"))",
+      "kind": "locator_not_found",
+      "heal_hint": "locator",
+      "outcome": "healed",
+      "suggestion": "locator(\"#type\")",
+      "strategy": "css",
+      "reason": "The old locator used the id #type, which is still present on the page",
+      "confidence": 0.95,
+      "attempts": 1,
+      "from_cache": false,
+      "repaired_from": null,
+      "rejections": [],
+      "element": {
+        "tag": "select",
+        "type": "select-one",
+        "id": "type",
+        "name": null,
+        "value": null,
+        "text": "CHECKING SAVINGS"
+      },
+      "verified": true,
+      "definitions": [],
+      "caller_frames": [
+        {
+          "file": "framework/pages/accounts_page.py",
+          "line": 41,
+          "function": "open_new_account",
+          "code": "self.select_option(self.account_type, account_type)"
+        }
+      ],
+      "error_message": "Locator.wait_for: Timeout 4000ms exceeded.\nCall log:\n  - waiting for get_by_role(\"combobox\").filter(has=get_by_role(\"option\", name=\"SAVER\")) to be visible",
+      "seconds": 1.39,
+      "status": "proposed"
+    },
+    {
+      "test_id": "framework/healing/sample_tests/test_heldout_locators.py::test_heldout_first_name_field_renamed",
+      "time": "2026-10-27T05:28:35+00:00",
+      "action": "fill",
+      "page_url": "http://localhost:8080/parabank/register.htm",
+      "failed_locator": "locator(\"input[name='customer.givenName']\")",
+      "kind": "locator_not_found",
+      "heal_hint": "locator",
+      "outcome": "healed",
+      "suggestion": "locator(\"[id='customer.firstName']\")",
+      "strategy": "css",
+      "reason": "input field with a stable id, matching the old locator's name",
+      "confidence": 0.95,
+      "attempts": 2,
+      "from_cache": false,
+      "repaired_from": "locator(\"#customer.firstName\")",
+      "rejections": [
+        "Same locator as the one that failed."
+      ],
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.firstName",
+        "name": "customer.firstName",
+        "value": "",
+        "text": null
+      },
+      "verified": true,
+      "definitions": [],
+      "caller_frames": [
+        {
+          "file": "framework/pages/register_page.py",
+          "line": 23,
+          "function": "register",
+          "code": "self.fill(self.page.locator(f\"input[name='{field}']\"), values[key])"
+        }
+      ],
+      "error_message": "Locator.wait_for: Timeout 4000ms exceeded.\nCall log:\n  - waiting for locator(\"input[name='customer.givenName']\") to be visible",
+      "seconds": 2.78,
+      "status": "proposed"
+    },
+    {
+      "test_id": "framework/healing/sample_tests/test_heldout2_locators.py::test_heldout2_password_renamed",
+      "time": "2026-10-27T05:28:42+00:00",
+      "action": "fill",
+      "page_url": "http://localhost:8080/parabank/index.htm",
+      "failed_locator": "locator(\"input[name='pass']\")",
+      "kind": "locator_not_found",
+      "heal_hint": "locator",
+      "outcome": "healed",
+      "suggestion": "locator(\"input[name='password']\")",
+      "strategy": "css",
+      "reason": "password input field, previously targeted by the failing locator",
+      "confidence": 0.95,
+      "attempts": 1,
+      "from_cache": false,
+      "repaired_from": null,
+      "rejections": [],
+      "element": {
+        "tag": "input",
+        "type": "password",
+        "id": null,
+        "name": "password",
+        "value": null,
+        "text": null
+      },
+      "verified": true,
+      "definitions": [],
+      "caller_frames": [
+        {
+          "file": "framework/pages/login_page.py",
+          "line": 25,
+          "function": "login",
+          "code": "self.fill(self.password, password)"
+        }
+      ],
+      "error_message": "Locator.wait_for: Timeout 4000ms exceeded.\nCall log:\n  - waiting for locator(\"input[name='pass']\") to be visible",
+      "seconds": 1.34,
+      "status": "proposed"
+    },
+    {
+      "test_id": "framework/healing/sample_tests/test_heldout2_locators.py::test_heldout2_register_button_renamed",
+      "time": "2026-10-27T05:28:47+00:00",
+      "action": "click",
+      "page_url": "http://localhost:8080/parabank/register.htm",
+      "failed_locator": "get_by_role(\"button\", name=\"Sign Up\", exact=True)",
+      "kind": "locator_not_found",
+      "heal_hint": "locator",
+      "outcome": "healed",
+      "suggestion": "get_by_role(\"button\", name=\"Register\", exact=True)",
+      "strategy": "role",
+      "reason": "the test was trying to click the 'Sign Up' button, which is now named 'Register'",
+      "confidence": 0.95,
+      "attempts": 1,
+      "from_cache": false,
+      "repaired_from": null,
+      "rejections": [],
+      "element": {
+        "tag": "input",
+        "type": "submit",
+        "id": null,
+        "name": null,
+        "value": "Register",
+        "text": null
+      },
+      "verified": true,
+      "definitions": [],
+      "caller_frames": [],
+      "error_message": "Locator.wait_for: Timeout 4000ms exceeded.\nCall log:\n  - waiting for get_by_role(\"button\", name=\"Sign Up\", exact=True) to be visible",
+      "seconds": 1.72,
+      "status": "proposed"
+    },
+    {
+      "test_id": "framework/healing/sample_tests/test_heldout2_locators.py::test_heldout2_state_field_renamed",
+      "time": "2026-10-27T05:28:53+00:00",
+      "action": "fill",
+      "page_url": "http://localhost:8080/parabank/register.htm",
+      "failed_locator": "locator(\"input[name='customer.address.region']\")",
+      "kind": "locator_not_found",
+      "heal_hint": "locator",
+      "outcome": "healed",
+      "suggestion": "locator(\"[id='customer.address.state']\")",
+      "strategy": "css",
+      "reason": "input field with a stable id, matching the old locator's name",
+      "confidence": 0.95,
+      "attempts": 2,
+      "from_cache": false,
+      "repaired_from": "locator(\"#customer.address.state\")",
+      "rejections": [
+        "Same locator as the one that failed."
+      ],
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.address.state",
+        "name": "customer.address.state",
+        "value": "",
+        "text": null
+      },
+      "verified": true,
+      "definitions": [],
+      "caller_frames": [
+        {
+          "file": "framework/pages/register_page.py",
+          "line": 23,
+          "function": "register",
+          "code": "self.fill(self.page.locator(f\"input[name='{field}']\"), values[key])"
+        }
+      ],
+      "error_message": "Locator.wait_for: Timeout 4000ms exceeded.\nCall log:\n  - waiting for locator(\"input[name='customer.address.region']\") to be visible",
+      "seconds": 2.78,
+      "status": "proposed"
+    },
+    {
+      "test_id": "framework/healing/sample_tests/test_heldout3_locators.py::test_heldout3_login_button_renamed",
+      "time": "2026-10-27T05:29:04+00:00",
+      "action": "click",
+      "page_url": "http://localhost:8080/parabank/index.htm",
+      "failed_locator": "get_by_role(\"button\", name=\"Sign In\", exact=True)",
+      "kind": "locator_not_found",
+      "heal_hint": "locator",
+      "outcome": "healed",
+      "suggestion": "get_by_role(\"button\", name=\"Log In\", exact=True)",
+      "strategy": "role",
+      "reason": "matches the failing locator's name",
+      "confidence": 1.0,
+      "attempts": 1,
+      "from_cache": false,
+      "repaired_from": null,
+      "rejections": [],
+      "element": {
+        "tag": "input",
+        "type": "submit",
+        "id": null,
+        "name": null,
+        "value": "Log In",
+        "text": null
+      },
+      "verified": true,
+      "definitions": [],
+      "caller_frames": [
+        {
+          "file": "framework/pages/login_page.py",
+          "line": 26,
+          "function": "login",
+          "code": "self.click(self.submit)"
+        }
+      ],
+      "error_message": "Locator.wait_for: Timeout 4000ms exceeded.\nCall log:\n  - waiting for get_by_role(\"button\", name=\"Sign In\", exact=True) to be visible",
+      "seconds": 1.47,
+      "status": "proposed"
+    },
+    {
+      "test_id": "framework/healing/sample_tests/test_heldout3_locators.py::test_heldout3_last_name_field_renamed",
+      "time": "2026-10-27T05:29:10+00:00",
+      "action": "fill",
+      "page_url": "http://localhost:8080/parabank/register.htm",
+      "failed_locator": "locator(\"input[name='customer.surname']\")",
+      "kind": "locator_not_found",
+      "heal_hint": "locator",
+      "outcome": "healed",
+      "suggestion": "locator(\"[id='customer.lastName']\")",
+      "strategy": "css",
+      "reason": "The test was filling the surname field, which has an id of customer.lastName",
+      "confidence": 0.95,
+      "attempts": 1,
+      "from_cache": false,
+      "repaired_from": "locator(\"#customer.lastName\")",
+      "rejections": [],
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.lastName",
+        "name": "customer.lastName",
+        "value": "",
+        "text": null
+      },
+      "verified": true,
+      "definitions": [],
+      "caller_frames": [
+        {
+          "file": "framework/pages/register_page.py",
+          "line": 23,
+          "function": "register",
+          "code": "self.fill(self.page.locator(f\"input[name='{field}']\"), values[key])"
+        }
+      ],
+      "error_message": "Locator.wait_for: Timeout 4000ms exceeded.\nCall log:\n  - waiting for locator(\"input[name='customer.surname']\") to be visible",
+      "seconds": 1.58,
+      "status": "proposed"
+    },
+    {
+      "test_id": "framework/healing/sample_tests/test_heldout3_locators.py::test_heldout3_phone_field_renamed",
+      "time": "2026-10-27T05:29:16+00:00",
+      "action": "fill",
+      "page_url": "http://localhost:8080/parabank/register.htm",
+      "failed_locator": "locator(\"input[name='customer.mobile']\")",
+      "kind": "locator_not_found",
+      "heal_hint": "locator",
+      "outcome": "healed",
+      "suggestion": "locator(\"[id='customer.phoneNumber']\")",
+      "strategy": "css",
+      "reason": "input field with a stable id, matching the old locator's name",
+      "confidence": 0.95,
+      "attempts": 2,
+      "from_cache": false,
+      "repaired_from": "locator(\"#customer.phoneNumber\")",
+      "rejections": [
+        "Same locator as the one that failed."
+      ],
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.phoneNumber",
+        "name": "customer.phoneNumber",
+        "value": "",
+        "text": null
+      },
+      "verified": true,
+      "definitions": [],
+      "caller_frames": [
+        {
+          "file": "framework/pages/register_page.py",
+          "line": 23,
+          "function": "register",
+          "code": "self.fill(self.page.locator(f\"input[name='{field}']\"), values[key])"
+        }
+      ],
+      "error_message": "Locator.wait_for: Timeout 4000ms exceeded.\nCall log:\n  - waiting for locator(\"input[name='customer.mobile']\") to be visible",
+      "seconds": 2.69,
+      "status": "proposed"
+    }
+  ]
+}

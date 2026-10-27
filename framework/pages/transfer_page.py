@@ -47,8 +47,8 @@ class TransferPage(BasePage):
         """Fill the form, submit and wait for the result heading. Assertions stay in the tests."""
         if amount:
             self.fill(self.amount, amount)
-        self.from_account.select_option(index=from_index)
-        self.to_account.select_option(index=to_index)
+        self.select_option(self.from_account, index=from_index)
+        self.select_option(self.to_account, index=to_index)
         self.click(self.submit_button)
         self.result_heading.wait_for()
         return self

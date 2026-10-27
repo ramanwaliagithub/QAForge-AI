@@ -22,7 +22,7 @@ uv run pytest -q
 
 ## Status
 
-Day 14 of 60: LLM locator suggestion with validation.
+Day 15 of 60: opt-in self-healing fixture (--heal).
 
 ## Reports
 
@@ -40,3 +40,16 @@ brew install ollama && ollama serve        # in another terminal
 ollama pull llama3.1:8b && ollama pull nomic-embed-text
 uv run python -m scripts.llm_hello
 ```
+
+## Self-healing (opt-in)
+
+```bash
+uv run pytest --heal            # a broken locator in a page object is healed at run time (needs Ollama running)
+```
+
+- Off by default. With `--heal`, a click/fill/select that fails because its **locator** is wrong asks a local LLM for a
+  replacement, validates it on the live page (exactly one match, right kind of element), and retries the action **once**.
+- Assertion failures are never healed. Source files are never edited: proposals go to `reports/healing.json` for review.
+- A test that only passed because of a heal is reported, not hidden: a `HealedLocatorWarning` (use
+  `-W error::framework.healing.plugin.HealedLocatorWarning` to make CI fail on heals) plus a "self-healing" summary section.
+- Flags: `--heal-allow-maybe` (also try ambiguous failures), `--heal-max-per-test N`. Details: `docs/notes/day15.md`.

@@ -188,10 +188,10 @@ qaforge-ai/
 - Commit: `feat: LLM locator suggestion with validation`
 
 ### Day 15: Safe self-healing loop
-- [ ] Add a fixture that retries a step once with the healed locator
-- [ ] Never auto-write to source; log proposals to `reports/healing.json`
-- [ ] Add a flag `--heal` (off by default)
-- [ ] Guard rail: skip healing for assertion failures (only locator failures)
+- [x] Add a fixture that retries a step once with the healed locator
+- [x] Never auto-write to source; log proposals to `reports/healing.json`
+- [x] Add a flag `--heal` (off by default)
+- [x] Guard rail: skip healing for assertion failures (only locator failures)
 - Commit: `feat: opt-in self-healing fixture`
 
 ### Day 16: Healing review report
