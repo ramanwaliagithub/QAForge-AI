@@ -22,7 +22,7 @@ uv run pytest -q
 
 ## Status
 
-Day 14 of 60: LLM locator suggestion with validation.
+Day 15 of 60: opt-in self-healing fixture (--heal).
 
 ## Reports
 
