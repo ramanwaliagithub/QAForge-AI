@@ -121,9 +121,9 @@ def format_frames(frames: list[dict], limit: int = 4) -> str:
     return "\n".join(f"  - {f['file']}:{f['line']}  {f['code']}" for f in frames[-limit:]) or "  (none)"
 
 
-def build_prompt(ctx: FailureContext) -> str:
+def build_prompt(ctx: FailureContext, action: str | None = None) -> str:
     e = ctx.error
-    action = intended_action(e)
+    action = action or intended_action(e)
     return (PROMPT_PATH.read_text()
             .replace("{locator}", e.locator or "(unknown)")
             .replace("{action}", action or "(unknown)")
@@ -132,10 +132,12 @@ def build_prompt(ctx: FailureContext) -> str:
             .replace("{elements}", format_elements(ctx.page.elements, action=action, role=failed_role(e.locator))))
 
 
-def suggest_locator(client: LLMClient, ctx: FailureContext, page, max_attempts: int = 3, temperature: float = 0.0) -> HealResult:
-    """`page` holds the captured DOM (see open_snapshot). Rejections are fed back so the next attempt can fix them."""
-    base_prompt, prompt = build_prompt(ctx), build_prompt(ctx)
-    action = intended_action(ctx.error)
+def suggest_locator(client: LLMClient, ctx: FailureContext, page, max_attempts: int = 3, temperature: float = 0.0,
+                    action: str | None = None) -> HealResult:
+    """`page` holds the DOM to validate against: the captured one (see open_snapshot) or the live page.
+    `action` overrides the intent read from the failing source lines. Rejections are fed back for the next attempt."""
+    action = action or intended_action(ctx.error)
+    base_prompt, prompt = build_prompt(ctx, action), build_prompt(ctx, action)
     result = HealResult(healed=False)
     tried: list[str] = []
     for n in range(1, max_attempts + 1):

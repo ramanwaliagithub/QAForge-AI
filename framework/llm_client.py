@@ -1,7 +1,9 @@
 """Swappable LLM client. Tests and tooling depend on `LLMClient`, not on a vendor SDK."""
+import json
 import os
 import time
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Protocol
 
 from framework.logging_utils import get_logger
@@ -41,7 +43,9 @@ class OllamaClient:
         if client is None:
             import ollama
 
-            client = ollama.Client(host=host or os.getenv("OLLAMA_HOST", "http://localhost:11434"))
+            # a timeout so a hung model cannot hang a test run (healing calls the model from inside tests)
+            client = ollama.Client(host=host or os.getenv("OLLAMA_HOST", "http://localhost:11434"),
+                                   timeout=float(os.getenv("OLLAMA_TIMEOUT_S", "120")))
         self._client = client
 
     def generate(self, prompt, *, system=None, temperature=0.0, json_mode=False, num_ctx=None) -> LLMResponse:
@@ -67,9 +71,34 @@ class OllamaClient:
         return list(self._client.embeddings(model=self.embed_model, prompt=text)["embedding"])
 
 
+class ReplayClient:
+    """Deterministic stand-in for a model: replays canned answers from a JSON file (a list of strings).
+
+    For tests and CI where the model must not be called. Answers are returned in order; running out is an error,
+    so a test notices when the code under test makes more calls than expected.
+    """
+
+    def __init__(self, path: str | None = None):
+        self.path = path or os.environ["LLM_REPLAY_FILE"]
+        self.replies: list[str] = json.loads(Path(self.path).read_text())
+        self.calls = 0
+
+    def generate(self, prompt, *, system=None, temperature=0.0, json_mode=False, num_ctx=None) -> LLMResponse:
+        if self.calls >= len(self.replies):
+            raise RuntimeError(f"ReplayClient exhausted after {self.calls} calls ({self.path})")
+        text = self.replies[self.calls]
+        self.calls += 1
+        return LLMResponse(text=text if isinstance(text, str) else json.dumps(text), model="replay", latency_s=0.0)
+
+    def embed(self, text: str) -> list[float]:
+        return [0.0]
+
+
 def get_client() -> LLMClient:
-    """Factory: pick the backend from LLM_PROVIDER (only `ollama` for now)."""
+    """Factory: pick the backend from LLM_PROVIDER: `ollama` (default) or `replay` (canned answers, for tests)."""
     provider = os.getenv("LLM_PROVIDER", "ollama")
     if provider == "ollama":
         return OllamaClient()
+    if provider == "replay":
+        return ReplayClient()
     raise ValueError(f"Unknown LLM_PROVIDER: {provider}")

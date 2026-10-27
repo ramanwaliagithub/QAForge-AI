@@ -75,20 +75,33 @@ def classify_message(exc_type: str, message: str) -> tuple[str, str | None, str 
     return kind, locator, action, timeout_ms
 
 
-def project_frames(tb, root: Path | None = None, limit: int = 8) -> list[dict]:
-    """Stack frames that are in this repository (not site-packages / .venv), innermost last."""
+def _project_frames(summaries, root: Path | None, limit: int, skip_prefixes: tuple[str, ...] = ()) -> list[dict]:
     root = (root or Path.cwd()).resolve()
     out = []
-    for fs in traceback.extract_tb(tb):
+    for fs in summaries:
         p = Path(fs.filename).resolve()
         if ".venv" in p.parts or "site-packages" in p.parts:
             continue
         try:
-            rel = p.relative_to(root)
+            rel = str(p.relative_to(root))
         except ValueError:
             continue
-        out.append({"file": str(rel), "line": fs.lineno, "function": fs.name, "code": (fs.line or "").strip()})
+        if rel.startswith(skip_prefixes):
+            continue
+        out.append({"file": rel, "line": fs.lineno, "function": fs.name, "code": (fs.line or "").strip()})
     return out[-limit:]
+
+
+def project_frames(tb, root: Path | None = None, limit: int = 8) -> list[dict]:
+    """Stack frames that are in this repository (not site-packages / .venv), innermost last."""
+    return _project_frames(traceback.extract_tb(tb), root, limit)
+
+
+def stack_frames(root: Path | None = None, limit: int = 6,
+                 skip_prefixes: tuple[str, ...] = ("framework/healing/", "framework/pages/base_page.py")) -> list[dict]:
+    """The current call stack in project code, innermost last, without the healing machinery and the generic page
+    helper: what is left is the test and the page-object lines, e.g. `self.fill(self.amount, amount)`."""
+    return _project_frames(traceback.extract_stack()[:-1], root, limit, skip_prefixes)
 
 
 def raised_in(frames: list[dict]) -> str:
