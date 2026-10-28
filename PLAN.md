@@ -35,6 +35,7 @@ Critical decisions are asked before building and recorded here.
 | 2026-10-07 | Commit granularity | **Multiple small commits per day** | One per task where practical, each passing tests; push at end of day |
 | 2026-10-09 | Local model | **llama3.1:8b** + nomic-embed-text | Default from plan; swap via `OLLAMA_MODEL` |
 | 2026-10-15 | App under test | **ParaBank in local Docker** (`docker compose up -d`, `http://localhost:8080/parabank`) | Public demo's registration started returning HTTP 500 and was slow/flaky (Day 6). Local is stable, fast (suite 10s -> 2s) and CI-ready. Public demo still usable via `BASE_URL` |
+| 2026-10-28 | Healing apply step edits source (Day 16) | Only `approved` proposals; a diff is shown and confirmed (`--yes` to skip); a locator is patched only where its definition is ONE unique literal match; files with uncommitted changes are refused | Days 14-15 deliberately never edited source; this is the only place that does, and only after a human approves |
 | 2026-10-05 | Remote | `https://github.com/ramanwaliagithub/QAForge-AI.git` | |
 
 ## Open-source stack
