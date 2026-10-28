@@ -28,3 +28,6 @@ reports/testgen/*.xml
 .playwright-mcp/
 reports/failures/
 reports/healing.json
+reports/healing_review.json
+reports/healing_review.md
+reports/healing_review.html

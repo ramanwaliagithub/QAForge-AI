@@ -9,7 +9,7 @@ from playwright.sync_api import expect
 from framework.pages import AccountsPage, TransferPage
 
 
-@pytest.mark.xfail(strict=True, reason="ParaBank bug: a negative transfer amount is accepted")
+@pytest.mark.xfail(strict=True, raises=AssertionError, reason="ParaBank bug: a negative transfer amount is accepted")
 def test_negative_amount_is_rejected(new_customer_page, base_url):
     transfer = TransferPage(new_customer_page, base_url).open()
     transfer.transfer("-100")
@@ -17,7 +17,7 @@ def test_negative_amount_is_rejected(new_customer_page, base_url):
     assert not transfer.success_heading.is_visible(), "negative transfer was accepted"
 
 
-@pytest.mark.xfail(strict=True, reason="ParaBank bug: no balance check, a transfer can overdraw an account")
+@pytest.mark.xfail(strict=True, raises=AssertionError, reason="ParaBank bug: no balance check, a transfer can overdraw an account")
 def test_transfer_larger_than_balance_is_rejected(new_customer_page, base_url):
     AccountsPage(new_customer_page, base_url).open_new_account("SAVINGS")  # second account to transfer to
     transfer = TransferPage(new_customer_page, base_url).open(accounts=2)
