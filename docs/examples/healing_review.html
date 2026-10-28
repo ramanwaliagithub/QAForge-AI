@@ -1,0 +1,36 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Healing review</title><style>
+body{font:15px/1.5 system-ui,sans-serif;margin:0 auto;max-width:960px;padding:16px;color:#1b1f23;background:#fff}
+.card{border:1px solid #d0d7de;border-radius:8px;padding:12px 16px;margin:16px 0}.card.approved{border-color:#1a7f37}.card.rejected{border-color:#cf222e;opacity:.7}.card.applied{border-color:#8250df}
+table{border-collapse:collapse;width:100%}th{text-align:left;width:130px;vertical-align:top;color:#57606a;font-weight:600}td,th{padding:3px 6px}
+code{background:#f6f8fa;padding:1px 5px;border-radius:4px;font-size:13px}.badge{font-size:12px;background:#ddf4ff;border-radius:10px;padding:2px 8px}.score{font-size:13px;color:#57606a}
+pre.diff{background:#f6f8fa;padding:10px;overflow:auto;border-radius:6px;font-size:13px}.refuse{color:#cf222e}
+@media(prefers-color-scheme:dark){body{background:#0d1117;color:#e6edf3}.card{border-color:#30363d}code,pre.diff{background:#161b22}th{color:#8b949e}.badge{background:#1f3a5f}}
+</style></head><body>
+<h1>Healing review</h1>
+<p>Updated 2026-10-28T05:58:21+00:00. 1 proposals: 1 proposed, 0 approved, 0 rejected, 0 applied.</p>
+<p><strong>No source file has been changed.</strong> The score is a transparent heuristic, not a probability.</p>
+<section class="card proposed">
+<h2><code>74be18c8</code> <span class="badge">proposed</span> <span class="score">score 1.00</span></h2>
+<table>
+<tr><th>Old</th><td><code>locator(&quot;#amt&quot;)</code></td></tr>
+<tr><th>New</th><td><code>locator(&quot;#amount&quot;)</code> <small>(css; fill)</small></td></tr>
+<tr><th>Why (model)</th><td>old locator was for an input without an accessible name; stable id <small>(self-reported 0.9)</small></td></tr>
+<tr><th>Defined at</th><td><code>framework/pages/transfer_page.py:13</code> <code>return self.page.locator(&quot;#amt&quot;)</code></td></tr>
+<tr><th>Resolved element</th><td>tag=&#x27;input&#x27;, type=&#x27;text&#x27;, id=&#x27;amount&#x27;, name=&#x27;input&#x27;</td></tr>
+<tr><th>Tests (3)</th><td>test_decimal_amount_is_accepted, test_negative_amount_is_rejected, test_transfer_larger_than_balance_is_rejected</td></tr>
+<tr><th>Score parts</th><td>base +0.50, retry_verified +0.20, first_attempt +0.10, semantic_locator +0.05, one_source_definition +0.10, repeated_across_tests +0.10, harness_repair +0.00, model_self_report +0.04</td></tr>
+<tr><th>Flags</th><td><ul><li>non_semantic_locator: css; tests/test_locator_quality.py will need an ACCEPTED entry with a reason</li></ul></td></tr>
+</table>
+<pre class="diff">--- a/framework/pages/transfer_page.py
++++ b/framework/pages/transfer_page.py
+@@ -11,5 +11,5 @@
+     @property
+     def amount(self):
+-        return self.page.locator(&quot;#amt&quot;)
++        return self.page.locator(&quot;#amount&quot;)
+ 
+     @property
+</pre>
+<p><small>Approve: <code>python -m framework.healing approve 74be18c8</code></small></p>
+</section></body></html>

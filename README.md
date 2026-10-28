@@ -22,7 +22,7 @@ uv run pytest -q
 
 ## Status
 
-Day 15 of 60: opt-in self-healing fixture (--heal).
+Day 16 of 60: healing review report and apply CLI.
 
 ## Reports
 
@@ -53,3 +53,14 @@ uv run pytest --heal            # a broken locator in a page object is healed at
 - A test that only passed because of a heal is reported, not hidden: a `HealedLocatorWarning` (use
   `-W error::framework.healing.plugin.HealedLocatorWarning` to make CI fail on heals) plus a "self-healing" summary section.
 - Flags: `--heal-allow-maybe` (also try ambiguous failures), `--heal-max-per-test N`. Details: `docs/notes/day15.md`.
+
+Review and fix (the only step that edits source, and only after you approve):
+
+```bash
+uv run python -m framework.healing report            # reports/healing_review.{json,md,html}; see docs/examples/healing_review.md
+uv run python -m framework.healing approve <id>      # or: reject <id> --note "why"
+uv run python -m framework.healing apply             # shows each diff, asks to confirm (--dry-run / --yes)
+```
+
+`apply` patches only approved proposals whose old locator appears **exactly once** as literal source text, never a file with
+uncommitted changes, and never commits. Details: `docs/notes/day16.md`.
