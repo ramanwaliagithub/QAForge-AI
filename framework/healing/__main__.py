@@ -140,7 +140,8 @@ def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(prog="python -m framework.healing", description="Review and apply self-healing proposals.")
     ap.add_argument("--events", help=f"healing events from `pytest --heal` (default {DEFAULT_EVENTS}, env HEAL_REPORT)")
     ap.add_argument("--review", help=f"review file with decisions (default {DEFAULT_REVIEW}, env HEAL_REVIEW)")
-    ap.add_argument("--roots", nargs="+", help=f"source folders to search and patch (default {' '.join(DEFAULT_ROOTS)})")
+    ap.add_argument("--roots", action="append", metavar="DIR",
+                    help=f"source folder to search and patch; repeat for several (default {' '.join(DEFAULT_ROOTS)})")
     sub = ap.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("report", help="merge events into the review file and write the markdown/html report")
     r.add_argument("--format", choices=["md", "html", "both"], default="both")
