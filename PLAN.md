@@ -196,10 +196,10 @@ qaforge-ai/
 - Commit: `feat: opt-in self-healing fixture`
 
 ### Day 16: Healing review report
-- [ ] Generate a markdown/HTML report of proposed fixes (old vs new locator)
-- [ ] Add confidence score and "approved/rejected" field
-- [ ] Add a CLI `python -m framework.healing apply` that patches approved ones
-- [ ] Try it end to end on a broken test
+- [x] Generate a markdown/HTML report of proposed fixes (old vs new locator)
+- [x] Add confidence score and "approved/rejected" field
+- [x] Add a CLI `python -m framework.healing apply` that patches approved ones
+- [x] Try it end to end on a broken test
 - Commit: `feat: healing review and apply CLI`
 
 ### Day 17: Phase 2 consolidation
