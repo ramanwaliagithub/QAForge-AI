@@ -1,11 +1,10 @@
 import json
-from pathlib import Path
 
 import pytest
 
 from framework.healing.review import (
     build_proposals, decide, empty_review, load_review, merge_review, proposal_id, render_html, render_markdown,
-    save_review, score_proposal, summary_counts,
+    save_review, summary_counts,
 )
 
 PAGE = 'class P:\n    @property\n    def amount(self):\n        return self.page.locator("#amt")\n'

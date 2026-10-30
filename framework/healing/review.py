@@ -13,7 +13,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from framework.healing.patching import DEFAULT_ROOTS, PatchRefused, locate, plan_patch
-from framework.locator_audit import classify_css
 
 SCHEMA = 1
 STATUSES = ("proposed", "approved", "rejected", "applied")

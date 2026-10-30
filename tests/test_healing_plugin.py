@@ -6,8 +6,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-import pytest
-
 E2E = "framework/healing/sample_tests/test_heal_e2e.py"
 AMOUNT = {"strategy": "css", "css": "#amount", "reason": "amount input", "confidence": 0.9}
 BUTTON = {"strategy": "role", "role": "button", "name": "Transfer", "exact": True, "reason": "submit", "confidence": 0.8}

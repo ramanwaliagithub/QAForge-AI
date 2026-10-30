@@ -41,7 +41,7 @@ NOT_ACTIONABLE = (
     (PWERR, NOT_ACTIONABLE, "not_actionable", 'locator("#fromAccountId")', "fill"),
     (ASSERT, "assert 1 == 2", "assertion", None, None),
     (TIMEOUT, "Page.wait_for_url: Timeout 5000ms exceeded.", "timeout_other", None, "wait_for_url"),
-    (f"builtins.RuntimeError", "boom", "other", None, None),
+    ("builtins.RuntimeError", "boom", "other", None, None),
 ])
 def test_classify_message(exc_type, message, kind, locator, action):
     got_kind, got_locator, got_action, _ = classify_message(exc_type, message)
@@ -98,7 +98,7 @@ def test_raised_in_uses_the_innermost_project_frame():
 
 def test_assertion_raised_inside_a_page_object_is_a_precondition_not_a_product_assertion():
     from pathlib import Path
-    import importlib.util, tempfile, textwrap
+    import importlib.util, textwrap
 
     # build a real traceback whose innermost project frame is under framework/pages/
     root = Path("framework/pages/_tmp_precondition.py")

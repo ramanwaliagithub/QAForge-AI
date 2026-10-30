@@ -12,7 +12,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from ai_testgen.edge_cases import classify_outcome, expects_rejection, propose_edge_cases
-from ai_testgen.mcp_flows import McpActionError, account_options, act, goto, open_account, page_texts, register
+from ai_testgen.mcp_flows import McpActionError, act, goto, open_account, page_texts, register
 from ai_testgen.mcp_session import find_ref, playwright_mcp
 from framework.llm_client import get_client
 

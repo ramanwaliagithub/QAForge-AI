@@ -5,7 +5,6 @@ import pytest
 from framework.healing.collector import (
     FailureContext, capture_page_state, collect_failure_context, load_failure_context, slugify,
 )
-from framework.pages import TransferPage
 
 HTML = """<html><head><title>Fixture page</title></head><body>
 <h1>Transfer Funds</h1>
