@@ -22,12 +22,15 @@ uv run pytest -q
 
 ## Status
 
-Day 16 of 60: healing review report and apply CLI.
+Day 17 of 60: Phase 2 (AI test generation and self-healing) is complete, tagged `v0.2-ai-testgen`.
+The honest numbers are in [docs/phase2-results.md](docs/phase2-results.md): 1 of 15 generated tests passes, locator healing is 7/7 on a
+held-out set, and the suite is stable (0 failures in 30 parallel runs with reruns off).
 
 ## Reports
 
 ```bash
-uv run pytest -n 3                                  # writes allure-results/
+uv run pytest -n 3                                  # parallel; writes allure-results/
+uv run python -m scripts.suite_stability suite 30   # flake rate per test over 30 runs, reruns off
 allure generate allure-results -o allure-report --clean
 allure open allure-report
 ```

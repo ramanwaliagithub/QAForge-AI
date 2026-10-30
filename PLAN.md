@@ -204,10 +204,10 @@ qaforge-ai/
 - Commit: `feat: healing review and apply CLI`
 
 ### Day 17: Phase 2 consolidation
-- [ ] Run full suite with generated tests, record pass rate and healing rate
-- [ ] Write `docs/phase2-results.md` with honest numbers and failure types
-- [ ] Clean up code and add docstrings
-- [ ] Tag release `v0.2-ai-testgen`
+- [x] Run full suite with generated tests, record pass rate and healing rate
+- [x] Write `docs/phase2-results.md` with honest numbers and failure types
+- [x] Clean up code and add docstrings
+- [x] Tag release `v0.2-ai-testgen`
 - Commit: `docs: phase 2 results, tag v0.2`
 
 ---
