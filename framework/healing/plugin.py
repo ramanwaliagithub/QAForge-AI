@@ -85,6 +85,7 @@ def summarize(events: list[dict]) -> dict:
 
 
 def write_report(events: list[dict], path: str | Path) -> Path:
+    """Write the heal events and their summary to the JSON report. Proposals only: no source file is changed."""
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps({
@@ -97,6 +98,7 @@ def write_report(events: list[dict], path: str | Path) -> Path:
 
 
 def pytest_sessionfinish(session, exitstatus):
+    """Write the report once per session; an xdist worker hands its events to the controller instead."""
     config = session.config
     if config._healer is None:
         return
@@ -112,6 +114,7 @@ def pytest_testnodedown(node, error):
 
 
 def pytest_terminal_summary(terminalreporter, config):
+    """Print a 'self-healing' section listing every heal, so none passes silently."""
     if config._healer is None:
         return
     events = _all_events(config)

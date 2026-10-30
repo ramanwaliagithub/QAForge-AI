@@ -27,6 +27,8 @@ class PatchRefused(Exception):
 
 @dataclass
 class PatchPlan:
+    """A checked, not yet applied edit: the line to change, old and new text, a unified diff and the full new file content."""
+
     file: str
     line: int          # 1-based
     old_line: str

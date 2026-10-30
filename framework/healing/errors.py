@@ -31,6 +31,10 @@ KIND_HINT = {
 
 @dataclass
 class ErrorInfo:
+    """A failure classified for the healing pipeline: its kind, whether a locator change is a plausible fix
+    (`heal_hint`), and the locator, action and project source frames involved.
+    """
+
     type: str                  # e.g. "playwright._impl._errors.TimeoutError"
     message: str               # cleaned, without the aria snapshot Playwright appends to expect() failures
     kind: str                  # a KIND_HINT key
@@ -115,6 +119,9 @@ def raised_in(frames: list[dict]) -> str:
 
 
 def analyze_exception(exc: BaseException, root: Path | None = None) -> ErrorInfo:
+    """Classify an exception from a test (kind, locator, action, timeout) and note where in the project it was raised.
+    An assertion raised inside a page object becomes `page_object_precondition`, not a product assertion.
+    """
     exc_type = f"{type(exc).__module__}.{type(exc).__qualname__}"
     message = clean_message(str(exc))
     kind, locator, action, timeout_ms = classify_message(exc_type, message)

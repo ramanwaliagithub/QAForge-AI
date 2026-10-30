@@ -17,6 +17,10 @@ _NOT_TEXT_INPUT_TYPES = {"submit", "button", "checkbox", "radio", "image", "rese
 
 
 class LocatorSuggestion(BaseModel):
+    """A locator proposed by the model, as data (a strategy and its fields). It is never executed: `build_locator`
+    builds the Playwright locator from validated fields.
+    """
+
     strategy: Literal["role", "label", "text", "placeholder", "css"]
     role: str | None = None
     name: str | None = None      # accessible name for role locators
@@ -53,6 +57,7 @@ class SuggestionParseError(ValueError):
 
 
 def parse_suggestion(text: str) -> LocatorSuggestion:
+    """Parse the model's reply into a LocatorSuggestion; raises SuggestionParseError with a message that can be fed back."""
     start, end = text.find("{"), text.rfind("}")
     if start == -1 or end == -1:
         raise SuggestionParseError("No JSON object in the response.")
@@ -91,6 +96,7 @@ def render_locator(s: LocatorSuggestion, prefix: str = "") -> str:
 
 
 def build_locator(page, s: LocatorSuggestion):
+    """Build the Playwright locator for a suggestion. Only our code constructs it, never the model."""
     if s.strategy == "role":
         kwargs = {"name": s.name} if s.name else {}
         return page.get_by_role(s.role, exact=s.exact, **kwargs)
@@ -120,6 +126,8 @@ def intended_action(error: ErrorInfo) -> str | None:
 
 @dataclass
 class Validation:
+    """Result of checking a suggestion on the page: ok, match count, why it was rejected, and the matched element."""
+
     ok: bool
     count: int
     reason: str

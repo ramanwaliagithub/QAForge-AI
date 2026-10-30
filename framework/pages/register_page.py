@@ -1,7 +1,11 @@
+"""Page object for ParaBank's customer registration form."""
+
 from framework.pages.base_page import BasePage
 
 
 class RegisterPage(BasePage):
+    """The registration form; FIELDS maps the keyword names used by `register` to the form's `name` attributes."""
+
     path = "/register.htm"
 
     FIELDS = {

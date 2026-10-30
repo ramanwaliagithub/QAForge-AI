@@ -33,6 +33,7 @@ def _line(p: dict) -> str:
 
 
 def cmd_report(args, out) -> int:
+    """Merge the run's heal events into the review file (earlier decisions are kept) and write the markdown/html reports."""
     import json
     events_path, review_path = _paths(args)
     if not events_path.exists():
@@ -68,6 +69,7 @@ def cmd_list(args, out) -> int:
 
 
 def cmd_decide(args, out, status: str) -> int:
+    """Approve or reject proposals by id; `approve --all` takes the verified, single-definition ones above `--min-score`."""
     _, review_path = _paths(args)
     review = rv.load_review(review_path)
     ids = list(args.ids)
@@ -89,6 +91,9 @@ def cmd_decide(args, out, status: str) -> int:
 
 
 def cmd_apply(args, out, input_fn=input, isatty=None) -> int:
+    """Apply approved proposals to the source: show each diff, confirm (`--yes` is required without a terminal) and refuse
+    anything unsafe. Never commits and never runs tests. Returns 1 if any proposal was refused.
+    """
     isatty = sys.stdin.isatty() if isatty is None else isatty
     _, review_path = _paths(args)
     repo = Path.cwd()
@@ -137,6 +142,7 @@ def cmd_apply(args, out, input_fn=input, isatty=None) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
+    """Argument parser for `python -m framework.healing`: report, list, approve, reject and apply."""
     ap = argparse.ArgumentParser(prog="python -m framework.healing", description="Review and apply self-healing proposals.")
     ap.add_argument("--events", help=f"healing events from `pytest --heal` (default {DEFAULT_EVENTS}, env HEAL_REPORT)")
     ap.add_argument("--review", help=f"review file with decisions (default {DEFAULT_REVIEW}, env HEAL_REVIEW)")
@@ -163,6 +169,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv=None, out=None, input_fn=input, isatty=None) -> int:
+    """Entry point; returns the exit code. `out`, `input_fn` and `isatty` can be replaced so tests need no terminal."""
     out = out or sys.stdout
     args = build_parser().parse_args(argv)
     if args.cmd == "report":

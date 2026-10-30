@@ -1,3 +1,5 @@
+"""Page object for ParaBank's transfer-funds screen."""
+
 import re
 
 from playwright.sync_api import expect
@@ -6,6 +8,8 @@ from framework.pages.base_page import BasePage
 
 
 class TransferPage(BasePage):
+    """Transfer funds between a customer's own accounts."""
+
     path = "/transfer.htm"
 
     @property
