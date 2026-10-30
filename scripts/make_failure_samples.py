@@ -1,6 +1,6 @@
 """Run the deliberately broken sample tests and keep the collected failure contexts.
 
-Usage: uv run python -m scripts.make_failure_samples [tuned|heldout|heldout2|heldout3]
+Usage: uv run python -m scripts.make_failure_samples [tuned|heldout|heldout2|heldout3|heldout4]
 Writes JSON + PNG into framework/healing/samples/ (committed, used by tests and by the Day 14 suggester).
 Each set writes into its own folder (samples, samples_heldout, samples_heldout2); see the test files for what each breaks.
 """
@@ -19,6 +19,7 @@ SETS = {
     "heldout": ("samples_heldout", "test_heldout_locators.py"),
     "heldout2": ("samples_heldout2", "test_heldout2_locators.py"),
     "heldout3": ("samples_heldout3", "test_heldout3_locators.py"),
+    "heldout4": ("samples_heldout4", "test_heldout4_locators.py"),
 }
 WHICH = next((a for a in sys.argv[1:] if a in SETS), "tuned")
 OUT = Path("framework/healing") / SETS[WHICH][0]

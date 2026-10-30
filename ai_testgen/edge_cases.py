@@ -24,6 +24,8 @@ controls. Respond with JSON only, in this shape:
 
 
 class EdgeCase(BaseModel):
+    """One proposed transfer edge case: amount, which accounts to use, and the behaviour the model expects."""
+
     title: str = Field(min_length=3)
     amount: str
     from_index: int = Field(ge=0, le=1)
@@ -32,11 +34,15 @@ class EdgeCase(BaseModel):
 
 
 class EdgeCaseError(ValueError):
+    """The model's answer could not be used (invalid JSON or schema)."""
+
     pass
 
 
 @dataclass
 class Proposal:
+    """Feasible edge cases, plus the proposals dropped because the page has no controls to do them."""
+
     cases: list[EdgeCase]
     rejected: list[dict] = field(default_factory=list)  # proposals that cannot be done with the page's controls
 
@@ -65,6 +71,9 @@ def parse_edge_cases(text: str) -> Proposal:
 
 
 def propose_edge_cases(client: LLMClient, snapshot: str, n: int = 5, max_retries: int = 2) -> Proposal:
+    """Ask the model for edge cases for a transfer-page snapshot and keep the feasible ones; retries with the error
+    fed back. Raises EdgeCaseError when no answer is usable.
+    """
     prompt = PROMPT.format(snapshot=snapshot, n=n + 2)  # ask for a few extra: some proposals will be infeasible
     rejected, last = [], None
     for _ in range(max_retries + 1):

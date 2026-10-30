@@ -28,6 +28,8 @@ _NAME_ATTR = re.compile(r"^[a-z]*\[name=X\]$")  # matched after attribute values
 
 @dataclass
 class Finding:
+    """One locator call found in a page object, with its tier and whether it depends on position."""
+
     file: str
     line: int
     call: str          # locator | get_by_role | ...
@@ -37,6 +39,7 @@ class Finding:
 
 
 def classify_css(selector: str) -> str:
+    """Tier of a CSS selector: hand-written id, form `name` attribute, other css, or fragile (class, structure, XPath)."""
     sel = selector.strip()
     if sel.startswith(("//", "xpath=", "(//")):
         return "fragile"
@@ -65,6 +68,7 @@ def _chain_has_position(node: ast.AST) -> bool:
 
 
 def audit_source(source: str, filename: str = "<src>") -> list[Finding]:
+    """Find every locator call in the source and put it in a tier."""
     findings = []
     tree = ast.parse(source)
     for node in ast.walk(tree):

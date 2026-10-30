@@ -1,11 +1,10 @@
-import json
 from pathlib import Path
 
 import pytest
 
 from framework.healing.collector import load_failure_context
 from framework.healing.suggestion import (
-    repair_dotted_id, failed_role, LocatorSuggestion, SuggestionParseError, build_locator, intended_action, parse_suggestion, render_locator,
+    repair_dotted_id, failed_role, LocatorSuggestion, SuggestionParseError, intended_action, parse_suggestion, render_locator,
     validate_suggestion,
 )
 

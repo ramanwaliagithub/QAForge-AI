@@ -1,0 +1,527 @@
+{
+  "summary": {
+    "label": "day17_heldout4_t07_x3",
+    "temperature": 0.7,
+    "runs": 3,
+    "heldout4": {
+      "cases": 21,
+      "correct": 21,
+      "healed_wrong_element": 0,
+      "needed_mechanical_repair": 6,
+      "not_healed": 0,
+      "first_try_valid": 14
+    }
+  },
+  "rows": [
+    {
+      "set": "heldout4",
+      "sample": "street_field_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 3,
+      "suggestion": "locator(\"[id='customer.address.street']\")",
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.address.street",
+        "name": "customer.address.street",
+        "value": "",
+        "text": null
+      },
+      "rejections": [
+        "CSS selector '#customer.address.line1' is fragile (class, structure, position or XPath); use role/label/text, or an id or name attribute.",
+        "Same locator as the one that failed."
+      ],
+      "first_try_valid": false,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout4",
+      "sample": "street_field_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 2,
+      "healed": true,
+      "correct": true,
+      "attempts": 2,
+      "suggestion": "locator(\"input[name='customer.address.street']\")",
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.address.street",
+        "name": "customer.address.street",
+        "value": "",
+        "text": null
+      },
+      "rejections": [
+        "Same locator as the one that failed."
+      ],
+      "first_try_valid": false,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout4",
+      "sample": "street_field_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 3,
+      "healed": true,
+      "correct": true,
+      "attempts": 2,
+      "suggestion": "locator(\"[id='customer.address.street']\")",
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.address.street",
+        "name": "customer.address.street",
+        "value": "",
+        "text": null
+      },
+      "rejections": [
+        "CSS selector '#customer.address.line1' is fragile (class, structure, position or XPath); use role/label/text, or an id or name attribute."
+      ],
+      "first_try_valid": false,
+      "needed_repair": true,
+      "repairs": [
+        "locator(\"#customer.address.street\")"
+      ]
+    },
+    {
+      "set": "heldout4",
+      "sample": "ssn_field_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "locator(\"[id='customer.ssn']\")",
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.ssn",
+        "name": "customer.ssn",
+        "value": "",
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": true,
+      "repairs": [
+        "locator(\"#customer.ssn\")"
+      ]
+    },
+    {
+      "set": "heldout4",
+      "sample": "ssn_field_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 2,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "locator(\"input[name='customer.ssn']\")",
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.ssn",
+        "name": "customer.ssn",
+        "value": "",
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout4",
+      "sample": "ssn_field_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 3,
+      "healed": true,
+      "correct": true,
+      "attempts": 2,
+      "suggestion": "locator(\"[id='customer.ssn']\")",
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.ssn",
+        "name": "customer.ssn",
+        "value": "",
+        "text": null
+      },
+      "rejections": [
+        "CSS selector '#customer.taxId' is fragile (class, structure, position or XPath); use role/label/text, or an id or name attribute."
+      ],
+      "first_try_valid": false,
+      "needed_repair": true,
+      "repairs": [
+        "locator(\"#customer.ssn\")"
+      ]
+    },
+    {
+      "set": "heldout4",
+      "sample": "zip_field_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 2,
+      "suggestion": "locator(\"[id='customer.address.zipCode']\")",
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.address.zipCode",
+        "name": "customer.address.zipCode",
+        "value": "",
+        "text": null
+      },
+      "rejections": [
+        "CSS selector '#customer.address.postalCode' is fragile (class, structure, position or XPath); use role/label/text, or an id or name attribute."
+      ],
+      "first_try_valid": false,
+      "needed_repair": true,
+      "repairs": [
+        "locator(\"#customer.address.zipCode\")"
+      ]
+    },
+    {
+      "set": "heldout4",
+      "sample": "zip_field_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 2,
+      "healed": true,
+      "correct": true,
+      "attempts": 2,
+      "suggestion": "locator(\"[id='customer.address.zipCode']\")",
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.address.zipCode",
+        "name": "customer.address.zipCode",
+        "value": "",
+        "text": null
+      },
+      "rejections": [
+        "Same locator as the one that failed."
+      ],
+      "first_try_valid": false,
+      "needed_repair": true,
+      "repairs": [
+        "locator(\"#customer.address.zipCode\")"
+      ]
+    },
+    {
+      "set": "heldout4",
+      "sample": "zip_field_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 3,
+      "healed": true,
+      "correct": true,
+      "attempts": 2,
+      "suggestion": "locator(\"[id='customer.address.zipCode']\")",
+      "element": {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.address.zipCode",
+        "name": "customer.address.zipCode",
+        "value": "",
+        "text": null
+      },
+      "rejections": [
+        "CSS selector '#customer.address.postalCode' is fragile (class, structure, position or XPath); use role/label/text, or an id or name attribute."
+      ],
+      "first_try_valid": false,
+      "needed_repair": true,
+      "repairs": [
+        "locator(\"#customer.address.zipCode\")"
+      ]
+    },
+    {
+      "set": "heldout4",
+      "sample": "login_button_shortened",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "get_by_role(\"button\", name=\"Log In\", exact=True)",
+      "element": {
+        "tag": "input",
+        "type": "submit",
+        "id": null,
+        "name": null,
+        "value": "Log In",
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout4",
+      "sample": "login_button_shortened",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 2,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "get_by_role(\"button\", name=\"Log In\", exact=True)",
+      "element": {
+        "tag": "input",
+        "type": "submit",
+        "id": null,
+        "name": null,
+        "value": "Log In",
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout4",
+      "sample": "login_button_shortened",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 3,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "get_by_role(\"button\", name=\"Log In\", exact=True)",
+      "element": {
+        "tag": "input",
+        "type": "submit",
+        "id": null,
+        "name": null,
+        "value": "Log In",
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout4",
+      "sample": "from_account_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "locator(\"#fromAccountId\")",
+      "element": {
+        "tag": "select",
+        "type": "select-one",
+        "id": "fromAccountId",
+        "name": null,
+        "value": null,
+        "text": "408504"
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout4",
+      "sample": "from_account_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 2,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "locator(\"#fromAccountId\")",
+      "element": {
+        "tag": "select",
+        "type": "select-one",
+        "id": "fromAccountId",
+        "name": null,
+        "value": null,
+        "text": "408504"
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout4",
+      "sample": "from_account_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 3,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "locator(\"#fromAccountId\")",
+      "element": {
+        "tag": "select",
+        "type": "select-one",
+        "id": "fromAccountId",
+        "name": null,
+        "value": null,
+        "text": "408504"
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout4",
+      "sample": "transfer_button_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "get_by_role(\"button\", name=\"Transfer\", exact=True)",
+      "element": {
+        "tag": "input",
+        "type": "submit",
+        "id": null,
+        "name": null,
+        "value": "Transfer",
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout4",
+      "sample": "transfer_button_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 2,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "get_by_role(\"button\", name=\"Transfer\", exact=True)",
+      "element": {
+        "tag": "input",
+        "type": "submit",
+        "id": null,
+        "name": null,
+        "value": "Transfer",
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout4",
+      "sample": "transfer_button_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 3,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "get_by_role(\"button\", name=\"Transfer\", exact=True)",
+      "element": {
+        "tag": "input",
+        "type": "submit",
+        "id": null,
+        "name": null,
+        "value": "Transfer",
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout4",
+      "sample": "open_account_button_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 1,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "get_by_role(\"button\", name=\"Open New Account\", exact=True)",
+      "element": {
+        "tag": "input",
+        "type": "button",
+        "id": null,
+        "name": null,
+        "value": "Open New Account",
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout4",
+      "sample": "open_account_button_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 2,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "get_by_role(\"button\", name=\"Open New Account\", exact=True)",
+      "element": {
+        "tag": "input",
+        "type": "button",
+        "id": null,
+        "name": null,
+        "value": "Open New Account",
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    },
+    {
+      "set": "heldout4",
+      "sample": "open_account_button_renamed",
+      "kind": "locator_not_found",
+      "guard_attempts": true,
+      "run": 3,
+      "healed": true,
+      "correct": true,
+      "attempts": 1,
+      "suggestion": "get_by_role(\"button\", name=\"Open New Account\", exact=True)",
+      "element": {
+        "tag": "input",
+        "type": "button",
+        "id": null,
+        "name": null,
+        "value": "Open New Account",
+        "text": null
+      },
+      "rejections": [],
+      "first_try_valid": true,
+      "needed_repair": false,
+      "repairs": []
+    }
+  ]
+}

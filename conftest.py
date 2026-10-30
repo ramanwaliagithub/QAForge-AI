@@ -1,3 +1,7 @@
+"""Shared fixtures: browser and page (tracing, failure artifacts, failure collection), registered users,
+page objects, and the --heal plugin.
+"""
+
 import os
 import re
 import uuid
@@ -34,6 +38,7 @@ def base_url():
 
 @pytest.fixture(scope="session")
 def browser(request):
+    """One Chromium per test session (headless unless `--headed`)."""
     with sync_playwright() as p:
         browser = p.chromium.launch(
             headless=not request.config.getoption("--headed"),
@@ -65,6 +70,9 @@ def collect_failure(request, page):
 
 @pytest.fixture
 def page(browser, request):
+    """A fresh browser context and page per test, with tracing. On failure it saves a screenshot and trace (Allure and
+    reports/failures) and the healing failure context.
+    """
     context = browser.new_context()
     context.set_default_timeout(int(os.getenv("ACTION_TIMEOUT_MS", "15000")))  # fail bad locators in 15s, not 30s
     context.tracing.start(screenshots=True, snapshots=True, sources=False)

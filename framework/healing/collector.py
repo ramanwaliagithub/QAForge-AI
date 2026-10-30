@@ -31,6 +31,10 @@ _ELEMENTS_JS = """(max) => {
 
 @dataclass
 class PageState:
+    """The page as it was when the test failed: url, title, accessibility snapshot, interactive elements and a
+    size-capped copy of the HTML (plus any errors met while capturing).
+    """
+
     url: str = ""
     title: str = ""
     aria_snapshot: str = ""
@@ -42,6 +46,10 @@ class PageState:
 
 @dataclass
 class FailureContext:
+    """Everything the healing pipeline knows about one failed test: the classified error, the page state and the
+    screenshot file name. Saved as JSON next to the screenshot.
+    """
+
     schema: int
     test_id: str
     collected_at: str
@@ -112,6 +120,7 @@ def collect_failure_context(page, test_id: str, exc: BaseException, out_dir: Pat
 
 
 def load_failure_context(path: Path) -> FailureContext:
+    """Read a saved failure context; refuses a file written with a different schema version."""
     data = json.loads(Path(path).read_text())
     if data.get("schema") != SCHEMA_VERSION:
         raise ValueError(f"Unsupported failure context schema: {data.get('schema')!r}")

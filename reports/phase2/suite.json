@@ -1,0 +1,196 @@
+{
+  "label": "suite",
+  "pytest_args": [
+    "tests"
+  ],
+  "runs": 30,
+  "reruns": 0,
+  "collected": 477,
+  "collection_stable": true,
+  "runs_with_any_failure": 0,
+  "run_failure_rate": 0.0,
+  "seconds_per_run_median": 37.4,
+  "failing_tests": [],
+  "per_run": [
+    {
+      "run": 1,
+      "seconds": 37.9,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 2,
+      "seconds": 37.4,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 3,
+      "seconds": 37.5,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 4,
+      "seconds": 37.1,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 5,
+      "seconds": 37.1,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 6,
+      "seconds": 26.9,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 7,
+      "seconds": 37.9,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 8,
+      "seconds": 37.0,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 9,
+      "seconds": 37.1,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 10,
+      "seconds": 37.4,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 11,
+      "seconds": 38.6,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 12,
+      "seconds": 37.1,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 13,
+      "seconds": 37.2,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 14,
+      "seconds": 37.3,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 15,
+      "seconds": 37.4,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 16,
+      "seconds": 37.4,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 17,
+      "seconds": 37.4,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 18,
+      "seconds": 37.6,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 19,
+      "seconds": 37.2,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 20,
+      "seconds": 38.7,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 21,
+      "seconds": 37.4,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 22,
+      "seconds": 37.4,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 23,
+      "seconds": 37.1,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 24,
+      "seconds": 37.1,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 25,
+      "seconds": 37.3,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 26,
+      "seconds": 37.5,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 27,
+      "seconds": 37.2,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 28,
+      "seconds": 37.4,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 29,
+      "seconds": 37.4,
+      "tests": 477,
+      "failures": []
+    },
+    {
+      "run": 30,
+      "seconds": 37.5,
+      "tests": 477,
+      "failures": []
+    }
+  ]
+}

@@ -13,7 +13,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from framework.healing.patching import DEFAULT_ROOTS, PatchRefused, locate, plan_patch
-from framework.locator_audit import classify_css
 
 SCHEMA = 1
 STATUSES = ("proposed", "approved", "rejected", "applied")
@@ -30,6 +29,9 @@ def proposal_id(failed: str, suggestion: str) -> str:
 
 
 def risk_flags(p: dict) -> list[str]:
+    """Reasons to look twice at a proposal: no or several source definitions, a css locator, low model confidence,
+    a mechanical repair, or a retry that did not succeed everywhere.
+    """
     flags = []
     defs = p["definitions"]
     if not defs:
@@ -93,6 +95,7 @@ def empty_review() -> dict:
 
 
 def load_review(path: Path) -> dict:
+    """Load the review file (an empty review if there is none); refuses a file with an unknown schema version."""
     path = Path(path)
     if not path.exists():
         return empty_review()
@@ -154,6 +157,9 @@ def summary_counts(review: dict) -> dict:
 
 
 def render_markdown(review: dict, events: list[dict] | None = None, roots=DEFAULT_ROOTS, repo_root: Path | None = None) -> str:
+    """The review as a markdown report: counts, then per proposal the old and new locator, flags and the exact diff
+    that `apply` would make.
+    """
     c = summary_counts(review)
     out = ["# Healing review", "",
            f"Updated {review['updated_at']}. {len(review['proposals'])} proposals: " + ", ".join(f"{v} {k}" for k, v in c.items()) + ".", "",
@@ -195,6 +201,7 @@ def render_markdown(review: dict, events: list[dict] | None = None, roots=DEFAUL
 
 
 def render_html(review: dict, events: list[dict] | None = None, roots=DEFAULT_ROOTS, repo_root: Path | None = None) -> str:
+    """The same review as one self-contained HTML page."""
     e = html.escape
     c = summary_counts(review)
     rows = []

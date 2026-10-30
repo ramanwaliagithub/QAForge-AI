@@ -14,9 +14,10 @@ out_dir = Path("reports/testgen")
 out_dir.mkdir(parents=True, exist_ok=True)
 junit = out_dir / f"{label}.xml"
 
+# --reruns 0: a pass-rate experiment must not hide failures that a rerun would absorb.
 subprocess.run(
     [sys.executable, "-m", "pytest", "ai_testgen/generated", "-m", "ai", "-q", "-p", "no:cacheprovider",
-     f"--junitxml={junit}", "--tb=line", "-n", "3", "--reruns", "0"]  # no reruns: a pass-rate experiment must not hide failures,
+     f"--junitxml={junit}", "--tb=line", "-n", "3", "--reruns", "0"],
     check=False, capture_output=True, text=True,
 )
 

@@ -11,6 +11,8 @@ OUTPUTS_DIR = Path(__file__).parent / "outputs"
 
 @dataclass
 class Story:
+    """A user story with its acceptance criteria, as loaded from `ai_testgen/stories`."""
+
     name: str
     story: str
     criteria: str

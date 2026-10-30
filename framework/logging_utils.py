@@ -8,7 +8,10 @@ _RESERVED = set(logging.LogRecord("", 0, "", 0, "", (), None).__dict__) | {"mess
 
 
 class JsonFormatter(logging.Formatter):
+    """Format log records as one JSON object per line, including any `extra` fields."""
+
     def format(self, record: logging.LogRecord) -> str:
+        """`ts`, `level`, `logger` and `msg`, then the record's extra fields, then `exc` when an exception is attached."""
         entry = {
             "ts": datetime.fromtimestamp(record.created, timezone.utc).isoformat(timespec="milliseconds"),
             "level": record.levelname,

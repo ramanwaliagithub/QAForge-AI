@@ -20,6 +20,8 @@ OLD_RESULT_CHARS = 300    # older tool results are cut to this
 
 @dataclass
 class Step:
+    """One tool call of the exploration agent: the tool, its arguments, the result and any text from the model."""
+
     n: int
     tool: str | None = None
     args: dict | None = None
@@ -29,6 +31,10 @@ class Step:
 
 @dataclass
 class AgentRun:
+    """A finished agent run: the steps, the final answer, why it stopped (`done` or `max_steps`) and how often it
+    had to be nudged to call a tool.
+    """
+
     steps: list[Step] = field(default_factory=list)
     final: str = ""
     stopped: str = ""     # "done" | "max_steps"
@@ -143,6 +149,7 @@ async def run_agent(llm_chat, session, tools: list[dict], system: str, task: str
 
 
 def render_transcript(run: AgentRun, title: str, task: str) -> str:
+    """Render an agent run as a markdown transcript (results are cut to 700 characters)."""
     lines = [f"# {title}", "", f"**Task:** {task}", "",
              f"Steps: {len(run.steps)}, stopped: {run.stopped}, nudges: {run.nudges}", ""]
     for s in run.steps:

@@ -57,6 +57,7 @@ NO_CONTEXT = "(No page snapshot available. Infer locators carefully from the tes
 
 
 def render_codegen_prompt(case: TestCase, page_context: str = "", few_shot: bool = True) -> str:
+    """Fill the codegen prompt: few-shot examples, page-object summary, page context and the test case as JSON."""
     return (
         load_prompt("codegen")
         .replace("{examples}", load_examples() if few_shot else "(none)")
@@ -96,6 +97,9 @@ def generate_test_code(
     client: LLMClient, case: TestCase, temperature: float = 0.0, max_retries: int = 2, page_context: str = "",
     few_shot: bool = True,
 ) -> str:
+    """Ask the model for one pytest function for the case; reject it with `check_code` and retry with the error fed
+    back. Raises CodegenError after `max_retries + 1` attempts.
+    """
     base_prompt = render_codegen_prompt(case, page_context, few_shot)
     prompt, last_error = base_prompt, None
     for attempt in range(max_retries + 1):

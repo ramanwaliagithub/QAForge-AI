@@ -60,6 +60,9 @@ def selector_for(el: dict) -> str | None:
 
 
 def format_elements(elements: list[dict]) -> str:
+    """Format captured elements as prompt lines: tag, exact selector, label and options (account ids are masked,
+    because they differ per user).
+    """
     lines = []
     for el in elements:
         selector = selector_for(el)

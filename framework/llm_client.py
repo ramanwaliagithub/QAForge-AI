@@ -13,6 +13,8 @@ log = get_logger("qaforge.llm")
 
 @dataclass
 class LLMResponse:
+    """A model answer with its latency and, when the provider reports them, token counts."""
+
     text: str
     model: str
     latency_s: float
@@ -21,6 +23,8 @@ class LLMResponse:
 
 
 class LLMClient(Protocol):
+    """What the rest of the code needs from a model: `generate` and `embed`. Implemented by OllamaClient and ReplayClient."""
+
     def generate(
         self,
         prompt: str,
@@ -49,6 +53,7 @@ class OllamaClient:
         self._client = client
 
     def generate(self, prompt, *, system=None, temperature=0.0, json_mode=False, num_ctx=None) -> LLMResponse:
+        """One chat turn with the local Ollama model (`json_mode` asks for JSON). Raises if the server is down or times out."""
         messages = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": prompt}]
         options = {"temperature": temperature}
         if num_ctx:

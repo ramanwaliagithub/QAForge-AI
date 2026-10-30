@@ -18,6 +18,8 @@ MAX_ELEMENTS = 80
 
 @dataclass
 class Attempt:
+    """One model answer and what became of it: the parsed suggestion and its validation, or why it was rejected."""
+
     suggestion: LocatorSuggestion | None
     source: str | None            # rendered locator, e.g. get_by_role("button", name="Transfer")
     validation: Validation | None
@@ -28,6 +30,8 @@ class Attempt:
 
 @dataclass
 class HealResult:
+    """Outcome of `suggest_locator`: whether a valid suggestion was found, and every attempt made on the way."""
+
     healed: bool
     attempts: list[Attempt] = field(default_factory=list)
 
@@ -122,6 +126,9 @@ def format_frames(frames: list[dict], limit: int = 4) -> str:
 
 
 def build_prompt(ctx: FailureContext, action: str | None = None) -> str:
+    """Fill the prompt template: the failed locator, the intended action, source frames, page title and url, and the
+    candidate elements that action can work on.
+    """
     e = ctx.error
     action = action or intended_action(e)
     return (PROMPT_PATH.read_text()

@@ -1,0 +1,182 @@
+{
+  "summary": {
+    "failures": 14,
+    "by_kind": {
+      "assertion_strict_violation": 1,
+      "assertion_element_missing": 8,
+      "not_actionable": 3,
+      "locator_not_found": 1,
+      "other": 1
+    },
+    "by_hint": {
+      "maybe": 12,
+      "locator": 1,
+      "no": 1
+    },
+    "guard_would_attempt": 1,
+    "validated_suggestions": 0,
+    "reached_healer_at_run_time": 0
+  },
+  "rows": [
+    {
+      "test": "test_bill_payment_service_form_is_displayed",
+      "kind": "assertion_strict_violation",
+      "heal_hint": "maybe",
+      "raised_in": "test",
+      "action": "to_be_visible",
+      "locator": "get_by_text(\"Account #:\")",
+      "guard_attempts": false,
+      "suggestion": null,
+      "validated": false
+    },
+    {
+      "test": "test_missing_payee_fields_show_validation_messages",
+      "kind": "assertion_element_missing",
+      "heal_hint": "maybe",
+      "raised_in": "test",
+      "action": "to_be_visible",
+      "locator": "get_by_text(\"Payee Name: is required\")",
+      "guard_attempts": false,
+      "suggestion": null,
+      "validated": false
+    },
+    {
+      "test": "test_amount_is_not_a_number",
+      "kind": "assertion_element_missing",
+      "heal_hint": "maybe",
+      "raised_in": "test",
+      "action": "to_be_visible",
+      "locator": "get_by_text(\"Invalid amount\")",
+      "guard_attempts": false,
+      "suggestion": null,
+      "validated": false
+    },
+    {
+      "test": "test_successful_payment_shows_confirmation",
+      "kind": "assertion_element_missing",
+      "heal_hint": "maybe",
+      "raised_in": "test",
+      "action": "to_be_visible",
+      "locator": "get_by_text(\"Bill Payment Complete with payee name, amount, and from-account is displayed\")",
+      "guard_attempts": false,
+      "suggestion": null,
+      "validated": false
+    },
+    {
+      "test": "test_account_with_insufficient_funds_is_selected",
+      "kind": "assertion_element_missing",
+      "heal_hint": "maybe",
+      "raised_in": "test",
+      "action": "to_be_visible",
+      "locator": "get_by_text(\"Insufficient funds in account\")",
+      "guard_attempts": false,
+      "suggestion": null,
+      "validated": false
+    },
+    {
+      "test": "test_open_new_checking_account",
+      "kind": "assertion_element_missing",
+      "heal_hint": "maybe",
+      "raised_in": "test",
+      "action": "to_be_visible",
+      "locator": "get_by_text(\"with a new checking account number\")",
+      "guard_attempts": false,
+      "suggestion": null,
+      "validated": false
+    },
+    {
+      "test": "test_open_new_savings_account",
+      "kind": "assertion_element_missing",
+      "heal_hint": "maybe",
+      "raised_in": "test",
+      "action": "to_be_visible",
+      "locator": "get_by_text(\"with a new savings account number\")",
+      "guard_attempts": false,
+      "suggestion": null,
+      "validated": false
+    },
+    {
+      "test": "test_no_funding_account_selected",
+      "kind": "not_actionable",
+      "heal_hint": "maybe",
+      "raised_in": "test",
+      "action": "select_option",
+      "locator": "locator(\"#fromAccountId\")",
+      "guard_attempts": false,
+      "suggestion": null,
+      "validated": false
+    },
+    {
+      "test": "test_insufficient_funds_in_funding_account",
+      "kind": "not_actionable",
+      "heal_hint": "maybe",
+      "raised_in": "test",
+      "action": "fill",
+      "locator": "locator(\"#newAccountId\")",
+      "guard_attempts": false,
+      "suggestion": null,
+      "validated": false
+    },
+    {
+      "test": "test_zero_initial_deposit_amount",
+      "kind": "locator_not_found",
+      "heal_hint": "locator",
+      "raised_in": "test",
+      "action": "fill",
+      "locator": "locator(\"#initialBalance\")",
+      "guard_attempts": true,
+      "suggestion": null,
+      "validated": false,
+      "attempts": 3,
+      "rejections": [
+        "Matches no element on the page.",
+        "Matches no element on the page.",
+        "Matches no element on the page."
+      ]
+    },
+    {
+      "test": "test_transfer_money_between_own_accounts",
+      "kind": "not_actionable",
+      "heal_hint": "maybe",
+      "raised_in": "test",
+      "action": "select_option",
+      "locator": "locator(\"#toAccountId\")",
+      "guard_attempts": false,
+      "suggestion": null,
+      "validated": false
+    },
+    {
+      "test": "test_invalid_amount",
+      "kind": "assertion_element_missing",
+      "heal_hint": "maybe",
+      "raised_in": "test",
+      "action": "to_be_visible",
+      "locator": "get_by_text(\"Invalid amount\")",
+      "guard_attempts": false,
+      "suggestion": null,
+      "validated": false
+    },
+    {
+      "test": "test_selecting_account_not_owned_by_customer",
+      "kind": "assertion_element_missing",
+      "heal_hint": "maybe",
+      "raised_in": "test",
+      "action": "to_be_visible",
+      "locator": "get_by_text(\"You do not have an account with the specified ID\")",
+      "guard_attempts": false,
+      "suggestion": null,
+      "validated": false
+    },
+    {
+      "test": "test_transfer_same_amount_same_account",
+      "kind": "other",
+      "heal_hint": "no",
+      "raised_in": "test",
+      "action": null,
+      "locator": null,
+      "guard_attempts": false,
+      "suggestion": null,
+      "validated": false
+    }
+  ]
+}

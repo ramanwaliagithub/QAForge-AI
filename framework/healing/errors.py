@@ -21,6 +21,7 @@ KIND_HINT = {
     "locator_not_found": "locator",       # waited for the locator, nothing matched
     "strict_mode_violation": "locator",   # matched several elements; needs to be more specific
     "assertion_element_missing": "maybe",  # expect() on an element that does not exist: renamed, or removed on purpose?
+    "assertion_strict_violation": "maybe",  # expect() on a locator that matches several elements: stale, or a duplicate appeared?
     "not_actionable": "maybe",            # matched, but wrong element type or not enabled/visible
     "page_object_precondition": "maybe",  # an expect() raised INSIDE a page object: its own locators are probably stale
     "assertion": "no",                    # element found, value differs: a possible product bug
@@ -31,6 +32,10 @@ KIND_HINT = {
 
 @dataclass
 class ErrorInfo:
+    """A failure classified for the healing pipeline: its kind, whether a locator change is a plausible fix
+    (`heal_hint`), and the locator, action and project source frames involved.
+    """
+
     type: str                  # e.g. "playwright._impl._errors.TimeoutError"
     message: str               # cleaned, without the aria snapshot Playwright appends to expect() failures
     kind: str                  # a KIND_HINT key
@@ -59,7 +64,8 @@ def classify_message(exc_type: str, message: str) -> tuple[str, str | None, str 
     action = expect.group(1) if expect else (act.group("action") if act else None)
 
     if "strict mode violation" in message:
-        kind = "strict_mode_violation"
+        # Raised by an expect() matcher it is an assertion problem, not an action that can be retried with a better locator.
+        kind = "assertion_strict_violation" if expect else "strict_mode_violation"
     elif expect or (exc_type.endswith("AssertionError") and message.startswith("Locator expected")):
         kind = "assertion_element_missing" if "element(s) not found" in message else "assertion"
     elif exc_type.endswith("AssertionError"):
@@ -115,12 +121,15 @@ def raised_in(frames: list[dict]) -> str:
 
 
 def analyze_exception(exc: BaseException, root: Path | None = None) -> ErrorInfo:
+    """Classify an exception from a test (kind, locator, action, timeout) and note where in the project it was raised.
+    An assertion raised inside a page object becomes `page_object_precondition`, not a product assertion.
+    """
     exc_type = f"{type(exc).__module__}.{type(exc).__qualname__}"
     message = clean_message(str(exc))
     kind, locator, action, timeout_ms = classify_message(exc_type, message)
     frames = project_frames(exc.__traceback__, root)
     where = raised_in(frames)
-    if kind in ("assertion", "assertion_element_missing") and where == "page_object":
+    if kind in ("assertion", "assertion_element_missing", "assertion_strict_violation") and where == "page_object":
         # Page objects only assert preconditions on their own locators (e.g. "the dropdown has N options"), so this is
         # not a product assertion: a stale locator inside the page object is the likely cause.
         kind = "page_object_precondition"

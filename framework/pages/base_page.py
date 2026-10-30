@@ -1,3 +1,7 @@
+"""Base page object: navigation and the action helpers (click, fill, select_option) through which every
+page object acts, which is also where self-healing hooks in.
+"""
+
 from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import Locator, Page
 

@@ -1,3 +1,5 @@
+"""Page object for ParaBank's accounts overview and open-new-account screens."""
+
 import re
 
 from playwright.sync_api import expect
@@ -6,6 +8,8 @@ from framework.pages.base_page import BasePage
 
 
 class AccountsPage(BasePage):
+    """Accounts overview and the open-new-account flow."""
+
     path = "/overview.htm"
 
     @property

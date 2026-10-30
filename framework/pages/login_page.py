@@ -1,7 +1,11 @@
+"""Page object for ParaBank's login form and logout link."""
+
 from framework.pages.base_page import BasePage
 
 
 class LoginPage(BasePage):
+    """The login form and the logout link."""
+
     path = "/index.htm"
 
     @property

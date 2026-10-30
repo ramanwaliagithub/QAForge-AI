@@ -31,6 +31,8 @@ log = get_logger("qaforge.healing")
 
 @dataclass
 class HealConfig:
+    """Limits for one run: model attempts per heal, heals per test, whether to try ambiguous failures, temperature."""
+
     max_attempts: int = 3           # LLM attempts per heal (each rejection is fed back)
     max_heals_per_test: int = 3     # stops a badly broken page from costing a model call per action
     allow_maybe: bool = False       # also try failures whose cause is ambiguous (not_actionable, preconditions)
@@ -39,6 +41,8 @@ class HealConfig:
 
 @dataclass
 class HealEvent:
+    """Everything recorded about one heal attempt. It goes into the JSON report and the review; `outcome` says what happened."""
+
     test_id: str
     time: str
     action: str
@@ -66,12 +70,19 @@ class HealEvent:
 
 @dataclass
 class Proposal:
+    """A healed locator waiting for the retry result: the live Playwright locator, its suggestion and its event."""
+
     locator: object                 # a Playwright Locator for the healed element
     suggestion: LocatorSuggestion
     event: HealEvent
 
 
 class Healer:
+    """Run-time healer behind `--heal`. On a locator failure it asks the model (once per page, locator and action),
+    validates the answer on the live page and returns a replacement for ONE retry. It never edits source; every
+    outcome is recorded in `events`.
+    """
+
     def __init__(self, client_factory, config: HealConfig | None = None):
         self._client_factory, self._client = client_factory, None
         self.config = config or HealConfig()
