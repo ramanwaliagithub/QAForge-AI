@@ -1,0 +1,281 @@
+{
+  "schema": 1,
+  "test_id": "framework/healing/sample_tests/test_heldout4_locators.py::test_heldout4_zip_field_renamed",
+  "collected_at": "2026-10-30T05:23:53+00:00",
+  "error": {
+    "type": "playwright._impl._errors.TimeoutError",
+    "message": "Locator.wait_for: Timeout 3000ms exceeded.\nCall log:\n  - waiting for locator(\"input[name='customer.address.postalCode']\") to be visible",
+    "kind": "locator_not_found",
+    "heal_hint": "locator",
+    "locator": "locator(\"input[name='customer.address.postalCode']\")",
+    "action": "wait_for",
+    "timeout_ms": 3000,
+    "frames": [
+      {
+        "file": "framework/healing/sample_tests/test_heldout4_locators.py",
+        "line": 72,
+        "function": "test_heldout4_zip_field_renamed",
+        "code": "ZipFieldRenamed(page, base_url).open().register(**USER)"
+      },
+      {
+        "file": "framework/pages/register_page.py",
+        "line": 23,
+        "function": "register",
+        "code": "self.fill(self.page.locator(f\"input[name='{field}']\"), values[key])"
+      },
+      {
+        "file": "framework/pages/base_page.py",
+        "line": 50,
+        "function": "fill",
+        "code": "self._act(\"fill\", locator, lambda loc: loc.fill(value))"
+      },
+      {
+        "file": "framework/pages/base_page.py",
+        "line": 30,
+        "function": "_act",
+        "code": "locator.wait_for(state=\"visible\")"
+      }
+    ],
+    "raised_in": "page_object"
+  },
+  "page": {
+    "url": "http://localhost:8080/parabank/register.htm",
+    "title": "ParaBank | Register for Free Online Account Access",
+    "aria_snapshot": "- link:\n  - /url: admin.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\n  - img\n- link \"ParaBank\":\n  - /url: index.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\n  - img \"ParaBank\"\n- paragraph: Experience the difference\n- list:\n  - listitem: Solutions\n  - listitem:\n    - link \"About Us\":\n      - /url: about.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\n  - listitem:\n    - link \"Services\":\n      - /url: services.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\n  - listitem:\n    - link \"Products\":\n      - /url: http://www.parasoft.com/jsp/products.jsp\n  - listitem:\n    - link \"Locations\":\n      - /url: http://www.parasoft.com/jsp/pr/contacts.jsp\n  - listitem:\n    - link \"Admin Page\":\n      - /url: admin.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\n- list:\n  - listitem:\n    - link \"home\":\n      - /url: index.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\n  - listitem:\n    - link \"about\":\n      - /url: about.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\n  - listitem:\n    - link \"contact\":\n      - /url: contact.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\n- heading \"Customer Login\" [level=2]\n- paragraph: Username\n- textbox\n- paragraph: Password\n- textbox\n- button \"Log In\"\n- paragraph:\n  - link \"Forgot login info?\":\n    - /url: lookup.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\n- paragraph:\n  - link \"Register\":\n    - /url: register.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\n- heading \"Signing up is easy!\" [level=1]\n- paragraph: If you have an account with us you can sign-up for free instant online access. You will have to provide some personal information.\n- table:\n  - rowgroup:\n    - 'row \"First Name: Qa\"':\n      - cell \"First Name:\"\n      - cell \"Qa\":\n        - textbox: Qa\n      - cell\n    - 'row \"Last Name: Forge\"':\n      - cell \"Last Name:\"\n      - cell \"Forge\":\n        - textbox: Forge\n      - cell\n    - 'row \"Address: 1 St\"':\n      - cell \"Address:\"\n      - cell \"1 St\":\n        - textbox: 1 St\n      - cell\n    - 'row \"City: C\"':\n      - cell \"City:\"\n      - cell \"C\":\n        - textbox: C\n      - cell\n    - 'row \"State: CA\"':\n      - cell \"State:\"\n      - cell \"CA\":\n        - textbox: CA\n      - cell\n    - row \"Zip Code:\":\n      - cell \"Zip Code:\"\n      - cell:\n        - textbox\n      - cell\n    - 'row \"Phone #:\"':\n      - 'cell \"Phone #:\"'\n      - cell:\n        - textbox\n      - cell\n    - row \"SSN:\":\n      - cell \"SSN:\"\n      - cell:\n        - textbox\n      - cell\n    - row:\n      - cell\n    - row \"Username:\":\n      - cell \"Username:\"\n      - cell:\n        - textbox\n      - cell\n    - row \"Password:\":\n      - cell \"Password:\"\n      - cell:\n        - textbox\n      - cell\n    - row \"Confirm:\":\n      - cell \"Confirm:\"\n      - cell:\n        - textbox\n      - cell\n    - row \"Register\":\n      - cell\n      - cell \"Register\":\n        - button \"Register\"\n- list:\n  - listitem:\n    - link \"Home\":\n      - /url: index.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\n    - text: \"|\"\n  - listitem:\n    - link \"About Us\":\n      - /url: about.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\n    - text: \"|\"\n  - listitem:\n    - link \"Services\":\n      - /url: services.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\n    - text: \"|\"\n  - listitem:\n    - link \"Products\":\n      - /url: http://www.parasoft.com/jsp/products.jsp\n    - text: \"|\"\n  - listitem:\n    - link \"Locations\":\n      - /url: http://www.parasoft.com/jsp/pr/contacts.jsp\n    - text: \"|\"\n  - listitem:\n    - link \"Site Map\":\n      - /url: sitemap.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\n    - text: \"|\"\n  - listitem:\n    - link \"Contact Us\":\n      - /url: contact.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\n- paragraph: \u00a9 Parasoft. All rights reserved.\n- list:\n  - listitem: \"Visit us at:\"\n  - listitem:\n    - link \"www.parasoft.com\":\n      - /url: http://www.parasoft.com/",
+    "elements": [
+      {
+        "tag": "a",
+        "href": "admin.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "href": "index.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "About Us",
+        "href": "about.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Services",
+        "href": "services.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Products",
+        "href": "http://www.parasoft.com/jsp/products.jsp",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Locations",
+        "href": "http://www.parasoft.com/jsp/pr/contacts.jsp",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Admin Page",
+        "href": "admin.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "home",
+        "href": "index.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "about",
+        "href": "about.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "contact",
+        "href": "contact.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1",
+        "visible": true
+      },
+      {
+        "tag": "h2",
+        "text": "Customer Login",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "name": "username",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "password",
+        "name": "password",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "submit",
+        "value": "Log In",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Forgot login info?",
+        "href": "lookup.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Register",
+        "href": "register.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1",
+        "visible": true
+      },
+      {
+        "tag": "h1",
+        "text": "Signing up is easy!",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.firstName",
+        "name": "customer.firstName",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.lastName",
+        "name": "customer.lastName",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.address.street",
+        "name": "customer.address.street",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.address.city",
+        "name": "customer.address.city",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.address.state",
+        "name": "customer.address.state",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.address.zipCode",
+        "name": "customer.address.zipCode",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.phoneNumber",
+        "name": "customer.phoneNumber",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.ssn",
+        "name": "customer.ssn",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "id": "customer.username",
+        "name": "customer.username",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "password",
+        "id": "customer.password",
+        "name": "customer.password",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "password",
+        "id": "repeatedPassword",
+        "name": "repeatedPassword",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "submit",
+        "value": "Register",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Home",
+        "href": "index.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "About Us",
+        "href": "about.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Services",
+        "href": "services.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Products",
+        "href": "http://www.parasoft.com/jsp/products.jsp",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Locations",
+        "href": "http://www.parasoft.com/jsp/pr/contacts.jsp",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Site Map",
+        "href": "sitemap.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Contact Us",
+        "href": "contact.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "www.parasoft.com",
+        "href": "http://www.parasoft.com/",
+        "visible": true
+      }
+    ],
+    "html": "<!DOCTYPE html><html><head>\n\t\t<meta charset=\"UTF-8\">\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n\t\t<title>ParaBank | Register for Free Online Account Access</title>\n\t\t<link href=\"template.css;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\" rel=\"stylesheet\" type=\"text/css\">\n\t\t<link href=\"style.css;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\" rel=\"stylesheet\" type=\"text/css\">\n\t\t<script src=\"webjars/jquery/4.0.0/jquery.min.js;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\"></script>\n\t</head>\n\n\t<body onload=\"document.login.username.focus();\">\n\t\t<div id=\"mainPanel\">\n\t\t\t\n\t\t\t\t\n\t\t\t\t\t\n\n\n\n<div id=\"topPanel\">\n  <a href=\"admin.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\"><img src=\"images/clear.gif;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\" width=\"56\" height=\"42\" border=\"0\" class=\"admin\"></a>\n  <a href=\"index.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\"><img src=\"images/logo.gif;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\" alt=\"ParaBank\" width=\"136\" height=\"31\" border=\"0\" class=\"logo\" title=\"ParaBank\"></a>\n  <p class=\"caption\">Experience the difference</p>\n</div>\n<div id=\"headerPanel\" style=\"background: url(images/header-main.jpg;jsessionid=30EBA0099C6747F02F62FE2CD46654C1) 0 0 no-repeat;\">\n  \n\n\n<ul class=\"leftmenu\">\n  <li class=\"Solutions\">Solutions</li>\n  <li><a href=\"about.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\">About Us</a></li>\n  <li><a href=\"services.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\">Services</a></li>\n  <li><a href=\"http://www.parasoft.com/jsp/products.jsp\">Products</a></li>\n  <li><a href=\"http://www.parasoft.com/jsp/pr/contacts.jsp\">Locations</a></li>\n  <li><a href=\"admin.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\">Admin Page</a></li>\n  \n</ul>\n  \n\n\n<ul class=\"button\">\n  <li class=\"home\"><a href=\"index.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\">home</a></li>\n  <li class=\"aboutus\"><a href=\"about.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\">about</a></li>\n  <li class=\"contact\"><a href=\"contact.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\">contact</a></li>\n</ul>\n</div>\n\t\t\t\t\n\t\t\t\t\n\t\t\t\n\t\t\t<div id=\"bodyPanel\">\n\t\t\t\t<div id=\"leftPanel\">\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\n\n<h2>Customer Login</h2>\n<div id=\"loginPanel\">\n  <form name=\"login\" action=\"login.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\" method=\"POST\">\n    \n    <p><b>Username</b></p>\n    <div class=\"login\"><input type=\"text\" class=\"input\" name=\"username\"></div>\n    <p><b>Password</b></p>\n    <div class=\"login\"><input type=\"password\" class=\"input\" name=\"password\"></div>\n    <div class=\"login\"><input type=\"submit\" class=\"button\" value=\"Log In\"></div>\n  </form>\n  <p><a href=\"lookup.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\">Forgot login info?</a></p>\n  <p><a href=\"register.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\">Register</a></p>\n</div>\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t\t<div id=\"rightPanel\">\n\t\t\t\t\t\n\n\n\n<h1 class=\"title\">Signing up is easy!</h1>\n\n<p>If you have an account with us you can sign-up for free instant online access. You will have to provide some personal information.</p>\n\n<form id=\"customerForm\" action=\"register.htm\" method=\"post\">\n  <table class=\"form2\">\n    <tbody><tr>\n      <td align=\"right\" width=\"30%\"><b>First Name:</b></td>\n      <td width=\"20%\">\n        <input id=\"customer.firstName\" name=\"customer.firstName\" class=\"input\" type=\"text\" value=\"\">\n      </td>\n      <td width=\"50%\">\n        \n      </td>\n    </tr>\n    <tr>\n      <td align=\"right\" width=\"30%\"><b>Last Name:</b></td>\n      <td width=\"20%\">\n        <input id=\"customer.lastName\" name=\"customer.lastName\" class=\"input\" type=\"text\" value=\"\">\n      </td>\n      <td width=\"50%\">\n        \n      </td>\n    </tr>\n    <tr>\n      <td align=\"right\" width=\"30%\"><b>Address:</b></td>\n      <td width=\"20%\">\n        <input id=\"customer.address.street\" name=\"customer.address.street\" class=\"input\" type=\"text\" value=\"\">\n      </td>\n      <td width=\"50%\">\n        \n      </td>\n    </tr>\n    <tr>\n      <td align=\"right\" width=\"30%\"><b>City:</b></td>\n      <td width=\"20%\">\n        <input id=\"customer.address.city\" name=\"customer.address.city\" class=\"input\" type=\"text\" value=\"\">\n      </td>\n      <td width=\"50%\">\n        \n      </td>\n    </tr>\n    <tr>\n      <td align=\"right\" width=\"30%\"><b>State:</b></td>\n      <td width=\"20%\">\n        <input id=\"customer.address.state\" name=\"customer.address.state\" class=\"input\" type=\"text\" value=\"\">\n      </td>\n      <td width=\"50%\">\n        \n      </td>\n    </tr>\n    <tr>\n      <td align=\"right\" width=\"30%\"><b>Zip Code:</b></td>\n      <td width=\"20%\">\n        <input id=\"customer.address.zipCode\" name=\"customer.address.zipCode\" class=\"input\" type=\"text\" value=\"\">\n      </td>\n      <td width=\"50%\">\n        \n      </td>\n    </tr>\n    <tr>\n      <td align=\"right\" width=\"30%\"><b>Phone #:</b></td>\n      <td width=\"20%\">\n        <input id=\"customer.phoneNumber\" name=\"customer.phoneNumber\" class=\"input\" type=\"text\" value=\"\">\n      </td>\n      <td width=\"50%\">\n        \n      </td>\n    </tr>\n    <tr>\n      <td align=\"right\" width=\"30%\"><b>SSN:</b></td>\n      <td width=\"20%\">\n        <input id=\"customer.ssn\" name=\"customer.ssn\" class=\"input\" type=\"text\" value=\"\">\n      </td>\n      <td width=\"50%\">\n        \n      </td>\n    </tr>\n    <tr><td>&nbsp;</td></tr>\n    <tr>\n      <td align=\"right\" width=\"30%\"><b>Username:</b></td>\n      <td width=\"20%\">\n        <input id=\"customer.username\" name=\"customer.username\" class=\"input\" type=\"text\" value=\"\">\n      </td>\n      <td width=\"50%\">\n        \n      </td>\n    </tr>\n    <tr>\n      <td align=\"right\" width=\"30%\"><b>Password:</b></td>\n      <td width=\"20%\">\n        <input id=\"customer.password\" name=\"customer.password\" class=\"input\" type=\"password\" value=\"\">\n      </td>\n      <td width=\"50%\">\n        \n      </td>\n    </tr>\n    <tr>\n      <td align=\"right\" width=\"30%\"><b>Confirm:</b></td>\n      <td width=\"20%\">\n        <input id=\"repeatedPassword\" name=\"repeatedPassword\" class=\"input\" type=\"password\" value=\"\">\n      </td>\n      <td width=\"50%\">\n        \n      </td>\n    </tr>    \n    <tr>\n      <td>&nbsp;</td>\n      <td colspan=\"2\"><input type=\"submit\" class=\"button\" value=\"Register\"></td>\n    </tr>\n  </tbody></table>\n  <br>\n</form>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t\n\n\n<div id=\"footermainPanel\">\n  <div id=\"footerPanel\">\n    <ul>\n      <li><a href=\"index.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\">Home</a>| </li>\n      <li><a href=\"about.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\">About Us</a>| </li>\n      <li><a href=\"services.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\">Services</a>| </li>\n      <li><a href=\"http://www.parasoft.com/jsp/products.jsp\">Products</a>| </li>\n      <li><a href=\"http://www.parasoft.com/jsp/pr/contacts.jsp\">Locations</a>| </li>\n      <li><a href=\"sitemap.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\">Site Map</a>| </li>\n      <li><a href=\"contact.htm;jsessionid=30EBA0099C6747F02F62FE2CD46654C1\">Contact Us</a></li>\n    </ul>\n    <p class=\"copyright\">\u00a9 Parasoft. All rights reserved.</p>\n    <ul class=\"visit\">\n      <li>Visit us at:</li>\n      <li><a href=\"http://www.parasoft.com/\" target=\"_blank\">www.parasoft.com</a></li>\n    </ul>\n  </div>\n</div>\n\t\n\n</body></html>",
+    "html_truncated": false,
+    "capture_errors": []
+  },
+  "screenshot": "framework_healing_sample_tests_test_heldout4_locators.py_test_heldout4_zip_field_renamed.png"
+}
