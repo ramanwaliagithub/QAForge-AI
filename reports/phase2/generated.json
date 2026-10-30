@@ -1,0 +1,433 @@
+{
+  "label": "generated",
+  "pytest_args": [
+    "ai_testgen/generated",
+    "-m",
+    "ai"
+  ],
+  "runs": 5,
+  "reruns": 0,
+  "collected": 15,
+  "collection_stable": true,
+  "runs_with_any_failure": 5,
+  "run_failure_rate": 1.0,
+  "seconds_per_run_median": 48.3,
+  "failing_tests": [
+    {
+      "test": "ai_testgen.generated.test_bill_pay_01_bill_payment_service_form_is_displayed::test_bill_payment_service_form_is_displayed",
+      "failed_in_runs": 5,
+      "reasons": {
+        "AssertionError: Locator expected to be visible": 5
+      }
+    },
+    {
+      "test": "ai_testgen.generated.test_bill_pay_04_amount_is_not_a_number::test_amount_is_not_a_number",
+      "failed_in_runs": 5,
+      "reasons": {
+        "AssertionError: Locator expected to be visible": 5
+      }
+    },
+    {
+      "test": "ai_testgen.generated.test_bill_pay_02_missing_payee_fields_show_validation_mes::test_missing_payee_fields_show_validation_messages",
+      "failed_in_runs": 5,
+      "reasons": {
+        "AssertionError: Locator expected to be visible": 5
+      }
+    },
+    {
+      "test": "ai_testgen.generated.test_bill_pay_05_successful_payment_shows_confirmation_me::test_successful_payment_shows_confirmation",
+      "failed_in_runs": 5,
+      "reasons": {
+        "AssertionError: Locator expected to be visible": 5
+      }
+    },
+    {
+      "test": "ai_testgen.generated.test_open_account_01_open_new_checking_account::test_open_new_checking_account",
+      "failed_in_runs": 5,
+      "reasons": {
+        "AssertionError: Locator expected to be visible": 5
+      }
+    },
+    {
+      "test": "ai_testgen.generated.test_open_account_02_open_new_savings_account::test_open_new_savings_account",
+      "failed_in_runs": 5,
+      "reasons": {
+        "AssertionError: Locator expected to be visible": 5
+      }
+    },
+    {
+      "test": "ai_testgen.generated.test_open_account_04_insufficient_funds_in_funding_account::test_insufficient_funds_in_funding_account",
+      "failed_in_runs": 5,
+      "reasons": {
+        "playwright._impl._errors.Error: Locator.fill: Error: Element is not an <input>, <textarea>, <select> or [contenteditable] and does not have a role allowing [aria-readonly]": 5
+      }
+    },
+    {
+      "test": "ai_testgen.generated.test_bill_pay_06_account_with_insufficient_funds_is_selec::test_account_with_insufficient_funds_is_selected",
+      "failed_in_runs": 5,
+      "reasons": {
+        "AssertionError: Locator expected to be visible": 5
+      }
+    },
+    {
+      "test": "ai_testgen.generated.test_transfer_funds_02_invalid_amount::test_invalid_amount",
+      "failed_in_runs": 5,
+      "reasons": {
+        "AssertionError: Locator expected to be visible": 5
+      }
+    },
+    {
+      "test": "ai_testgen.generated.test_open_account_03_no_funding_account_selected::test_no_funding_account_selected",
+      "failed_in_runs": 5,
+      "reasons": {
+        "playwright._impl._errors.TimeoutError: Locator.select_option: Timeout 15000ms exceeded.": 5
+      }
+    },
+    {
+      "test": "ai_testgen.generated.test_transfer_funds_01_transfer_money_between_own_accounts::test_transfer_money_between_own_accounts",
+      "failed_in_runs": 5,
+      "reasons": {
+        "ValueError: Unsupported type: <class 'str'>": 4,
+        "playwright._impl._errors.TimeoutError: Locator.select_option: Timeout 15000ms exceeded.": 1
+      }
+    },
+    {
+      "test": "ai_testgen.generated.test_transfer_funds_03_selecting_an_account_not_owned_by_the_cu::test_selecting_account_not_owned_by_customer",
+      "failed_in_runs": 5,
+      "reasons": {
+        "AssertionError: Locator expected to be visible": 5
+      }
+    },
+    {
+      "test": "ai_testgen.generated.test_open_account_05_zero_initial_deposit_amount::test_zero_initial_deposit_amount",
+      "failed_in_runs": 5,
+      "reasons": {
+        "playwright._impl._errors.TimeoutError: Locator.fill: Timeout 15000ms exceeded.": 5
+      }
+    },
+    {
+      "test": "ai_testgen.generated.test_transfer_funds_04_edge_case_transferring_the_same_amount_t::test_transfer_same_amount_same_account",
+      "failed_in_runs": 5,
+      "reasons": {
+        "KeyError: 'account_ids'": 5
+      }
+    }
+  ],
+  "per_run": [
+    {
+      "run": 1,
+      "seconds": 48.3,
+      "tests": 15,
+      "failures": [
+        {
+          "test": "ai_testgen.generated.test_bill_pay_01_bill_payment_service_form_is_displayed::test_bill_payment_service_form_is_displayed",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_04_amount_is_not_a_number::test_amount_is_not_a_number",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_02_missing_payee_fields_show_validation_mes::test_missing_payee_fields_show_validation_messages",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_05_successful_payment_shows_confirmation_me::test_successful_payment_shows_confirmation",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_01_open_new_checking_account::test_open_new_checking_account",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_02_open_new_savings_account::test_open_new_savings_account",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_04_insufficient_funds_in_funding_account::test_insufficient_funds_in_funding_account",
+          "reason": "playwright._impl._errors.Error: Locator.fill: Error: Element is not an <input>, <textarea>, <select> or [contenteditable] and does not have a role allowing [aria-readonly]"
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_06_account_with_insufficient_funds_is_selec::test_account_with_insufficient_funds_is_selected",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_02_invalid_amount::test_invalid_amount",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_03_no_funding_account_selected::test_no_funding_account_selected",
+          "reason": "playwright._impl._errors.TimeoutError: Locator.select_option: Timeout 15000ms exceeded."
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_01_transfer_money_between_own_accounts::test_transfer_money_between_own_accounts",
+          "reason": "ValueError: Unsupported type: <class 'str'>"
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_03_selecting_an_account_not_owned_by_the_cu::test_selecting_account_not_owned_by_customer",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_05_zero_initial_deposit_amount::test_zero_initial_deposit_amount",
+          "reason": "playwright._impl._errors.TimeoutError: Locator.fill: Timeout 15000ms exceeded."
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_04_edge_case_transferring_the_same_amount_t::test_transfer_same_amount_same_account",
+          "reason": "KeyError: 'account_ids'"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "seconds": 48.0,
+      "tests": 15,
+      "failures": [
+        {
+          "test": "ai_testgen.generated.test_bill_pay_01_bill_payment_service_form_is_displayed::test_bill_payment_service_form_is_displayed",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_04_amount_is_not_a_number::test_amount_is_not_a_number",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_02_missing_payee_fields_show_validation_mes::test_missing_payee_fields_show_validation_messages",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_05_successful_payment_shows_confirmation_me::test_successful_payment_shows_confirmation",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_01_open_new_checking_account::test_open_new_checking_account",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_02_open_new_savings_account::test_open_new_savings_account",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_04_insufficient_funds_in_funding_account::test_insufficient_funds_in_funding_account",
+          "reason": "playwright._impl._errors.Error: Locator.fill: Error: Element is not an <input>, <textarea>, <select> or [contenteditable] and does not have a role allowing [aria-readonly]"
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_06_account_with_insufficient_funds_is_selec::test_account_with_insufficient_funds_is_selected",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_02_invalid_amount::test_invalid_amount",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_03_no_funding_account_selected::test_no_funding_account_selected",
+          "reason": "playwright._impl._errors.TimeoutError: Locator.select_option: Timeout 15000ms exceeded."
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_01_transfer_money_between_own_accounts::test_transfer_money_between_own_accounts",
+          "reason": "ValueError: Unsupported type: <class 'str'>"
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_03_selecting_an_account_not_owned_by_the_cu::test_selecting_account_not_owned_by_customer",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_05_zero_initial_deposit_amount::test_zero_initial_deposit_amount",
+          "reason": "playwright._impl._errors.TimeoutError: Locator.fill: Timeout 15000ms exceeded."
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_04_edge_case_transferring_the_same_amount_t::test_transfer_same_amount_same_account",
+          "reason": "KeyError: 'account_ids'"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "seconds": 48.1,
+      "tests": 15,
+      "failures": [
+        {
+          "test": "ai_testgen.generated.test_bill_pay_01_bill_payment_service_form_is_displayed::test_bill_payment_service_form_is_displayed",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_04_amount_is_not_a_number::test_amount_is_not_a_number",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_02_missing_payee_fields_show_validation_mes::test_missing_payee_fields_show_validation_messages",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_05_successful_payment_shows_confirmation_me::test_successful_payment_shows_confirmation",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_01_open_new_checking_account::test_open_new_checking_account",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_02_open_new_savings_account::test_open_new_savings_account",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_04_insufficient_funds_in_funding_account::test_insufficient_funds_in_funding_account",
+          "reason": "playwright._impl._errors.Error: Locator.fill: Error: Element is not an <input>, <textarea>, <select> or [contenteditable] and does not have a role allowing [aria-readonly]"
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_06_account_with_insufficient_funds_is_selec::test_account_with_insufficient_funds_is_selected",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_02_invalid_amount::test_invalid_amount",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_03_no_funding_account_selected::test_no_funding_account_selected",
+          "reason": "playwright._impl._errors.TimeoutError: Locator.select_option: Timeout 15000ms exceeded."
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_01_transfer_money_between_own_accounts::test_transfer_money_between_own_accounts",
+          "reason": "ValueError: Unsupported type: <class 'str'>"
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_03_selecting_an_account_not_owned_by_the_cu::test_selecting_account_not_owned_by_customer",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_05_zero_initial_deposit_amount::test_zero_initial_deposit_amount",
+          "reason": "playwright._impl._errors.TimeoutError: Locator.fill: Timeout 15000ms exceeded."
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_04_edge_case_transferring_the_same_amount_t::test_transfer_same_amount_same_account",
+          "reason": "KeyError: 'account_ids'"
+        }
+      ]
+    },
+    {
+      "run": 4,
+      "seconds": 58.1,
+      "tests": 15,
+      "failures": [
+        {
+          "test": "ai_testgen.generated.test_bill_pay_05_successful_payment_shows_confirmation_me::test_successful_payment_shows_confirmation",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_01_bill_payment_service_form_is_displayed::test_bill_payment_service_form_is_displayed",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_06_account_with_insufficient_funds_is_selec::test_account_with_insufficient_funds_is_selected",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_04_amount_is_not_a_number::test_amount_is_not_a_number",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_02_missing_payee_fields_show_validation_mes::test_missing_payee_fields_show_validation_messages",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_01_open_new_checking_account::test_open_new_checking_account",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_02_open_new_savings_account::test_open_new_savings_account",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_04_insufficient_funds_in_funding_account::test_insufficient_funds_in_funding_account",
+          "reason": "playwright._impl._errors.Error: Locator.fill: Error: Element is not an <input>, <textarea>, <select> or [contenteditable] and does not have a role allowing [aria-readonly]"
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_02_invalid_amount::test_invalid_amount",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_04_edge_case_transferring_the_same_amount_t::test_transfer_same_amount_same_account",
+          "reason": "KeyError: 'account_ids'"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_03_no_funding_account_selected::test_no_funding_account_selected",
+          "reason": "playwright._impl._errors.TimeoutError: Locator.select_option: Timeout 15000ms exceeded."
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_05_zero_initial_deposit_amount::test_zero_initial_deposit_amount",
+          "reason": "playwright._impl._errors.TimeoutError: Locator.fill: Timeout 15000ms exceeded."
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_01_transfer_money_between_own_accounts::test_transfer_money_between_own_accounts",
+          "reason": "ValueError: Unsupported type: <class 'str'>"
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_03_selecting_an_account_not_owned_by_the_cu::test_selecting_account_not_owned_by_customer",
+          "reason": "AssertionError: Locator expected to be visible"
+        }
+      ]
+    },
+    {
+      "run": 5,
+      "seconds": 57.9,
+      "tests": 15,
+      "failures": [
+        {
+          "test": "ai_testgen.generated.test_bill_pay_01_bill_payment_service_form_is_displayed::test_bill_payment_service_form_is_displayed",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_02_missing_payee_fields_show_validation_mes::test_missing_payee_fields_show_validation_messages",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_04_amount_is_not_a_number::test_amount_is_not_a_number",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_01_open_new_checking_account::test_open_new_checking_account",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_05_successful_payment_shows_confirmation_me::test_successful_payment_shows_confirmation",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_02_open_new_savings_account::test_open_new_savings_account",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_04_insufficient_funds_in_funding_account::test_insufficient_funds_in_funding_account",
+          "reason": "playwright._impl._errors.Error: Locator.fill: Error: Element is not an <input>, <textarea>, <select> or [contenteditable] and does not have a role allowing [aria-readonly]"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_03_no_funding_account_selected::test_no_funding_account_selected",
+          "reason": "playwright._impl._errors.TimeoutError: Locator.select_option: Timeout 15000ms exceeded."
+        },
+        {
+          "test": "ai_testgen.generated.test_bill_pay_06_account_with_insufficient_funds_is_selec::test_account_with_insufficient_funds_is_selected",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_02_invalid_amount::test_invalid_amount",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_open_account_05_zero_initial_deposit_amount::test_zero_initial_deposit_amount",
+          "reason": "playwright._impl._errors.TimeoutError: Locator.fill: Timeout 15000ms exceeded."
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_04_edge_case_transferring_the_same_amount_t::test_transfer_same_amount_same_account",
+          "reason": "KeyError: 'account_ids'"
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_03_selecting_an_account_not_owned_by_the_cu::test_selecting_account_not_owned_by_customer",
+          "reason": "AssertionError: Locator expected to be visible"
+        },
+        {
+          "test": "ai_testgen.generated.test_transfer_funds_01_transfer_money_between_own_accounts::test_transfer_money_between_own_accounts",
+          "reason": "playwright._impl._errors.TimeoutError: Locator.select_option: Timeout 15000ms exceeded."
+        }
+      ]
+    }
+  ]
+}
