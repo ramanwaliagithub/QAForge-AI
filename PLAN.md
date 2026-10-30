@@ -36,6 +36,7 @@ Critical decisions are asked before building and recorded here.
 | 2026-10-09 | Local model | **llama3.1:8b** + nomic-embed-text | Default from plan; swap via `OLLAMA_MODEL` |
 | 2026-10-15 | App under test | **ParaBank in local Docker** (`docker compose up -d`, `http://localhost:8080/parabank`) | Public demo's registration started returning HTTP 500 and was slow/flaky (Day 6). Local is stable, fast (suite 10s -> 2s) and CI-ready. Public demo still usable via `BASE_URL` |
 | 2026-10-28 | Healing apply step edits source (Day 16) | Only `approved` proposals; a diff is shown and confirmed (`--yes` to skip); a locator is patched only where its definition is ONE unique literal match; files with uncommitted changes are refused | Days 14-15 deliberately never edited source; this is the only place that does, and only after a human approves |
+| 2026-10-30 | Definition of "healing rate" for Phase 2 (Day 17) | Primary number: **healed correctly, at first sight, on samples written after the suggester stopped changing** (held-out set 4, committed before the model ran on it). Always reported next to the wrong-heal count, the guard-eligible subset and the pre-fix pooled figure (5/12). Rates on tuned or diagnosed sets are never quoted alone | "Healed" alone is not enough: a locator that resolves to one element can still be the wrong one (Day 14). Pass rate and flake rate are measured with reruns off |
 | 2026-10-05 | Remote | `https://github.com/ramanwaliagithub/QAForge-AI.git` | |
 
 ## Open-source stack
