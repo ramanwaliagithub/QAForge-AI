@@ -44,6 +44,7 @@ def run_once(index: int) -> dict:
 
 
 def main() -> None:
+    """Run the selection RUNS times, print each run and write the aggregate report."""
     runs = []
     for i in range(1, RUNS + 1):
         result = run_once(i)

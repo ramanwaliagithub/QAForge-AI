@@ -32,6 +32,7 @@ def _login(page, username, password):
 
 
 def bad_logins(browser, n):
+    """Try `n` logins with an unknown user, each in its own browser context, and count the outcomes."""
     for _ in range(n):
         ctx = browser.new_context()
         page = ctx.new_page()

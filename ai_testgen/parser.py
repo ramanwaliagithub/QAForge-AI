@@ -29,6 +29,9 @@ def _extract_json(text: str) -> str:
 
 
 def parse_testcases(text: str) -> list[TestCase]:
+    """Parse the model's JSON (an object with `test_cases`, or a bare list) into TestCase objects; raises ParseError
+    with a message that can be fed back to the model.
+    """
     try:
         data = json.loads(_extract_json(text))
     except json.JSONDecodeError as e:

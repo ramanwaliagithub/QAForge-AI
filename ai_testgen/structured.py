@@ -15,6 +15,9 @@ class GenerationError(RuntimeError):
 def generate_testcases(
     client: LLMClient, story: Story, temperature: float = 0.0, max_retries: int = 2
 ) -> list[TestCase]:
+    """Generate validated test cases for a story in JSON mode; on invalid output retry with the error fed back.
+    Raises GenerationError after `max_retries + 1` attempts.
+    """
     base_prompt = render_prompt(load_prompt("testcase_json"), story)
     prompt = base_prompt
     last_error = None

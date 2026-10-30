@@ -65,6 +65,7 @@ with sync_playwright() as p:
 
 
 def summarize(set_name):
+    """Counts for one sample set: correct, healed the wrong element, not healed, first-try valid, mechanically repaired."""
     r = [x for x in rows if x["set"] == set_name]
     return {
         "cases": len(r), "correct": sum(x["correct"] for x in r),

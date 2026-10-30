@@ -5,6 +5,8 @@ from pydantic import BaseModel, Field, field_validator
 
 
 class TestCase(BaseModel):
+    """One structured test case in the shape the model must produce (validated by pydantic)."""
+
     __test__ = False  # not a pytest class, despite the name
 
     title: str = Field(min_length=3)
@@ -22,6 +24,8 @@ class TestCase(BaseModel):
 
 
 class TestCaseList(BaseModel):
+    """The JSON envelope the model returns: a non-empty `test_cases` list."""
+
     __test__ = False
 
     test_cases: list[TestCase] = Field(min_length=1)
