@@ -4,12 +4,12 @@ from pathlib import Path
 import pytest
 
 from framework.healing.collector import load_failure_context
-from framework.healing.ground_truth import HELDOUT, HELDOUT2, HELDOUT3, TUNED, matches
+from framework.healing.ground_truth import HELDOUT, HELDOUT2, HELDOUT3, HELDOUT4, TUNED, matches
 from framework.healing.suggester import open_snapshot
 from framework.healing.suggestion import LocatorSuggestion, validate_suggestion
 
 SETS = {"samples": TUNED, "samples_heldout": HELDOUT, "samples_heldout2": HELDOUT2,
-        "samples_heldout3": HELDOUT3}
+        "samples_heldout3": HELDOUT3, "samples_heldout4": HELDOUT4}
 CASES = [(d, name) for d, truths in SETS.items() for name in truths]
 
 

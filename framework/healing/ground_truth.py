@@ -33,6 +33,18 @@ HELDOUT3 = {
     "funding_account_renamed": {"id": "fromAccountId"},
 }
 
+# Set 4 (Day 17): written after the suggester stopped changing, for the final Phase 2 measurement. Committed before the
+# model was run on it.
+HELDOUT4 = {
+    "street_field_renamed": {"name": "customer.address.street"},
+    "ssn_field_renamed": {"name": "customer.ssn"},
+    "zip_field_renamed": {"name": "customer.address.zipCode"},
+    "login_button_shortened": {"tag": "input", "type": "submit", "value": "Log In"},
+    "from_account_renamed": {"id": "fromAccountId"},
+    "transfer_button_renamed": {"tag": "input", "type": "submit", "value": "Transfer"},
+    "open_account_button_renamed": {"tag": "input", "type": "button", "value": "Open New Account"},
+}
+
 # Controls where no locator change is the right answer (an assertion failed, or the element legitimately changed).
 CONTROLS = ["expect_on_missing_element", "wrong_text_on_found_element"]
 
