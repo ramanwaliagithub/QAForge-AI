@@ -1,4 +1,5 @@
 import asyncio
+from concurrent.futures import ThreadPoolExecutor
 from types import SimpleNamespace
 
 from ai_testgen.explore_agent import (
@@ -15,8 +16,19 @@ async def fake_call(name, args):
     return f"ok:{name}:{args}"
 
 
+def run_async(coro):
+    """Run a coroutine to completion on its own thread, with its own event loop.
+
+    asyncio.run() refuses to start on the main thread once a Playwright sync browser has been started in the same
+    pytest process (Playwright keeps an event loop running there). A plain serial `pytest` therefore failed these tests
+    after any browser test, while `pytest -n 3` hid it by spreading the tests over workers.
+    """
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        return pool.submit(asyncio.run, coro).result()
+
+
 def run(llm, **kw):
-    return asyncio.run(run_agent(llm, None, [], "sys", "task", call_tool=fake_call, **kw))
+    return run_async(run_agent(llm, None, [], "sys", "task", call_tool=fake_call, **kw))
 
 
 def test_agent_calls_tools_then_stops_with_final_answer():
@@ -50,7 +62,7 @@ def test_tool_errors_are_reported_to_the_model():
 
     llm = scripted_llm({"content": "", "tool_calls": [{"name": "browser_click", "arguments": {"target": "e1"}}]},
                        {"content": "done", "tool_calls": []})
-    r = asyncio.run(run_agent(llm, None, [], "s", "t", call_tool=boom))
+    r = run_async(run_agent(llm, None, [], "s", "t", call_tool=boom))
     assert "element not found" in r.steps[0].result and r.stopped == "done"
 
 
@@ -101,7 +113,7 @@ def test_text_tool_call_is_executed_and_snapshot_not_taken_for_errors():
 
     llm = scripted_llm({"content": '{"name": "browser_click", "parameters": {"target": "e1"}}', "tool_calls": []},
                        {"content": "done", "tool_calls": []})
-    r = asyncio.run(run_agent(llm, None, [], "s", "t", call_tool=call))
+    r = run_async(run_agent(llm, None, [], "s", "t", call_tool=call))
     assert seen == ["browser_click"] and r.steps[0].result.startswith("### Error")
 
 
@@ -129,5 +141,15 @@ def test_run_agent_repairs_args_before_calling_the_tool():
     tools = [{"type": "function", "function": {"name": "browser_click", "parameters": CLICK_SCHEMA}}]
     llm = scripted_llm({"content": "", "tool_calls": [{"name": "browser_click", "arguments": {"id": "e9"}}]},
                        {"content": "done", "tool_calls": []})
-    r = asyncio.run(run_agent(llm, None, tools, "s", "t", call_tool=call))
+    r = run_async(run_agent(llm, None, tools, "s", "t", call_tool=call))
     assert got[0] == {"target": "e9"} and "repaired" in r.steps[0].note
+
+
+def test_the_agent_runs_after_a_browser_has_started(browser):
+    """Regression: with a Playwright sync browser alive, asyncio.run() on the main thread raises
+    'cannot be called from a running event loop'. This must hold regardless of test order."""
+    llm = scripted_llm(
+        {"content": "", "tool_calls": [{"name": "browser_navigate", "arguments": {"url": "http://x"}}]},
+        {"content": "done", "tool_calls": []},
+    )
+    assert run(llm).stopped == "done"
