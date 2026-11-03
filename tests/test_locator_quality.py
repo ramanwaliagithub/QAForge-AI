@@ -20,6 +20,8 @@ ACCEPTED = {
     "#fromAccountId": "dropdowns have no accessible name; hand-written id, and there are two on some pages",
     "#toAccountId": "same as #fromAccountId",
     "p.error": "ParaBank marks errors only with a CSS class (no role=alert); several can appear at once",
+    "select[name='fromAccountId']": "bill pay From dropdown has no accessible name and no id (#fromAccountId there is the confirmation's span); `name` is the form-binding contract",
+    "#validationModel-{}": "bill pay validation messages are <span class=error> with hand-written ids and no role=alert; their texts repeat (account and verify account), so the id is the only unique handle",
 }
 MIN_SCORE = 2.5  # current score is 2.58; raise the floor when it improves, never lower it
 

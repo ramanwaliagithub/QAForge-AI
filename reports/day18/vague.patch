@@ -1,0 +1,238 @@
+diff --git a/framework/pages/__init__.py b/framework/pages/__init__.py
+index 6955eb9..65a7b47 100644
+--- a/framework/pages/__init__.py
++++ b/framework/pages/__init__.py
+@@ -1,7 +1,8 @@
+ from framework.pages.accounts_page import AccountsPage
+ from framework.pages.base_page import BasePage
++from framework.pages.bill_pay_page import BillPayPage
+ from framework.pages.login_page import LoginPage
+ from framework.pages.register_page import RegisterPage
+ from framework.pages.transfer_page import TransferPage
+ 
+-__all__ = ["AccountsPage", "BasePage", "LoginPage", "RegisterPage", "TransferPage"]
++__all__ = ["AccountsPage", "BasePage", "BillPayPage", "LoginPage", "RegisterPage", "TransferPage"]
+diff --git a/framework/pages/accounts_page.py b/framework/pages/accounts_page.py
+index f6f3906..99dbfed 100644
+--- a/framework/pages/accounts_page.py
++++ b/framework/pages/accounts_page.py
+@@ -21,6 +21,10 @@ class AccountsPage(BasePage):
+         """One link per account in the overview table; an account's link text is its number."""
+         return self.accounts_table.get_by_role("link", name=re.compile(r"^\d+$"))
+ 
++    def account_row(self, account_id: str):
++        """The overview row of one account: the table row that contains the link with that account number."""
++        return self.accounts_table.get_by_role("row").filter(has=self.page.get_by_role("link", name=account_id, exact=True))
++
+     @property
+     def account_type(self):
+         """The account-type dropdown: the combobox that offers SAVINGS (the funding dropdown lists numbers)."""
+diff --git a/framework/pages/bill_pay_page.py b/framework/pages/bill_pay_page.py
+new file mode 100644
+index 0000000..37fa1a2
+--- /dev/null
++++ b/framework/pages/bill_pay_page.py
+@@ -0,0 +1,92 @@
++"""Page object for ParaBank's Bill Pay screen."""
++
++import re
++
++from playwright.sync_api import expect
++
++from framework.pages.base_page import BasePage
++
++
++class BillPayPage(BasePage):
++    """Pay a bill to a payee from one of the customer's accounts.
++
++    ParaBank's inputs have no accessible name, but each one sits in a table row that is named by its label cell, so a
++    field is "the textbox in the row called <label>". A row's accessible name also carries the field's current value and
++    any visible validation message ("Payee Name: Acme Power"), so rows are matched by the start of their name.
++    """
++
++    path = "/billpay.htm"
++
++    # keyword used by `fill_form` / `field` -> the label ParaBank shows next to the input
++    FIELDS = {
++        "payee_name": "Payee Name:",
++        "address": "Address:",
++        "city": "City:",
++        "state": "State:",
++        "zip_code": "Zip Code:",
++        "phone": "Phone #:",
++        "account": "Account #:",
++        "verify_account": "Verify Account #:",
++        "amount": "Amount: $",
++    }
++    FROM_ACCOUNT_LABEL = "From account #:"
++
++    def _row(self, label: str):
++        return self.page.get_by_role("row", name=re.compile(f"^{re.escape(label)}"))
++
++    def field_row(self, field: str):
++        """The table row of a form field; `field` is a key of FIELDS."""
++        return self._row(self.FIELDS[field])
++
++    def field(self, field: str):
++        """The input of a form field; `field` is a key of FIELDS."""
++        return self.field_row(field).get_by_role("textbox")
++
++    def field_error(self, field: str, message: str):
++        """A validation message in a field's row. ParaBank renders every message and hides the ones that do not apply,
++        so assert with `to_be_visible()` / `not_to_be_visible()`."""
++        return self.field_row(field).get_by_text(message, exact=True)
++
++    @property
++    def from_account(self):
++        """The dropdown of the customer's accounts to pay from (a combobox without an accessible name)."""
++        return self._row(self.FROM_ACCOUNT_LABEL).get_by_role("combobox")
++
++    @property
++    def send_button(self):
++        return self.page.get_by_role("button", name="Send Payment")
++
++    @property
++    def complete_heading(self):
++        return self.page.get_by_role("heading", name="Bill Payment Complete")
++
++    @property
++    def error_heading(self):
++        return self.page.get_by_role("heading", name="Error!")
++
++    @property
++    def confirmation(self):
++        """The sentence shown after a payment: "Bill Payment to <payee> in the amount of $<amount> from account <id> was successful."."""
++        return self.page.get_by_role("paragraph").filter(has_text="Bill Payment to")
++
++    def open(self):
++        """Open the page and wait until the form is there and the account dropdown has its options."""
++        super().open()
++        expect(self.send_button).to_be_visible()
++        expect(self.from_account.get_by_role("option")).not_to_have_count(0)
++        return self
++
++    def fill_form(self, **values: str):
++        """Fill the given fields; keys are the FIELDS names. Fields that are not given are left as they are."""
++        for field, value in values.items():
++            self.fill(self.field(field), value)
++        return self
++
++    def send_payment(self):
++        """Click Send Payment. Assertions on the outcome (confirmation or validation messages) stay in the tests."""
++        self.click(self.send_button)
++        return self
++
++    def pay(self, **values: str):
++        """Fill the given fields and send the payment."""
++        return self.fill_form(**values).send_payment()
+diff --git a/tests/test_bill_pay.py b/tests/test_bill_pay.py
+new file mode 100644
+index 0000000..3d07f74
+--- /dev/null
++++ b/tests/test_bill_pay.py
+@@ -0,0 +1,105 @@
++"""Bill Pay: a payment is confirmed and charged to the account; invalid forms are rejected before anything is sent.
++
++Tests that complete a payment use `new_customer_page` (a fresh customer) because they change a balance. The
++validation tests send nothing, so they can share the logged-in `registered_user`.
++
++Not covered on purpose: ParaBank accepts negative, zero and larger-than-balance amounts, and answers "12abc" with an
++internal error (the same class of bug as in Transfer Funds, see docs/mcp-findings.md). Those need xfail tests of their own.
++"""
++import re
++from decimal import Decimal
++
++import pytest
++from playwright.sync_api import expect
++
++from framework.pages import AccountsPage, BillPayPage
++
++PAYEE = {
++    "payee_name": "Acme Power",
++    "address": "9 Utility Road",
++    "city": "Powerville",
++    "state": "TX",
++    "zip_code": "75001",
++    "phone": "5550199",
++    "account": "12345",
++    "verify_account": "12345",
++}
++
++
++def _payment_requests(page):
++    """Collect the bill-pay requests the browser sends from now on, to show that a rejected form sent nothing."""
++    sent = []
++    page.on("request", lambda r: sent.append(r.url) if r.method == "POST" and "/bank/billpay" in r.url else None)
++    return sent
++
++
++def _balance(row) -> Decimal:
++    """The balance in an account's overview row, e.g. "590433  $515.50  $515.50" (balance first, then available)."""
++    return Decimal(re.search(r"\$([\d,]+\.\d{2})", row.inner_text()).group(1).replace(",", ""))
++
++
++@pytest.mark.smoke
++def test_valid_payment_shows_confirmation(new_customer_page, base_url):
++    bill_pay = BillPayPage(new_customer_page, base_url).open()
++    account = bill_pay.from_account.input_value()
++    bill_pay.pay(**PAYEE, amount="25.50")
++    expect(bill_pay.complete_heading).to_be_visible()
++    expect(bill_pay.confirmation).to_have_text(
++        f"Bill Payment to Acme Power in the amount of $25.50 from account {account} was successful."
++    )
++    expect(bill_pay.send_button).not_to_be_visible()  # the form is replaced by the confirmation
++
++
++def test_payment_is_deducted_from_the_account_balance(new_customer_page, base_url):
++    accounts = AccountsPage(new_customer_page, base_url).open()
++    expect(accounts.account_links).to_have_count(1)  # a new customer has exactly one account
++    account = accounts.account_links.inner_text()
++    before = _balance(accounts.account_row(account))
++
++    bill_pay = BillPayPage(new_customer_page, base_url).open()
++    expect(bill_pay.from_account).to_have_value(account)
++    bill_pay.pay(**PAYEE, amount="25.50")
++    expect(bill_pay.complete_heading).to_be_visible()
++
++    accounts.open()
++    expect(accounts.account_row(account)).to_contain_text(f"${before - Decimal('25.50'):,.2f}")
++
++
++def test_empty_form_shows_every_required_error(logged_in_page, base_url):
++    bill_pay = BillPayPage(logged_in_page, base_url).open()
++    sent = _payment_requests(logged_in_page)
++    bill_pay.send_payment()
++    required = {
++        "payee_name": "Payee name is required.",
++        "address": "Address is required.",
++        "city": "City is required.",
++        "state": "State is required.",
++        "zip_code": "Zip Code is required.",
++        "phone": "Phone number is required.",
++        "account": "Account number is required.",
++        "verify_account": "Account number is required.",
++        "amount": "The amount cannot be empty.",
++    }
++    for field, message in required.items():
++        expect(bill_pay.field_error(field, message)).to_be_visible()
++    expect(bill_pay.send_button).to_be_visible()
++    expect(bill_pay.complete_heading).not_to_be_visible()
++    assert not sent, f"an empty form was submitted: {sent}"
++
++
++def test_mismatched_account_numbers_are_rejected(logged_in_page, base_url):
++    bill_pay = BillPayPage(logged_in_page, base_url).open()
++    sent = _payment_requests(logged_in_page)
++    bill_pay.pay(**{**PAYEE, "verify_account": "54321"}, amount="25.50")
++    expect(bill_pay.field_error("verify_account", "The account numbers do not match.")).to_be_visible()
++    expect(bill_pay.complete_heading).not_to_be_visible()
++    assert not sent, f"a payment with mismatched account numbers was submitted: {sent}"
++
++
++def test_non_numeric_amount_is_rejected(logged_in_page, base_url):
++    bill_pay = BillPayPage(logged_in_page, base_url).open()
++    sent = _payment_requests(logged_in_page)
++    bill_pay.pay(**PAYEE, amount="abc")
++    expect(bill_pay.field_error("amount", "Please enter a valid amount.")).to_be_visible()
++    expect(bill_pay.complete_heading).not_to_be_visible()
++    assert not sent, f"a payment with a non-numeric amount was submitted: {sent}"
