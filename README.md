@@ -22,15 +22,17 @@ uv run pytest -q
 
 ## Status
 
-Day 17 of 60: Phase 2 (AI test generation and self-healing) is complete, tagged `v0.2-ai-testgen`.
-The honest numbers are in [docs/phase2-results.md](docs/phase2-results.md): 1 of 15 generated tests passes, locator healing is 7/7 on a
-held-out set, and the suite is stable (0 failures in 30 parallel runs with reruns off).
+Day 18 of 60: Phase 3 (AI-assisted development workflows) has started with [specs](specs/README.md) that agents can execute.
+Phase 2 (AI test generation and self-healing) is complete, tagged `v0.2-ai-testgen`; the honest numbers are in
+[docs/phase2-results.md](docs/phase2-results.md): 1 of 15 generated tests passes, locator healing is 7/7 on a held-out set, and the suite is
+stable (0 failures in 30 parallel runs with reruns off). Day 18's spec-vs-vague-prompt comparison is in [docs/notes/day18.md](docs/notes/day18.md).
 
 ## Reports
 
 ```bash
 uv run pytest -n 3                                  # parallel; writes allure-results/
 uv run python -m scripts.suite_stability suite 30   # flake rate per test over 30 runs, reruns off
+uv run python -m scripts.spec_scorecard <checkout> <label>   # score an agent's implementation of specs/001 (reports/day18/)
 allure generate allure-results -o allure-report --clean
 allure open allure-report
 ```
