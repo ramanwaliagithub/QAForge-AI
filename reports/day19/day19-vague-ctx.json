@@ -1,0 +1,96 @@
+{
+  "1_page_object_file": true,
+  "1_class_subclasses_basepage": true,
+  "1_missing_members": [
+    "FIELDS",
+    "field_error",
+    "fill_payment",
+    "result_heading",
+    "result_message"
+  ],
+  "1_exported_from_package": true,
+  "2_assertions_in_page_object": 0,
+  "6_banned_in_page_object": [],
+  "4_tests_file": true,
+  "4_test_functions": 5,
+  "4_names_match": false,
+  "4_missing_names": [
+    "test_bill_pay_form_shows_every_field_and_the_customers_account",
+    "test_empty_submit_requires_every_field",
+    "test_mismatched_account_numbers_are_refused",
+    "test_non_numeric_amount_is_refused",
+    "test_successful_payment_is_confirmed_and_debits_the_account"
+  ],
+  "5_tests_without_expect": [],
+  "6_banned_in_tests": [],
+  "T4_tests_watching_requests": [
+    "test_empty_form_shows_required_messages_and_sends_no_payment",
+    "test_mismatched_account_numbers_show_mismatch_message_and_send_no_payment",
+    "test_non_numeric_amount_shows_invalid_amount_message_and_sends_no_payment"
+  ],
+  "T7_balance_like_literals": [],
+  "7_fixtures": {
+    "test_form_lists_every_payee_field_and_the_from_account": [
+      "logged_in_page",
+      "base_url"
+    ],
+    "test_empty_form_shows_required_messages_and_sends_no_payment": [
+      "logged_in_page",
+      "base_url"
+    ],
+    "test_mismatched_account_numbers_show_mismatch_message_and_send_no_payment": [
+      "logged_in_page",
+      "base_url"
+    ],
+    "test_non_numeric_amount_shows_invalid_amount_message_and_sends_no_payment": [
+      "logged_in_page",
+      "base_url"
+    ],
+    "test_valid_payment_shows_confirmation_with_payee_amount_and_from_account": [
+      "new_customer_page",
+      "base_url"
+    ]
+  },
+  "7_payment_test_uses_new_customer_page": false,
+  "6_weak_selectors_in_page_object": [],
+  "audit_score": 2.74,
+  "3_non_semantic_selectors": [],
+  "4_collected": 5,
+  "9_runs_n3": [
+    {
+      "passed": 5,
+      "failed": 0,
+      "error": 0
+    },
+    {
+      "passed": 5,
+      "failed": 0,
+      "error": 0
+    },
+    {
+      "passed": 5,
+      "failed": 0,
+      "error": 0
+    }
+  ],
+  "9_serial_run": {
+    "passed": 5,
+    "failed": 0,
+    "error": 0
+  },
+  "10_repo_checks": {
+    "passed": 171,
+    "failed": 0,
+    "error": 0
+  },
+  "11_changed_paths": [
+    "framework/pages/__init__.py",
+    "framework/pages/bill_pay_page.py",
+    "tests/test_bill_pay.py"
+  ],
+  "11_outside_deliverables": [],
+  "size_lines": {
+    "framework/pages/bill_pay_page.py": 124,
+    "tests/test_bill_pay.py": 103
+  }
+}

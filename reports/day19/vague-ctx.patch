@@ -1,0 +1,253 @@
+diff --git a/framework/pages/__init__.py b/framework/pages/__init__.py
+index 6955eb9..65a7b47 100644
+--- a/framework/pages/__init__.py
++++ b/framework/pages/__init__.py
+@@ -1,7 +1,8 @@
+ from framework.pages.accounts_page import AccountsPage
+ from framework.pages.base_page import BasePage
++from framework.pages.bill_pay_page import BillPayPage
+ from framework.pages.login_page import LoginPage
+ from framework.pages.register_page import RegisterPage
+ from framework.pages.transfer_page import TransferPage
+ 
+-__all__ = ["AccountsPage", "BasePage", "LoginPage", "RegisterPage", "TransferPage"]
++__all__ = ["AccountsPage", "BasePage", "BillPayPage", "LoginPage", "RegisterPage", "TransferPage"]
+diff --git a/framework/pages/bill_pay_page.py b/framework/pages/bill_pay_page.py
+new file mode 100644
+index 0000000..d9ccea6
+--- /dev/null
++++ b/framework/pages/bill_pay_page.py
+@@ -0,0 +1,124 @@
++"""Page object for ParaBank's Bill Pay screen."""
++
++import re
++
++from playwright.sync_api import expect
++
++from framework.pages.base_page import BasePage
++
++
++class BillPayPage(BasePage):
++    """Pay a bill to a payee from one of the customer's accounts.
++
++    ParaBank's form inputs have no accessible name, but each one sits in a table row whose accessible name starts with the
++    row's label, so every field is found as "the textbox in the row labelled X". The label strings below are exactly what the
++    page shows; tests use them to find the validation message that appears in the same row.
++    """
++
++    path = "/billpay.htm"
++
++    PAYEE_NAME = "Payee Name:"
++    ADDRESS = "Address:"
++    CITY = "City:"
++    STATE = "State:"
++    ZIP_CODE = "Zip Code:"
++    PHONE = "Phone #:"
++    ACCOUNT = "Account #:"
++    VERIFY_ACCOUNT = "Verify Account #:"
++    AMOUNT = "Amount: $"
++    FROM_ACCOUNT = "From account #:"
++
++    def field_row(self, label: str):
++        """The table row of the field with this label.
++
++        The row's accessible name is its label followed by the validation message when one shows, so it is matched from the
++        start: a plain substring "Account #:" would also match "Verify Account #:".
++        """
++        return self.page.get_by_role("row", name=re.compile(rf"^{re.escape(label)}"))
++
++    @property
++    def heading(self):
++        return self.page.get_by_role("heading", name="Bill Payment Service")
++
++    @property
++    def payee_name(self):
++        return self.field_row(self.PAYEE_NAME).get_by_role("textbox")
++
++    @property
++    def address(self):
++        return self.field_row(self.ADDRESS).get_by_role("textbox")
++
++    @property
++    def city(self):
++        return self.field_row(self.CITY).get_by_role("textbox")
++
++    @property
++    def state(self):
++        return self.field_row(self.STATE).get_by_role("textbox")
++
++    @property
++    def zip_code(self):
++        return self.field_row(self.ZIP_CODE).get_by_role("textbox")
++
++    @property
++    def phone(self):
++        return self.field_row(self.PHONE).get_by_role("textbox")  # the input's own id is a generated UUID
++
++    @property
++    def account_number(self):
++        return self.field_row(self.ACCOUNT).get_by_role("textbox")
++
++    @property
++    def verify_account(self):
++        return self.field_row(self.VERIFY_ACCOUNT).get_by_role("textbox")
++
++    @property
++    def amount(self):
++        return self.field_row(self.AMOUNT).get_by_role("textbox")
++
++    @property
++    def from_account(self):
++        """The dropdown of the customer's accounts to pay from."""
++        return self.field_row(self.FROM_ACCOUNT).get_by_role("combobox")
++
++    @property
++    def send_button(self):
++        return self.page.get_by_role("button", name="Send Payment", exact=True)
++
++    @property
++    def confirmation_heading(self):
++        return self.page.get_by_role("heading", name="Bill Payment Complete")
++
++    @property
++    def confirmation_message(self):
++        """The sentence naming the payee, the amount and the account the payment was made from."""
++        return self.page.get_by_role("paragraph").filter(has_text="Bill Payment to")
++
++    def open(self):
++        """Open the page and wait until the from-account dropdown lists accounts (it is filled asynchronously)."""
++        super().open()
++        expect(self.send_button).to_be_visible()
++        expect(self.from_account.get_by_role("option")).not_to_have_count(0)
++        return self
++
++    def fill_form(self, name: str = "", address: str = "", city: str = "", state: str = "", zip_code: str = "",
++                  phone: str = "", account: str = "", verify_account: str = "", amount: str = ""):
++        """Fill the payee fields that are given; an empty value leaves its field empty. Nothing is submitted."""
++        fields = [
++            (self.payee_name, name), (self.address, address), (self.city, city), (self.state, state),
++            (self.zip_code, zip_code), (self.phone, phone), (self.account_number, account),
++            (self.verify_account, verify_account), (self.amount, amount),
++        ]
++        for locator, value in fields:
++            if value:
++                self.fill(locator, value)
++        return self
++
++    def submit(self):
++        """Click Send Payment. The page shows validation messages or a result; waiting for either stays in the tests."""
++        self.click(self.send_button)
++        return self
++
++    def pay(self, **fields: str):
++        """Fill the form (see `fill_form` for the keyword names) and submit it."""
++        return self.fill_form(**fields).submit()
+diff --git a/tests/test_bill_pay.py b/tests/test_bill_pay.py
+new file mode 100644
+index 0000000..fd5a87b
+--- /dev/null
++++ b/tests/test_bill_pay.py
+@@ -0,0 +1,103 @@
++"""Bill Pay (billpay.htm): the form, its validation, and a successful payment.
++
++Covered: the form lists every payee field and a from-account; an empty form shows a "required" message beside each field;
++mismatched account numbers and a non-numeric amount are rejected with their message; a valid payment shows the confirmation
++with payee, amount and from-account. Validation runs in the browser, so a rejected form must not send any payment request.
++Not covered (ParaBank bugs, see CLAUDE.md T8): negative, zero and over-balance amounts are accepted.
++"""
++import re
++
++from playwright.sync_api import expect
++
++from framework.pages import BillPayPage
++
++PAYMENT = {
++    "name": "Test Payee",
++    "address": "9 Main Street",
++    "city": "Springfield",
++    "state": "IL",
++    "zip_code": "62701",
++    "phone": "5550199",
++    "account": "12345",
++    "verify_account": "12345",
++    "amount": "25.50",
++}
++PAID_AMOUNT = "$25.50"  # how the confirmation shows PAYMENT["amount"]
++
++# The message ParaBank shows beside each empty field, keyed by the field's row label.
++REQUIRED_MESSAGES = {
++    BillPayPage.PAYEE_NAME: "Payee name is required.",
++    BillPayPage.ADDRESS: "Address is required.",
++    BillPayPage.CITY: "City is required.",
++    BillPayPage.STATE: "State is required.",
++    BillPayPage.ZIP_CODE: "Zip Code is required.",
++    BillPayPage.PHONE: "Phone number is required.",
++    BillPayPage.ACCOUNT: "Account number is required.",
++    BillPayPage.VERIFY_ACCOUNT: "Account number is required.",
++    BillPayPage.AMOUNT: "The amount cannot be empty.",
++}
++MISMATCH_MESSAGE = "The account numbers do not match."
++INVALID_AMOUNT_MESSAGE = "Please enter a valid amount."
++
++
++def record_payment_requests(page) -> list[str]:
++    """Collect the URL of every POST to the bill-pay service: the request that moves the money."""
++    sent: list[str] = []
++
++    def on_request(request):
++        if request.method == "POST" and "/billpay" in request.url:
++            sent.append(request.url)
++
++    page.on("request", on_request)
++    return sent
++
++
++def expect_nothing_was_paid(bill_pay: BillPayPage, sent: list[str]):
++    """The rejection left the form on screen, showed no confirmation and sent no payment request."""
++    expect(bill_pay.send_button).to_be_visible()
++    expect(bill_pay.confirmation_heading).not_to_be_visible()
++    assert not sent, f"a payment request was sent: {sent}"
++
++
++def test_form_lists_every_payee_field_and_the_from_account(logged_in_page, base_url):
++    bill_pay = BillPayPage(logged_in_page, base_url).open()
++    expect(bill_pay.heading).to_be_visible()
++    for field in (bill_pay.payee_name, bill_pay.address, bill_pay.city, bill_pay.state, bill_pay.zip_code, bill_pay.phone,
++                  bill_pay.account_number, bill_pay.verify_account, bill_pay.amount, bill_pay.from_account):
++        expect(field).to_be_visible()
++    expect(bill_pay.from_account).to_have_value(re.compile(r"^\d+$"))  # an account number is selected
++
++
++def test_empty_form_shows_required_messages_and_sends_no_payment(logged_in_page, base_url):
++    bill_pay = BillPayPage(logged_in_page, base_url).open()
++    sent = record_payment_requests(logged_in_page)
++    bill_pay.submit()
++    for label, message in REQUIRED_MESSAGES.items():
++        expect(bill_pay.field_row(label).get_by_text(message, exact=True)).to_be_visible()
++    expect_nothing_was_paid(bill_pay, sent)
++
++
++def test_mismatched_account_numbers_show_mismatch_message_and_send_no_payment(logged_in_page, base_url):
++    bill_pay = BillPayPage(logged_in_page, base_url).open()
++    sent = record_payment_requests(logged_in_page)
++    bill_pay.pay(**{**PAYMENT, "verify_account": "99999"})
++    expect(bill_pay.field_row(BillPayPage.VERIFY_ACCOUNT).get_by_text(MISMATCH_MESSAGE, exact=True)).to_be_visible()
++    expect_nothing_was_paid(bill_pay, sent)
++
++
++def test_non_numeric_amount_shows_invalid_amount_message_and_sends_no_payment(logged_in_page, base_url):
++    bill_pay = BillPayPage(logged_in_page, base_url).open()
++    sent = record_payment_requests(logged_in_page)
++    bill_pay.pay(**{**PAYMENT, "amount": "abc"})
++    expect(bill_pay.field_row(BillPayPage.AMOUNT).get_by_text(INVALID_AMOUNT_MESSAGE, exact=True)).to_be_visible()
++    expect_nothing_was_paid(bill_pay, sent)
++
++
++def test_valid_payment_shows_confirmation_with_payee_amount_and_from_account(new_customer_page, base_url):
++    bill_pay = BillPayPage(new_customer_page, base_url).open()
++    from_account = bill_pay.from_account.input_value()  # the option value is the account number; read it, never hard-code it
++    bill_pay.pay(**PAYMENT)
++    expect(bill_pay.confirmation_heading).to_be_visible()
++    expect(bill_pay.confirmation_message).to_have_text(
++        f"Bill Payment to {PAYMENT['name']} in the amount of {PAID_AMOUNT} from account {from_account} was successful."
++    )

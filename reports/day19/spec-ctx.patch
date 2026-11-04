@@ -1,0 +1,252 @@
+diff --git a/framework/pages/__init__.py b/framework/pages/__init__.py
+index 6955eb9..65a7b47 100644
+--- a/framework/pages/__init__.py
++++ b/framework/pages/__init__.py
+@@ -1,7 +1,8 @@
+ from framework.pages.accounts_page import AccountsPage
+ from framework.pages.base_page import BasePage
++from framework.pages.bill_pay_page import BillPayPage
+ from framework.pages.login_page import LoginPage
+ from framework.pages.register_page import RegisterPage
+ from framework.pages.transfer_page import TransferPage
+ 
+-__all__ = ["AccountsPage", "BasePage", "LoginPage", "RegisterPage", "TransferPage"]
++__all__ = ["AccountsPage", "BasePage", "BillPayPage", "LoginPage", "RegisterPage", "TransferPage"]
+diff --git a/framework/pages/bill_pay_page.py b/framework/pages/bill_pay_page.py
+new file mode 100644
+index 0000000..632ae63
+--- /dev/null
++++ b/framework/pages/bill_pay_page.py
+@@ -0,0 +1,100 @@
++"""Page object for ParaBank's Bill Pay screen."""
++
++import re
++
++from playwright.sync_api import Locator, expect
++
++from framework.pages.base_page import BasePage
++
++
++class BillPayPage(BasePage):
++    """Pay a bill from one of the customer's accounts.
++
++    Validation is client-side: a rejected form sends nothing and shows its messages in place. After a valid payment the page
++    stays on /billpay.htm and swaps the form for a confirmation, so tests wait for `result_heading`, not for a URL.
++    """
++
++    path = "/billpay.htm"
++
++    # keyword name used by `fill_payment` -> the form's `name` attribute (the form has no labels a locator can use)
++    FIELDS = {
++        "payee_name": "payee.name",
++        "address": "payee.address.street",
++        "city": "payee.address.city",
++        "state": "payee.address.state",
++        "zip_code": "payee.address.zipCode",
++        "phone": "payee.phoneNumber",
++        "account": "payee.accountNumber",
++        "verify_account": "verifyAccount",
++        "amount": "amount",
++    }
++
++    # The part after `validationModel-` of every error span. Checked in `field_error` because a typo would match nothing, and
++    # `expect(...).not_to_be_visible()` passes on a locator that matches nothing.
++    ERROR_IDS = (
++        "name", "address", "city", "state", "zipCode", "phoneNumber",
++        "account-empty", "account-invalid",
++        "verifyAccount-empty", "verifyAccount-invalid", "verifyAccount-mismatch",
++        "amount-empty", "amount-invalid",
++    )
++
++    @property
++    def heading(self) -> Locator:
++        return self.page.get_by_role("heading", name="Bill Payment Service")
++
++    @property
++    def submit_button(self) -> Locator:
++        return self.page.get_by_role("button", name="Send Payment", exact=True)
++
++    @property
++    def result_heading(self) -> Locator:
++        return self.page.get_by_role("heading", name="Bill Payment Complete")
++
++    @property
++    def result_message(self) -> Locator:
++        """The "Bill Payment to X in the amount of $Y from account Z was successful." paragraph of the confirmation."""
++        return self.page.get_by_role("paragraph").filter(has_text=re.compile(r"Bill Payment to .* was successful\."))
++
++    @property
++    def from_account(self) -> Locator:
++        """The From account dropdown, found as the combobox in the table row labelled "From account #:" (it has no name of its own)."""
++        return self.page.get_by_role("row", name=re.compile(r"^From account #:")).get_by_role("combobox")
++
++    def field(self, key: str) -> Locator:
++        """The input for one of the FIELDS keys, by its form `name` attribute (no accessible name, but a stable binding)."""
++        return self.page.locator(f"input[name='{self.FIELDS[key]}']")
++
++    def field_error(self, message_id: str) -> Locator:
++        """ONE error span, by the hand-written id `validationModel-<message_id>` (see ERROR_IDS).
++
++        All 13 spans are in the DOM from the start with display:none, so assert visibility, not presence. The ids are unique,
++        unlike the texts: "Account number is required." and "Please enter a valid number." each appear twice on the page.
++        """
++        if message_id not in self.ERROR_IDS:
++            raise ValueError(f"unknown bill pay error id {message_id!r}; use one of {self.ERROR_IDS}")
++        return self.page.locator(f"#validationModel-{message_id}")
++
++    def open(self) -> "BillPayPage":
++        """Open the page and wait until the From dropdown lists an account (the form is usable then)."""
++        super().open()
++        expect(self.from_account.get_by_role("option")).not_to_have_count(0)
++        return self
++
++    def fill_payment(self, **values: str) -> "BillPayPage":
++        """Fill the fields given in `values` (keys are the FIELDS names); omitted fields stay empty."""
++        unknown = set(values) - set(self.FIELDS)
++        if unknown:
++            raise ValueError(f"unknown bill pay field(s) {sorted(unknown)}; use {sorted(self.FIELDS)}")
++        for key in self.FIELDS:
++            if key in values:
++                self.fill(self.field(key), values[key])
++        return self
++
++    def submit(self) -> "BillPayPage":
++        """Click "Send Payment". Does not wait: a rejected form shows messages and a valid one shows `result_heading`."""
++        self.click(self.submit_button)
++        return self
++
++    def pay(self, **values: str) -> "BillPayPage":
++        """Fill the form with `values` and submit it. Assertions stay in the tests."""
++        return self.fill_payment(**values).submit()
+diff --git a/tests/test_bill_pay.py b/tests/test_bill_pay.py
+new file mode 100644
+index 0000000..4c6f3fc
+--- /dev/null
++++ b/tests/test_bill_pay.py
+@@ -0,0 +1,106 @@
++"""Bill Pay (specs/001-billpay-page-and-tests.md): the form is there, each kind of invalid input is refused with the right message,
++and a valid payment is confirmed and really takes the money out of the account.
++
++Not covered on purpose: amounts of 0 or below zero and a payment larger than the balance (ParaBank accepts them, which is a bug
++and not a requirement), the other fields being non-numeric, and phone/zip formats.
++"""
++import re
++from decimal import Decimal
++
++from playwright.sync_api import expect
++
++from framework.pages import AccountsPage, BillPayPage
++
++AMOUNT = Decimal("25.50")
++VALID_PAYMENT = {
++    "payee_name": "Electric Co",
++    "address": "9 Grid Rd",
++    "city": "Powertown",
++    "state": "NV",
++    "zip_code": "89101",
++    "phone": "5550199",
++    "account": "12345",
++    "verify_account": "12345",
++    "amount": str(AMOUNT),
++}
++# what a customer sees, word for word, when each part of an empty form is refused (message id -> text)
++REQUIRED_MESSAGES = {
++    "name": "Payee name is required.",
++    "address": "Address is required.",
++    "city": "City is required.",
++    "state": "State is required.",
++    "zipCode": "Zip Code is required.",
++    "phoneNumber": "Phone number is required.",
++    "account-empty": "Account number is required.",
++    "verifyAccount-empty": "Account number is required.",
++    "amount-empty": "The amount cannot be empty.",
++}
++
++
++def _account_row(page, account):
++    """The overview row of one account (its first cell is a link whose text is the account number)."""
++    return page.get_by_role("row").filter(has=page.get_by_role("link", name=account, exact=True))
++
++
++def _balance(page, base_url, account) -> Decimal:
++    """The balance the overview shows for `account`, read once the table has been filled in (it loads asynchronously)."""
++    AccountsPage(page, base_url).open()
++    row = _account_row(page, account)
++    expect(row).to_have_count(1)
++    _account, balance, _available = row.get_by_role("cell").all_inner_texts()
++    return Decimal(balance.lstrip("$").replace(",", ""))
++
++
++def test_bill_pay_form_shows_every_field_and_the_customers_account(new_customer_page, base_url):
++    bill_pay = BillPayPage(new_customer_page, base_url).open()
++    expect(bill_pay.heading).to_be_visible()
++    for key in BillPayPage.FIELDS:
++        expect(bill_pay.field(key), f"field {key}").to_be_visible()
++    expect(bill_pay.from_account.get_by_role("option")).to_have_count(1)  # a brand-new customer has exactly one account
++
++
++def test_empty_submit_requires_every_field(logged_in_page, base_url):
++    bill_pay = BillPayPage(logged_in_page, base_url).open().submit()
++    for message_id, text in REQUIRED_MESSAGES.items():
++        expect(bill_pay.field_error(message_id), message_id).to_be_visible()
++        expect(bill_pay.field_error(message_id), message_id).to_have_text(text)
++    expect(bill_pay.result_heading).not_to_be_visible()
++
++
++def test_mismatched_account_numbers_are_refused(logged_in_page, base_url):
++    bill_pay = BillPayPage(logged_in_page, base_url).open().pay(**{**VALID_PAYMENT, "verify_account": "54321"})
++    expect(bill_pay.field_error("verifyAccount-mismatch")).to_be_visible()
++    expect(bill_pay.field_error("verifyAccount-mismatch")).to_have_text("The account numbers do not match.")
++    expect(bill_pay.result_heading).not_to_be_visible()
++
++
++def test_non_numeric_amount_is_refused(logged_in_page, base_url):
++    bill_pay = BillPayPage(logged_in_page, base_url).open().pay(**{**VALID_PAYMENT, "amount": "abc"})
++    expect(bill_pay.field_error("amount-invalid")).to_be_visible()
++    expect(bill_pay.field_error("amount-invalid")).to_have_text("Please enter a valid amount.")
++    expect(bill_pay.result_heading).not_to_be_visible()
++
++
++def test_successful_payment_is_confirmed_and_debits_the_account(new_customer_page, base_url):
++    page = new_customer_page
++    accounts = AccountsPage(page, base_url).open()
++    expect(accounts.account_links).to_have_count(1)
++    account = accounts.account_links.inner_text()  # the only account, so the one the From dropdown offers
++    before = _balance(page, base_url, account)
++
++    bill_pay = BillPayPage(page, base_url).open().pay(**VALID_PAYMENT)
++    expect(bill_pay.result_heading).to_be_visible()
++    expect(bill_pay.result_message).to_have_text(
++        f"Bill Payment to {VALID_PAYMENT['payee_name']} in the amount of ${AMOUNT:,.2f} from account {account} was successful."
++    )
++
++    AccountsPage(page, base_url).open()
++    # cells: account number, balance, available amount; the balance must be lower by exactly the amount paid
++    expect(_account_row(page, account).get_by_role("cell")).to_have_text([account, f"${before - AMOUNT:,.2f}", re.compile(r"^\$")])
++
++    _account_row(page, account).get_by_role("link", name=account, exact=True).click()
++    # cells: date, transaction, debit, credit; the payment is a debit, so the credit cell is empty
++    payment = page.get_by_role("row").filter(has=page.get_by_role("link", name=f"Bill Payment to {VALID_PAYMENT['payee_name']}"))
++    expect(payment.get_by_role("cell")).to_have_text(
++        [re.compile(r"^\d+-\d+-\d+$"), f"Bill Payment to {VALID_PAYMENT['payee_name']}", f"${AMOUNT:,.2f}", ""]
++    )
+diff --git a/tests/test_locator_quality.py b/tests/test_locator_quality.py
+index d0a4a1f..9a83a41 100644
+--- a/tests/test_locator_quality.py
++++ b/tests/test_locator_quality.py
+@@ -14,12 +14,14 @@ PAGES = sorted(Path("framework/pages").glob("*_page.py"))
+ ACCEPTED = {
+     "input[name='username']": "login inputs have no accessible name; `name` is the server form-binding contract",
+     "input[name='password']": "same as username",
+-    "input[name='{}']": "registration inputs have no accessible name; the name is the form-binding contract",
++    "input[name='{}']": "registration and bill-pay inputs have no accessible name; the name is the form-binding contract",
+     "input[name='repeatedPassword']": "same as the registration fields",
+     "#amount": "transfer amount input has no label association; hand-written id",
+     "#fromAccountId": "dropdowns have no accessible name; hand-written id, and there are two on some pages",
+     "#toAccountId": "same as #fromAccountId",
+     "p.error": "ParaBank marks errors only with a CSS class (no role=alert); several can appear at once",
++    "#validationModel-{}": "bill-pay error spans have no role or name and their texts repeat (two 'required', two 'valid number'); "
++                           "the hand-written validationModel-* ids are the only unique handle",
+ }
+ MIN_SCORE = 2.5  # current score is 2.58; raise the floor when it improves, never lower it
+ 
