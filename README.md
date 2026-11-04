@@ -22,10 +22,11 @@ uv run pytest -q
 
 ## Status
 
-Day 18 of 60: Phase 3 (AI-assisted development workflows) has started with [specs](specs/README.md) that agents can execute.
+Day 19 of 60: Phase 3 (AI-assisted development workflows) is under way: [specs](specs/README.md) that agents can execute (Day 18) and agent
+instruction files, [CLAUDE.md](CLAUDE.md) and [Copilot instructions](.github/copilot-instructions.md) (Day 19).
 Phase 2 (AI test generation and self-healing) is complete, tagged `v0.2-ai-testgen`; the honest numbers are in
 [docs/phase2-results.md](docs/phase2-results.md): 1 of 15 generated tests passes, locator healing is 7/7 on a held-out set, and the suite is
-stable (0 failures in 30 parallel runs with reruns off). Day 18's spec-vs-vague-prompt comparison is in [docs/notes/day18.md](docs/notes/day18.md).
+stable (0 failures in 30 parallel runs with reruns off). The spec-vs-vague-prompt comparison is in [docs/notes/day18.md](docs/notes/day18.md); what the instruction files did and did not change is in [docs/notes/day19.md](docs/notes/day19.md).
 
 ## Reports
 
@@ -33,6 +34,7 @@ stable (0 failures in 30 parallel runs with reruns off). Day 18's spec-vs-vague-
 uv run pytest -n 3                                  # parallel; writes allure-results/
 uv run python -m scripts.suite_stability suite 30   # flake rate per test over 30 runs, reruns off
 uv run python -m scripts.spec_scorecard <checkout> <label>   # score an agent's implementation of specs/001 (reports/day18/)
+uv run python -m scripts.mutation_check <checkout> <label>   # does its Bill Pay suite notice 8 injected app bugs? (reports/day19/)
 allure generate allure-results -o allure-report --clean
 allure open allure-report
 ```

@@ -1,5 +1,5 @@
 """The Day 18 scorecard must catch the things it claims to catch, on small known inputs."""
-from scripts.spec_scorecard import REQUIRED_MEMBERS, REQUIRED_TESTS, parse_summary, static_checks
+from scripts.spec_scorecard import REQUIRED_MEMBERS, REQUIRED_TESTS, parse_summary, rule_indicators, static_checks
 
 INIT = 'from framework.pages.bill_pay_page import BillPayPage\n__all__ = ["BillPayPage"]\n'
 
@@ -65,3 +65,18 @@ def test_parse_summary_reads_the_last_summary_line():
     assert parse_summary("x\n2 failed, 3 passed, 1 skipped in 9s") == {"passed": 3, "failed": 2, "error": 0}
     assert parse_summary("1 error in 0.5s") == {"passed": 0, "failed": 0, "error": 1}
     assert parse_summary("no summary") == {"passed": 0, "failed": 0, "error": 0}
+
+
+def test_request_watching_is_found_directly_and_through_a_helper():
+    src = (
+        "def _sent(page):\n    page.on('request', lambda r: None)\n"
+        "def test_a(page):\n    _sent(page)\n"
+        "def test_b(page):\n    with page.expect_request('**/x'):\n        pass\n"
+        "def test_c(page):\n    page.click('x')\n"
+    )
+    assert rule_indicators(src)["T4_tests_watching_requests"] == ["test_a", "test_b"]
+
+
+def test_a_balance_written_into_a_test_is_reported_but_a_payment_amount_is_not():
+    src = "A = '25.50'\nB = '$490.00'\nC = '515.50'\nD = '1,000.00'\nE = '5.50'\nF = 'abc'\n"
+    assert rule_indicators(src)["T7_balance_like_literals"] == ["$490.00", "1,000.00", "515.50"]

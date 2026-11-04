@@ -1,0 +1,86 @@
+{
+  "1_page_object_file": true,
+  "1_class_subclasses_basepage": true,
+  "1_missing_members": [],
+  "1_exported_from_package": true,
+  "2_assertions_in_page_object": 0,
+  "6_banned_in_page_object": [],
+  "4_tests_file": true,
+  "4_test_functions": 5,
+  "4_names_match": true,
+  "4_missing_names": [],
+  "5_tests_without_expect": [],
+  "6_banned_in_tests": [],
+  "T4_tests_watching_requests": [],
+  "T7_balance_like_literals": [],
+  "7_fixtures": {
+    "test_bill_pay_form_shows_every_field_and_the_customers_account": [
+      "new_customer_page",
+      "base_url"
+    ],
+    "test_empty_submit_requires_every_field": [
+      "logged_in_page",
+      "base_url"
+    ],
+    "test_mismatched_account_numbers_are_refused": [
+      "logged_in_page",
+      "base_url"
+    ],
+    "test_non_numeric_amount_is_refused": [
+      "logged_in_page",
+      "base_url"
+    ],
+    "test_successful_payment_is_confirmed_and_debits_the_account": [
+      "new_customer_page",
+      "base_url"
+    ]
+  },
+  "7_payment_test_uses_new_customer_page": true,
+  "6_weak_selectors_in_page_object": [
+    "#validationModel-{} (css)"
+  ],
+  "audit_score": 2.6,
+  "3_non_semantic_selectors": [
+    "#validationModel-{}",
+    "input[name='{}']"
+  ],
+  "4_collected": 5,
+  "9_runs_n3": [
+    {
+      "passed": 5,
+      "failed": 0,
+      "error": 0
+    },
+    {
+      "passed": 5,
+      "failed": 0,
+      "error": 0
+    },
+    {
+      "passed": 5,
+      "failed": 0,
+      "error": 0
+    }
+  ],
+  "9_serial_run": {
+    "passed": 5,
+    "failed": 0,
+    "error": 0
+  },
+  "10_repo_checks": {
+    "passed": 171,
+    "failed": 0,
+    "error": 0
+  },
+  "11_changed_paths": [
+    "framework/pages/__init__.py",
+    "framework/pages/bill_pay_page.py",
+    "tests/test_bill_pay.py",
+    "tests/test_locator_quality.py"
+  ],
+  "11_outside_deliverables": [],
+  "size_lines": {
+    "framework/pages/bill_pay_page.py": 100,
+    "tests/test_bill_pay.py": 106
+  }
+}

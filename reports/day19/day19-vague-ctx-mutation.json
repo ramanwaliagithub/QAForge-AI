@@ -1,0 +1,61 @@
+{
+  "label": "day19-vague-ctx",
+  "killed": 6,
+  "total": 8,
+  "mutants": {
+    "mismatch_hidden": {
+      "killed": true,
+      "failing_tests": [
+        "test_mismatched_account_numbers_show_mismatch_message_and_send_no_payment"
+      ],
+      "models": "story: the two account numbers must match, and the customer is told when they do not"
+    },
+    "city_required_hidden": {
+      "killed": true,
+      "failing_tests": [
+        "test_empty_form_shows_required_messages_and_sends_no_payment"
+      ],
+      "models": "story: every payee field is required, with a message next to the field"
+    },
+    "invalid_amount_text_changed": {
+      "killed": true,
+      "failing_tests": [
+        "test_non_numeric_amount_shows_invalid_amount_message_and_sends_no_payment"
+      ],
+      "models": "story: the amount must be a number, with the right message"
+    },
+    "rejected_form_posts": {
+      "killed": true,
+      "failing_tests": [
+        "test_empty_form_shows_required_messages_and_sends_no_payment",
+        "test_mismatched_account_numbers_show_mismatch_message_and_send_no_payment",
+        "test_non_numeric_amount_shows_invalid_amount_message_and_sends_no_payment"
+      ],
+      "models": "CLAUDE.md T4: a rejected form must send nothing"
+    },
+    "confirmation_amount_wrong": {
+      "killed": true,
+      "failing_tests": [
+        "test_valid_payment_shows_confirmation_with_payee_amount_and_from_account"
+      ],
+      "models": "story: the confirmation shows the amount paid"
+    },
+    "confirmation_account_wrong": {
+      "killed": true,
+      "failing_tests": [
+        "test_valid_payment_shows_confirmation_with_payee_amount_and_from_account"
+      ],
+      "models": "story: the confirmation shows the from-account"
+    },
+    "payment_not_debited": {
+      "killed": false,
+      "failing_tests": [],
+      "models": "spec 001: the payment takes the money out of the account"
+    },
+    "payment_debited_twice": {
+      "killed": false,
+      "failing_tests": [],
+      "models": "spec 001: the account is debited by exactly the amount"
+    }
+  }
+}

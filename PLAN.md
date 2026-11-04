@@ -38,6 +38,7 @@ Critical decisions are asked before building and recorded here.
 | 2026-10-28 | Healing apply step edits source (Day 16) | Only `approved` proposals; a diff is shown and confirmed (`--yes` to skip); a locator is patched only where its definition is ONE unique literal match; files with uncommitted changes are refused | Days 14-15 deliberately never edited source; this is the only place that does, and only after a human approves |
 | 2026-10-30 | Definition of "healing rate" for Phase 2 (Day 17) | Primary number: **healed correctly, at first sight, on samples written after the suggester stopped changing** (held-out set 4, committed before the model ran on it). Always reported next to the wrong-heal count, the guard-eligible subset and the pre-fix pooled figure (5/12). Rates on tuned or diagnosed sets are never quoted alone | "Healed" alone is not enough: a locator that resolves to one element can still be the wrong one (Day 14). Pass rate and flake rate are measured with reruns off |
 | 2026-11-03 | Spec format and how agent output is compared (Day 18) | Eight-section spec (goal, context, deliverables, acceptance criteria, constraints, out of scope, verification, open questions). Comparison: one agent per arm (vague prompt vs spec), same model, own worktree; rubric = the spec's acceptance criteria as a script committed **before** scoring; the spec run's code is adopted **unedited** as the Day 20 review baseline, the vague run is kept as a patch | n = 1 per arm: it shows what a spec changed, not how often. A spec's design hints can close off a better option (the vague run found fully semantic locators the spec ruled out), so facts and hints are written apart |
+| 2026-11-04 | Instruction files and how they are judged (Day 19) | `CLAUDE.md` is the full rule list (ids P/L/T/C/D); `.github/copilot-instructions.md` mirrors the same ids; `docs/test-writing-checklist.md` cites them; `tests/test_agent_instructions.py` keeps the three in sync and caps their length. Judged by a 2 x 2 (vague/spec x with/without context), one run per cell, scored by the Day 18 scorecard plus a mutation check (8 mutants fixed before the runs) | Tuned on spec 001 (rules L2 and T4 came from Day 18's output), so it cannot show generalisation. Result: process changed (agents mutation-test their own tests), output did not improve, and rule D2 cost one run its balance check; D2 was reworded afterwards and the new wording is untested |
 | 2026-10-05 | Remote | `https://github.com/ramanwaliagithub/QAForge-AI.git` | |
 
 ## Open-source stack
@@ -223,10 +224,10 @@ qaforge-ai/
 - Commit: `docs: spec template and first spec`
 
 ### Day 19: Project context files
-- [ ] Add `CLAUDE.md` / `.github/copilot-instructions.md` with conventions (naming, locators, no sleeps)
-- [ ] Add a test-writing checklist
-- [ ] Re-run Day 18 spec and compare quality
-- [ ] Notes on what instructions had the most effect
+- [x] Add `CLAUDE.md` / `.github/copilot-instructions.md` with conventions (naming, locators, no sleeps)
+- [x] Add a test-writing checklist
+- [x] Re-run Day 18 spec and compare quality
+- [x] Notes on what instructions had the most effect
 - Commit: `docs: agent instruction files`
 
 ### Day 20: Reviewing AI-generated tests

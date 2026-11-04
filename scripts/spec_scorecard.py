@@ -1,12 +1,12 @@
 """Score an implementation of specs/001-billpay-page-and-tests.md against the spec's acceptance criteria.
 
-Usage: uv run python -m scripts.spec_scorecard <checkout_dir> <label> [--runs 3]
+Usage: uv run python -m scripts.spec_scorecard <checkout_dir> <label> [--runs 3] [--out reports/day18]
 Example: uv run python -m scripts.spec_scorecard ../some-worktree vague
 
 The rubric is the spec's own criteria (numbers in brackets are the criterion numbers), fixed BEFORE any implementation was looked at.
 It scores only what a script can decide; whether the assertions are meaningful is judged by reading (docs/notes/day18.md).
 The checkout is run with THIS repository's interpreter from inside the checkout (pytest.ini has `pythonpath = .`, so the
-checkout's own `framework` is imported). Results go to reports/day18/<label>.json.
+checkout's own `framework` is imported). Results go to <out>/<label>.json (default reports/day18). The `T4_` and `T7_` keys were added on Day 19, before the Day 19 runs were scored.
 """
 import ast
 import json
@@ -15,7 +15,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from framework.locator_audit import audit_paths
+from framework.locator_audit import audit_paths, score
 
 PAGE = "framework/pages/bill_pay_page.py"
 INIT = "framework/pages/__init__.py"
@@ -32,6 +32,8 @@ REQUIRED_TESTS = [
 REQUIRED_MEMBERS = {"path", "FIELDS", "open", "fill_payment", "submit", "pay", "field_error", "result_heading", "result_message",
                     "from_account"}
 BANNED_ATTRIBUTES = {"nth", "first", "last", "wait_for_timeout", "sleep"}
+REQUEST_TRACKING = {"expect_request", "wait_for_request", "route", "request_finished"}  # or page.on("request", ...)
+BALANCE_LIKE = re.compile(r"^\$?\d{1,3}(,\d{3})*\.\d{2}$")  # "515.50", "$490.00": a balance written into a test (CLAUDE.md T7)
 REPO_CHECKS = ["tests/test_locator_quality.py", "tests/test_lint.py", "tests/test_docstrings.py", "tests/test_sources_parse.py"]
 
 
@@ -76,6 +78,29 @@ def _banned(tree: ast.Module) -> list[str]:
     return found
 
 
+def _tracks_requests(node: ast.AST) -> bool:
+    """True if the subtree watches network requests (page.on("request", ...), expect_request, route, ...)."""
+    for n in ast.walk(node):
+        if isinstance(n, ast.Attribute) and n.attr in REQUEST_TRACKING:
+            return True
+        if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == "on" and n.args \
+                and isinstance(n.args[0], ast.Constant) and n.args[0].value in ("request", "requestfinished"):
+            return True
+    return False
+
+
+def rule_indicators(tests_source: str) -> dict:
+    """Script-checkable signs of CLAUDE.md rules T4 (rejection checks that nothing was sent) and T7 (no balance written into a test)."""
+    tree = ast.parse(tests_source)
+    helpers = {n.name for n in tree.body if isinstance(n, ast.FunctionDef) and not n.name.startswith("test_") and _tracks_requests(n)}
+    tests = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name.startswith("test_")]
+    watching = [t.name for t in tests if _tracks_requests(t) or any(
+        isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id in helpers for n in ast.walk(t))]
+    literals = sorted({n.value for n in ast.walk(tree) if isinstance(n, ast.Constant) and isinstance(n.value, str)
+                       and BALANCE_LIKE.match(n.value) and len(n.value.lstrip("$").split(".")[0].replace(",", "")) >= 3})
+    return {"T4_tests_watching_requests": watching, "T7_balance_like_literals": literals}
+
+
 def static_checks(page_source: str | None, tests_source: str | None, init_source: str | None) -> dict:
     """The checks that need only the source text (criteria 1, 2, 4 names, 5, 6, 7). Pure, so it is unit-tested."""
     result: dict = {}
@@ -105,6 +130,7 @@ def static_checks(page_source: str | None, tests_source: str | None, init_source
         result["4_missing_names"] = sorted(set(REQUIRED_TESTS) - set(names))
         result["5_tests_without_expect"] = [t.name for t in tests if not _calls_expect(t)]
         result["6_banned_in_tests"] = _banned(tree)
+        result.update(rule_indicators(tests_source))
         result["7_fixtures"] = {t.name: [a.arg for a in t.args.args] for t in tests}
         payment = next((t for t in tests if "success" in t.name), None)
         result["7_payment_test_uses_new_customer_page"] = bool(payment) and "new_customer_page" in [a.arg for a in payment.args.args]
@@ -146,6 +172,7 @@ def main() -> None:
     if (checkout / PAGE).exists():
         findings = audit_paths([checkout / PAGE])
         report["6_weak_selectors_in_page_object"] = [f"{f.selector} ({f.tier})" for f in findings if f.tier in ("css", "fragile")]
+        report["audit_score"] = round(score(audit_paths(sorted((checkout / "framework/pages").glob("*_page.py")))), 2)
         report["3_non_semantic_selectors"] = sorted({f.selector for f in findings if f.tier != "semantic"})
     if (checkout / TESTS).exists():
         collected = _pytest(checkout, "--collect-only", TESTS)
@@ -157,7 +184,7 @@ def main() -> None:
     report["11_changed_paths"] = changed
     report["11_outside_deliverables"] = [p for p in changed if p not in ALLOWED_CHANGES]
     report["size_lines"] = {rel: len((_read(checkout, rel) or "").splitlines()) for rel in (PAGE, TESTS)}
-    out = Path("reports/day18")
+    out = Path(sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv else "reports/day18")
     out.mkdir(parents=True, exist_ok=True)
     (out / f"{label}.json").write_text(json.dumps(report, indent=2) + "\n")
     for key, value in report.items():
