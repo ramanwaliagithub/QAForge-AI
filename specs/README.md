@@ -32,6 +32,9 @@ Every spec has these sections, in this order. Delete none; write "none" where a 
 4. **Say what is out of scope as firmly as what is in.** Agents add things; reviewers pay for them.
 5. **Specify the interface, leave the internals open.** Names and signatures are contracts; how a method is written is not.
 6. **A spec is a file in git.** Change it when the requirement changes, and keep the version that produced the code you merged.
+7. **A spec overrides `CLAUDE.md` where they conflict, silently.** Spec 001 fixed its form fields to `name` attributes (waiving rule L2) and asked only for
+   "no confirmation" in rejection tests (waiving T4), and the agent that had read both followed the spec each time (`docs/notes/day19.md`). If a spec
+   waives a repo rule, say so under Constraints; otherwise write the spec so it does not forbid one.
 
 ## Using a spec
 

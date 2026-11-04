@@ -54,7 +54,8 @@ Code
 Done means
 - [D1] You ran the new tests with `--reruns=0`, serially and with `-n 3`, plus `tests/test_locator_quality.py tests/test_lint.py tests/test_docstrings.py tests/test_sources_parse.py`, and your
   report says what ran, what passed and what you did not run.
-- [D2] You changed only the files the task needs. If another file should change, say so in the report instead of editing it.
+- [D2] You changed only the files the task needs. If a test needs a small helper that another file lacks (a locator on an existing page object, say), add it and list it
+  in the report. Never drop a check just to avoid touching another file; if a bigger change seems needed, say so in the report.
 - [D3] Given a spec, its Deliverables, Constraints and Out of scope bind you. Report any criterion you could not meet and which facts you verified yourself.
 
 ## Git

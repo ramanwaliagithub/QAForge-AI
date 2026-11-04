@@ -34,4 +34,5 @@ checklist is `docs/test-writing-checklist.md`. The rule ids below are the same i
 - [C1] Docstrings: modules, public classes, public functions of 8+ lines in `framework/`, `scripts/`, `ai_testgen/`, `conftest.py`.
 - [C2] pyflakes clean; every `.py` parses. [C3] No new dependency unless asked.
 - [D1] Run the new tests with `--reruns=0` serially and with `-n 3`, plus the four repo checks, and say what you did not run.
-- [D2] Change only the files the task needs. [D3] Given a spec, its Deliverables and Out of scope bind you.
+- [D2] Change only the files the task needs; a small helper another file lacks may be added (list it); never drop a check to avoid touching a file.
+- [D3] Given a spec, its Deliverables and Out of scope bind you.

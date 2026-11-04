@@ -41,6 +41,7 @@ Tests (name: what it asserts):
 ## Constraints
 
 - <Must hold. e.g. act through the base-class helpers.>
+- Rules from `CLAUDE.md` this spec waives or changes: <none, or the rule ids and why>.
 
 ## Out of scope
 
