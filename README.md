@@ -22,8 +22,8 @@ uv run pytest -q
 
 ## Status
 
-Day 19 of 60: Phase 3 (AI-assisted development workflows) is under way: [specs](specs/README.md) that agents can execute (Day 18) and agent
-instruction files, [CLAUDE.md](CLAUDE.md) and [Copilot instructions](.github/copilot-instructions.md) (Day 19).
+Day 20 of 60: Phase 3 (AI-assisted development workflows) is under way: [specs](specs/README.md) that agents can execute (Day 18) and agent
+instruction files, [CLAUDE.md](CLAUDE.md) and [Copilot instructions](.github/copilot-instructions.md) (Day 19), and a [review checklist](docs/test-review-checklist.md) applied to the Bill Pay tests (Day 20: 7/8 to 8/8 injected bugs caught).
 Phase 2 (AI test generation and self-healing) is complete, tagged `v0.2-ai-testgen`; the honest numbers are in
 [docs/phase2-results.md](docs/phase2-results.md): 1 of 15 generated tests passes, locator healing is 7/7 on a held-out set, and the suite is
 stable (0 failures in 30 parallel runs with reruns off). The spec-vs-vague-prompt comparison is in [docs/notes/day18.md](docs/notes/day18.md); what the instruction files did and did not change is in [docs/notes/day19.md](docs/notes/day19.md).
