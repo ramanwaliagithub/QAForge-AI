@@ -231,10 +231,10 @@ qaforge-ai/
 - Commit: `docs: agent instruction files`
 
 ### Day 20: Reviewing AI-generated tests
-- [ ] Build a review checklist (assertions meaningful? waits? independence? data?)
-- [ ] Review the 5 generated tests from Day 18 against it
-- [ ] List defects found (weak asserts, hardcoded data, hidden dependencies)
-- [ ] Fix them by hand
+- [x] Build a review checklist (assertions meaningful? waits? independence? data?)
+- [x] Review the 5 generated tests from Day 18 against it
+- [x] List defects found (weak asserts, hardcoded data, hidden dependencies)
+- [x] Fix them by hand
 - Commit: `docs: ai test review checklist, fixes`
 
 ### Day 21: Automated quality gates for generated code

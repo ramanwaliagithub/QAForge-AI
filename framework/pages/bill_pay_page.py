@@ -1,5 +1,7 @@
 """Page object for ParaBank's Bill Pay screen (/billpay.htm)."""
 
+import re
+
 from playwright.sync_api import Locator, expect
 
 from framework.pages.base_page import BasePage
@@ -27,6 +29,12 @@ class BillPayPage(BasePage):
         "amount": "amount",
     }
 
+    # The part after `validationModel-` of every error span on the page.
+    ERROR_IDS = (
+        "name", "address", "city", "state", "zipCode", "phoneNumber", "account-empty", "account-invalid",
+        "verifyAccount-empty", "verifyAccount-invalid", "verifyAccount-mismatch", "amount-empty", "amount-invalid",
+    )
+
     @property
     def heading(self) -> Locator:
         """The form's heading, "Bill Payment Service" (hidden once the confirmation replaces the form)."""
@@ -47,8 +55,8 @@ class BillPayPage(BasePage):
 
     @property
     def from_account(self) -> Locator:
-        """The From account dropdown. It has no accessible name and no id; its form `name` is the stable handle."""
-        return self.page.locator("select[name='fromAccountId']")
+        """The From account dropdown, found as the combobox in the table row labelled "From account #:" (it has no name of its own)."""
+        return self.page.get_by_role("row", name=re.compile(r"^From account #:")).get_by_role("combobox")
 
     def field(self, name: str) -> Locator:
         """One of the nine text inputs, by its FIELDS keyword name (e.g. "payee_name")."""
@@ -58,8 +66,11 @@ class BillPayPage(BasePage):
         """ONE validation message, by the part of its id after `validationModel-` (e.g. "verifyAccount-mismatch").
 
         Matched by id, because the visible texts repeat ("Account number is required." is shown for both account and verify
-        account), so a text locator matches two elements. Each id is hand-written and unique on the page.
+        account), so a text locator matches two elements. Each id is hand-written and unique on the page. An id that is not in
+        ERROR_IDS is refused: a typo would match nothing, and `not_to_be_visible()` passes on a locator that matches nothing.
         """
+        if message_id not in self.ERROR_IDS:
+            raise ValueError(f"unknown bill pay error id {message_id!r}; use one of {self.ERROR_IDS}")
         return self.page.locator(f"#validationModel-{message_id}")
 
     def open(self) -> "BillPayPage":

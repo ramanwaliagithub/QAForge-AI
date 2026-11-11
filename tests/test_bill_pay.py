@@ -39,6 +39,13 @@ REQUIRED_MESSAGES = {
 }
 
 
+def _record_payment_requests(page) -> list[str]:
+    """URLs of the payment requests the browser sends from now on. A rejected form must send none (CLAUDE.md T4)."""
+    sent: list[str] = []
+    page.on("request", lambda r: sent.append(r.url) if r.method == "POST" and "/bank/billpay" in r.url else None)
+    return sent
+
+
 def _payment(**changes: str) -> dict[str, str]:
     """The valid payment with some fields replaced."""
     return {**VALID_PAYMENT, **changes}
@@ -63,25 +70,34 @@ def test_bill_pay_form_shows_every_field_and_the_customers_account(new_customer_
 
 
 def test_empty_submit_requires_every_field(logged_in_page, base_url):
-    bill_pay = BillPayPage(logged_in_page, base_url).open().pay()
+    bill_pay = BillPayPage(logged_in_page, base_url).open()
+    sent = _record_payment_requests(logged_in_page)
+    bill_pay.pay()
     for message_id, text in REQUIRED_MESSAGES.items():
         expect(bill_pay.field_error(message_id)).to_be_visible()
         expect(bill_pay.field_error(message_id)).to_have_text(text)
     expect(bill_pay.result_heading).not_to_be_visible()
+    assert not sent, f"a rejected form sent a payment request: {sent}"
 
 
 def test_mismatched_account_numbers_are_refused(logged_in_page, base_url):
-    bill_pay = BillPayPage(logged_in_page, base_url).open().pay(**_payment(verify_account="54321"))
+    bill_pay = BillPayPage(logged_in_page, base_url).open()
+    sent = _record_payment_requests(logged_in_page)
+    bill_pay.pay(**_payment(verify_account="54321"))
     expect(bill_pay.field_error("verifyAccount-mismatch")).to_be_visible()
     expect(bill_pay.field_error("verifyAccount-mismatch")).to_have_text("The account numbers do not match.")
     expect(bill_pay.result_heading).not_to_be_visible()
+    assert not sent, f"a rejected form sent a payment request: {sent}"
 
 
 def test_non_numeric_amount_is_refused(logged_in_page, base_url):
-    bill_pay = BillPayPage(logged_in_page, base_url).open().pay(**_payment(amount="abc"))
+    bill_pay = BillPayPage(logged_in_page, base_url).open()
+    sent = _record_payment_requests(logged_in_page)
+    bill_pay.pay(**_payment(amount="abc"))
     expect(bill_pay.field_error("amount-invalid")).to_be_visible()
     expect(bill_pay.field_error("amount-invalid")).to_have_text("Please enter a valid amount.")
     expect(bill_pay.result_heading).not_to_be_visible()
+    assert not sent, f"a rejected form sent a payment request: {sent}"
 
 
 def test_successful_payment_is_confirmed_and_debits_the_account(new_customer_page, base_url):

@@ -14,16 +14,15 @@ PAGES = sorted(Path("framework/pages").glob("*_page.py"))
 ACCEPTED = {
     "input[name='username']": "login inputs have no accessible name; `name` is the server form-binding contract",
     "input[name='password']": "same as username",
-    "input[name='{}']": "registration inputs have no accessible name; the name is the form-binding contract",
+    "input[name='{}']": "registration and bill-pay inputs have no accessible name; the name is the form-binding contract",
     "input[name='repeatedPassword']": "same as the registration fields",
     "#amount": "transfer amount input has no label association; hand-written id",
     "#fromAccountId": "dropdowns have no accessible name; hand-written id, and there are two on some pages",
     "#toAccountId": "same as #fromAccountId",
     "p.error": "ParaBank marks errors only with a CSS class (no role=alert); several can appear at once",
-    "select[name='fromAccountId']": "bill pay From dropdown has no accessible name and no id (#fromAccountId there is the confirmation's span); `name` is the form-binding contract",
     "#validationModel-{}": "bill pay validation messages are <span class=error> with hand-written ids and no role=alert; their texts repeat (account and verify account), so the id is the only unique handle",
 }
-MIN_SCORE = 2.5  # current score is 2.58; raise the floor when it improves, never lower it
+MIN_SCORE = 2.6  # current score is 2.6; raise the floor when it improves, never lower it
 
 
 def _non_semantic():
