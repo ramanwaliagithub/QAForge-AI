@@ -145,7 +145,7 @@ def validate_suggestion(page, s: LocatorSuggestion, failed_locator: str | None =
     or an element the intended action cannot work on."""
     if failed_locator and _normalise(render_locator(s)) == _normalise(failed_locator):
         return Validation(False, -1, "Same locator as the one that failed.")
-    if s.strategy == "css" and classify_css(s.css) == "fragile":
+    if s.strategy == "css" and classify_css(s.css or "") == "fragile":
         return Validation(False, -1, f"CSS selector {s.css!r} is fragile (class, structure, position or XPath); "
                                       "use role/label/text, or an id or name attribute.")
     try:
@@ -178,7 +178,7 @@ def _element_role(el: dict) -> str | None:
         return "combobox"
     if tag == "textarea" or (tag == "input" and typ not in ("checkbox", "radio", "hidden")):
         return "textbox"
-    return typ if tag == "input" else {"h1": "heading", "h2": "heading", "h3": "heading"}.get(tag)
+    return typ if tag == "input" else {"h1": "heading", "h2": "heading", "h3": "heading"}.get(tag or "")
 
 
 def action_compatible(action: str | None, el: dict) -> bool:

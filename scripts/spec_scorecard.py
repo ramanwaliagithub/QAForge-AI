@@ -133,7 +133,7 @@ def static_checks(page_source: str | None, tests_source: str | None, init_source
         result.update(rule_indicators(tests_source))
         result["7_fixtures"] = {t.name: [a.arg for a in t.args.args] for t in tests}
         payment = next((t for t in tests if "success" in t.name), None)
-        result["7_payment_test_uses_new_customer_page"] = bool(payment) and "new_customer_page" in [a.arg for a in payment.args.args]
+        result["7_payment_test_uses_new_customer_page"] = payment is not None and "new_customer_page" in [a.arg for a in payment.args.args]
     return result
 
 

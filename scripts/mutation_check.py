@@ -15,6 +15,7 @@ import sys
 import tempfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from typing import Any
 
 PLUGIN_DIR = Path(__file__).resolve().parent / "mutation_plugin"
 TESTS = "tests/test_bill_pay.py"
@@ -39,7 +40,7 @@ def build_command(junit: Path) -> list[str]:
 
 def failed_tests(junit: Path) -> list[str]:
     """Names of the tests that failed or errored in a junit file."""
-    return sorted(case.get("name") for case in ET.parse(junit).getroot().iter("testcase")
+    return sorted(case.get("name", "") for case in ET.parse(junit).getroot().iter("testcase")
                   if any(child.tag in ("failure", "error") for child in case))
 
 
@@ -62,12 +63,12 @@ def main() -> None:
     baseline = run(checkout, None)
     if baseline:
         sys.exit(f"baseline is not green, nothing to mutate: {baseline}")
-    results = {}
+    results: dict[str, dict[str, Any]] = {}
     for name in MUTANTS:
         failing = run(checkout, name)
         results[name] = {"killed": bool(failing), "failing_tests": failing, "models": MUTANTS[name]}
         print(f"{name:30} {'KILLED  ' if failing else 'SURVIVED'} {', '.join(failing)}", flush=True)
-    killed = sum(r["killed"] for r in results.values())
+    killed = sum(bool(r["killed"]) for r in results.values())
     report = {"label": label, "killed": killed, "total": len(results), "mutants": results}
     out.mkdir(parents=True, exist_ok=True)
     (out / f"{label}-mutation.json").write_text(json.dumps(report, indent=2) + "\n")

@@ -27,7 +27,7 @@ TEMPERATURE = float(ARGS[1]) if len(ARGS) > 1 else 0.0
 RUNS = int(ARGS[2]) if len(ARGS) > 2 else 1
 WHICH = ARGS[3] if len(ARGS) > 3 else "all"
 
-SETS = []  # (set name, folder, truth dict or None for controls)
+SETS: list[tuple[str, str, dict]] = []  # (set name, folder, truth dict or None for controls)
 if WHICH in ("tuned", "all"):
     SETS += [("tuned", "samples", dict(TUNED)), ("controls", "samples", dict.fromkeys(CONTROLS))]
 if WHICH in ("heldout", "all"):
@@ -54,7 +54,7 @@ with sync_playwright() as p:
                 repaired = [a.repaired_from for a in result.attempts if a.repaired_from]
                 rows.append({
                     "set": set_name, "sample": name, "kind": ctx.error.kind, "guard_attempts": should_attempt(ctx), "run": run + 1,
-                    "healed": result.healed, "correct": bool(result.healed and truth and matches(result.element, truth)),
+                    "healed": result.healed, "correct": bool(result.healed and truth and result.element is not None and matches(result.element, truth)),
                     "attempts": len(result.attempts), "suggestion": result.source, "element": result.element,
                     "rejections": [a.rejected_because for a in result.attempts if a.rejected_because],
                     "first_try_valid": bool(first and first.validation and first.validation.ok),

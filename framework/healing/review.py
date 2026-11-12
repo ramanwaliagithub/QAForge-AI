@@ -170,7 +170,7 @@ def render_markdown(review: dict, events: list[dict] | None = None, roots=DEFAUL
     if events:
         skipped = [e for e in events if e.get("outcome") not in ("healed", "retry_failed", None)]
         if skipped:
-            by = defaultdict(int)
+            by: defaultdict[str, int] = defaultdict(int)
             for e in skipped:
                 by[e["outcome"]] += 1
             out += ["Not proposals (nothing to review): " + ", ".join(f"{n}x {k}" for k, n in sorted(by.items())) + ".", ""]

@@ -20,7 +20,8 @@ from framework.pages import RegisterPage
 
 BASE = os.getenv("BASE_URL", "http://localhost:8080/parabank")
 N = int(sys.argv[1]) if len(sys.argv) > 1 else 40
-results, lock, user = collections.Counter(), threading.Lock(), {}
+results: collections.Counter[str] = collections.Counter()
+lock, user = threading.Lock(), {}
 
 
 def _login(page, username, password):
@@ -69,6 +70,8 @@ with sync_playwright() as p:
     browser.close()
 
 threads = [threading.Thread(target=in_own_browser, args=(fn, N)) for fn in (bad_logins, bad_logins, good_logins, good_logins)]
-[t.start() for t in threads]
-[t.join() for t in threads]
+for t in threads:
+    t.start()
+for t in threads:
+    t.join()
 print(dict(results))

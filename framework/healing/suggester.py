@@ -53,7 +53,8 @@ class HealResult:
 
     @property
     def element(self) -> dict | None:
-        return self.attempts[-1].validation.element if self.healed else None
+        validation = self.attempts[-1].validation
+        return validation.element if self.healed and validation else None
 
 
 def should_attempt(ctx: FailureContext, allow_maybe: bool = False) -> bool:

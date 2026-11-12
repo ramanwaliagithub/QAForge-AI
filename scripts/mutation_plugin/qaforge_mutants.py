@@ -100,4 +100,4 @@ def pytest_configure(config):
         _install(context, mutant)
         return context
 
-    Browser.new_context = new_context
+    Browser.new_context = new_context  # type: ignore[method-assign]  # the whole point: wrap every context a test opens

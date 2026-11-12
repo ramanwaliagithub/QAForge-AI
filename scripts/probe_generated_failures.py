@@ -10,6 +10,7 @@ the app does not have), so any suggestion that validates is a FALSE heal; that i
 import json
 import sys
 from pathlib import Path
+from typing import Any
 
 from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
@@ -27,7 +28,7 @@ with sync_playwright() as p:
     browser = p.chromium.launch()
     for ctx in contexts:
         e = ctx.error
-        row = {"test": ctx.test_id.split("::")[-1], "kind": e.kind, "heal_hint": e.heal_hint, "raised_in": e.raised_in,
+        row: dict[str, Any] = {"test": ctx.test_id.split("::")[-1], "kind": e.kind, "heal_hint": e.heal_hint, "raised_in": e.raised_in,
                "action": e.action, "locator": e.locator, "guard_attempts": should_attempt(ctx),
                "suggestion": None, "validated": False}
         if row["guard_attempts"]:
@@ -39,7 +40,7 @@ with sync_playwright() as p:
         rows.append(row)
     browser.close()
 
-summary = {"failures": len(rows), "by_kind": {}, "by_hint": {}, "guard_would_attempt": sum(r["guard_attempts"] for r in rows),
+summary: dict[str, Any] = {"failures": len(rows), "by_kind": {}, "by_hint": {}, "guard_would_attempt": sum(r["guard_attempts"] for r in rows),
            "validated_suggestions": sum(r["validated"] for r in rows),
            "reached_healer_at_run_time": sum(r["raised_in"] == "page_object" for r in rows)}
 for r in rows:

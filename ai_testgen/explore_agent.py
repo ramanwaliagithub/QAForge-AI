@@ -6,6 +6,7 @@ old tool results shortened so the context window is not exhausted by page snapsh
 import json
 import re
 from dataclasses import dataclass, field
+from typing import Any
 
 ALLOWED_TOOLS = (
     "browser_navigate", "browser_snapshot", "browser_click", "browser_type",
@@ -56,7 +57,7 @@ def to_ollama_tools(mcp_tools, allowed=ALLOWED_TOOLS) -> list[dict]:
 _ALIASES = ("ref", "id", "element_ref", "element_id", "selector", "element")
 
 
-def repair_args(args: dict, schema: dict) -> dict:
+def repair_args(args: dict, schema: dict | None) -> dict:
     """Fix argument names a small model gets wrong, using the tool's JSON schema.
 
     - drops arguments the schema does not know (the server rejects them);
@@ -107,7 +108,7 @@ async def run_agent(llm_chat, session, tools: list[dict], system: str, task: str
 
     call = call_tool or default_call
     schemas = {t["function"]["name"]: t["function"].get("parameters") for t in tools}
-    messages = [{"role": "system", "content": system}, {"role": "user", "content": task}]
+    messages: list[dict[str, Any]] = [{"role": "system", "content": system}, {"role": "user", "content": task}]
     run = AgentRun()
     for n in range(1, max_steps + 1):
         reply = llm_chat(messages, tools)

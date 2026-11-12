@@ -150,7 +150,7 @@ class Healer:
                                  temperature=self.config.temperature, action=action)
         event.attempts = len(result.attempts)
         event.rejections = [a.rejected_because for a in result.attempts if a.rejected_because]
-        if not result.healed:
+        if not result.healed or result.suggestion is None:
             event.outcome = "no_suggestion"
             return None
         self._cache[key] = result.suggestion

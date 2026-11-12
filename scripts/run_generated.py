@@ -29,7 +29,7 @@ for case in ET.parse(junit).getroot().iter("testcase"):
         reason = (problem.get("message") or problem.text or "").strip().splitlines()[0][:160]
     rows.append({"test": case.get("classname", "").split(".")[-1], "passed": problem is None, "reason": reason})
 
-passed = sum(r["passed"] for r in rows)
+passed = sum(bool(r["passed"]) for r in rows)
 summary = {"label": label, "total": len(rows), "passed": passed, "pass_rate": round(passed / len(rows), 3) if rows else 0, "results": rows}
 (out_dir / f"{label}.json").write_text(json.dumps(summary, indent=2) + "\n")
 print(f"{label}: {passed}/{len(rows)} passed ({summary['pass_rate']:.0%})")

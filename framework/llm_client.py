@@ -66,7 +66,7 @@ class OllamaClient:
         log.info("llm_call", extra={"model": self.model, "temperature": temperature, "latency_s": round(latency, 2)})
         return LLMResponse(
             text=resp["message"]["content"],
-            model=self.model,
+            model=self.model or "",
             latency_s=latency,
             prompt_tokens=resp.get("prompt_eval_count"),
             completion_tokens=resp.get("eval_count"),

@@ -37,7 +37,7 @@ class BasePage:
         except PlaywrightError as exc:
             healer = runtime.current()
             proposal = healer.heal(self.page, action, locator, exc) if healer else None
-            if proposal is None:
+            if healer is None or proposal is None:
                 raise
             log.info("retry_with_healed_locator", extra={"action": action, "locator": proposal.event.suggestion})
             try:
