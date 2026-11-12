@@ -49,6 +49,6 @@ out = Path("reports/phase2")
 out.mkdir(parents=True, exist_ok=True)
 (out / "generated_probe.json").write_text(json.dumps({"summary": summary, "rows": rows}, indent=2) + "\n")
 for r in rows:
-    print(f"{r['kind']:26} hint={r['heal_hint']:8} in={r['raised_in']:11} guard={str(r['guard_attempts']):5} {r['test']}"
+    print(f"{r['kind']:26} hint={r['heal_hint']:8} in={r['raised_in']:11} guard={r['guard_attempts']!s:5} {r['test']}"
           + (f"  -> {r['suggestion']}" if r["suggestion"] else ""))
 print(json.dumps(summary, indent=1))

@@ -151,7 +151,7 @@ def validate_suggestion(page, s: LocatorSuggestion, failed_locator: str | None =
     try:
         loc = build_locator(page, s)
         count = loc.count()
-    except Exception as e:  # noqa: BLE001: an invalid role or selector from the model
+    except Exception as e:  # an invalid role or selector from the model
         return Validation(False, -1, f"Locator is invalid: {str(e).splitlines()[0][:140]}")
     if count == 0:
         return Validation(False, 0, "Matches no element on the page.")

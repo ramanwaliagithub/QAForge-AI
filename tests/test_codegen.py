@@ -1,7 +1,14 @@
 import pytest
 
 from ai_testgen.codegen import (
-    CodegenError, load_examples, check_code, extract_code, generate_test_code, page_object_summary, render_codegen_prompt, slugify,
+    CodegenError,
+    check_code,
+    extract_code,
+    generate_test_code,
+    load_examples,
+    page_object_summary,
+    render_codegen_prompt,
+    slugify,
     write_test_file,
 )
 from ai_testgen.schema import TestCase
@@ -24,7 +31,7 @@ def test_check_code_accepts_good():
 
 
 @pytest.mark.parametrize(
-    "code, fragment",
+    ("code", "fragment"),
     [
         ("def test_x(:\n", "SyntaxError"),
         ("def helper():\n    pass\n", "exactly one"),

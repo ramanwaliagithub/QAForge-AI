@@ -25,7 +25,7 @@ def _truth_as_css(truth):
     return None
 
 
-@pytest.mark.parametrize("dir_name, name", CASES)
+@pytest.mark.parametrize(("dir_name", "name"), CASES)
 def test_the_correct_answer_exists_in_the_captured_page(dir_name, name):
     truth = SETS[dir_name][name]
     elements = _ctx(dir_name, name).page.elements
@@ -34,7 +34,7 @@ def test_the_correct_answer_exists_in_the_captured_page(dir_name, name):
     ), f"{name}: no captured element matches {truth}"
 
 
-@pytest.mark.parametrize("dir_name, name", [c for c in CASES if _truth_as_css(SETS[c[0]][c[1]])])
+@pytest.mark.parametrize(("dir_name", "name"), [c for c in CASES if _truth_as_css(SETS[c[0]][c[1]])])
 def test_the_correct_answer_resolves_to_exactly_one_element(browser, dir_name, name):
     ctx = _ctx(dir_name, name)
     context, page = open_snapshot(browser, ctx)

@@ -3,7 +3,11 @@ import json
 import pytest
 
 from framework.healing.collector import (
-    FailureContext, capture_page_state, collect_failure_context, load_failure_context, slugify,
+    FailureContext,
+    capture_page_state,
+    collect_failure_context,
+    load_failure_context,
+    slugify,
 )
 
 HTML = """<html><head><title>Fixture page</title></head><body>
@@ -53,7 +57,7 @@ def _real_locator_failure(page):
     page.set_default_timeout(500)
     try:
         page.locator("#amt").fill("5")  # the real id is #amount
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         return e
     pytest.fail("expected a timeout")
 

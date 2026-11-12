@@ -6,7 +6,7 @@ and problems are recorded in `capture_errors` instead.
 import json
 import re
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from framework.healing.errors import ErrorInfo, analyze_exception
@@ -76,7 +76,7 @@ def capture_page_state(page, max_html: int = 30_000) -> PageState:
     def attempt(name, fn):
         try:
             return fn()
-        except Exception as e:  # noqa: BLE001: the page may be closed or mid-navigation; record, do not raise
+        except Exception as e:  # the page may be closed or mid-navigation; record, do not raise
             state.capture_errors.append(f"{name}: {type(e).__name__}: {str(e).splitlines()[0][:160] if str(e) else ''}")
             return None
 
@@ -104,18 +104,18 @@ def collect_failure_context(page, test_id: str, exc: BaseException, out_dir: Pat
         try:
             (out_dir / f"{slug}.png").write_bytes(page.screenshot(full_page=True))
             shot_name = f"{slug}.png"
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             state.capture_errors.append(f"screenshot: {type(e).__name__}")
 
         ctx = FailureContext(
             schema=SCHEMA_VERSION, test_id=test_id,
-            collected_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            collected_at=datetime.now(UTC).isoformat(timespec="seconds"),
             error=analyze_exception(exc, project_root), page=state, screenshot=shot_name,
         )
         path = out_dir / f"{slug}.json"
         path.write_text(json.dumps(ctx.to_dict(), indent=2) + "\n")
         return path
-    except Exception:  # noqa: BLE001: never let the collector mask the real failure
+    except Exception:  # never let the collector mask the real failure
         return None
 
 

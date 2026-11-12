@@ -48,7 +48,7 @@ def test_defaults_applied():
 
 
 @pytest.mark.parametrize(
-    "text, fragment",
+    ("text", "fragment"),
     [
         ("not json at all", "No JSON"),
         ('{"test_cases": [', "Invalid JSON"),

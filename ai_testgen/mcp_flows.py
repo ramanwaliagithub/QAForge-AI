@@ -55,7 +55,7 @@ async def register(session, base_url: str, username: str, password: str = "Passw
     values = ["Mcp", "Tester", "1 Test Street", "Testville", "CA", "90210", "5550100", "123-45-6789", username, password, password]
     # two login textboxes come first on the page, then the 11 registration fields
     fields = [{"name": n, "type": "textbox", "target": find_ref(snap, "textbox", nth=i + 2), "value": v}
-              for i, (n, v) in enumerate(zip(REGISTER_FIELDS, values))]
+              for i, (n, v) in enumerate(zip(REGISTER_FIELDS, values, strict=True))]
     snap = await act(session, "browser_fill_form", {"fields": fields})
     return await act(session, "browser_click", {"target": find_ref(snap, "button", "Register")})
 

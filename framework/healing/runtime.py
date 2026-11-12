@@ -14,7 +14,7 @@ a replacement, retries the action ONCE with it, and records everything as a `Hea
 import contextlib
 import time
 from dataclasses import asdict, dataclass, field, replace
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from urllib.parse import urlparse
 
 from framework.healing.collector import FailureContext, capture_page_state
@@ -22,7 +22,11 @@ from framework.healing.definitions import find_definitions
 from framework.healing.errors import analyze_exception, stack_frames
 from framework.healing.suggester import suggest_locator
 from framework.healing.suggestion import (
-    LocatorSuggestion, build_locator, failed_role, render_locator, validate_suggestion,
+    LocatorSuggestion,
+    build_locator,
+    failed_role,
+    render_locator,
+    validate_suggestion,
 )
 from framework.logging_utils import get_logger
 
@@ -108,14 +112,14 @@ class Healer:
         started = time.perf_counter()
         info = analyze_exception(exc)
         event = HealEvent(
-            test_id=self.test_id, time=datetime.now(timezone.utc).isoformat(timespec="seconds"), action=action,
+            test_id=self.test_id, time=datetime.now(UTC).isoformat(timespec="seconds"), action=action,
             page_url=_safe(lambda: page.url, ""), failed_locator=info.locator, kind=info.kind, heal_hint=info.heal_hint,
             definitions=find_definitions(info.locator), caller_frames=stack_frames(), error_message=info.message[:400],
         )
         self.events.append(event)
         try:
             return self._heal(page, action, info, event)
-        except Exception as e:  # noqa: BLE001: healing must never turn a test failure into a different failure
+        except Exception as e:  # healing must never turn a test failure into a different failure
             event.outcome, event.error_message = "error", f"{type(e).__name__}: {str(e)[:300]}"
             log.warning("heal_error", extra={"test": self.test_id, "error": event.error_message})
             return None
@@ -169,7 +173,7 @@ class Healer:
 def _safe(fn, default):
     try:
         return fn()
-    except Exception:  # noqa: BLE001
+    except Exception:
         return default
 
 

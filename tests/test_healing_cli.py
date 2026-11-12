@@ -136,7 +136,7 @@ def test_without_yes_and_without_a_terminal_nothing_is_applied(repo):
     write_events(repo, AMOUNT)
     cli("report")
     cli("approve", ids(repo)[AMOUNT[0]])
-    code, out = cli("apply", tty=False)
+    _, out = cli("apply", tty=False)
     assert "re-run with --yes" in out and page_text(repo) == PAGE
 
 
@@ -144,9 +144,9 @@ def test_the_interactive_prompt_must_say_yes(repo):
     write_events(repo, AMOUNT)
     cli("report")
     cli("approve", ids(repo)[AMOUNT[0]])
-    code, out = cli("apply", answer="n")
+    _, out = cli("apply", answer="n")
     assert "skipped" in out and page_text(repo) == PAGE
-    code, out = cli("apply", answer="y")
+    _, out = cli("apply", answer="y")
     assert "applied to pages/p.py:4" in out and 'locator("#amount")' in page_text(repo)
 
 

@@ -80,7 +80,7 @@ def plan_patch(old_expr: str, new_expr: str, roots=DEFAULT_ROOTS, repo_root: Pat
     # keep the file's quoting style: if it matched the single-quoted spelling, write the new locator the same way
     replacement = new_expr.replace('"', "'") if hit["matched"] != old_expr and "'" not in new_expr else new_expr
     new_line = old_line.replace(hit["matched"], replacement, 1)
-    new_content = "".join(lines[: hit["line"] - 1] + [new_line] + lines[hit["line"]:])
+    new_content = "".join([*lines[: hit["line"] - 1], new_line, *lines[hit["line"]:]])
     try:
         ast.parse(new_content)
     except SyntaxError as e:

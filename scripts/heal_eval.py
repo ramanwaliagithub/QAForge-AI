@@ -21,7 +21,7 @@ from framework.healing.suggester import open_snapshot, should_attempt, suggest_l
 from framework.llm_client import get_client
 
 load_dotenv()
-ARGS = [a for a in sys.argv[1:]]
+ARGS = sys.argv[1:]
 LABEL = ARGS[0] if len(ARGS) > 0 else "heal_eval"
 TEMPERATURE = float(ARGS[1]) if len(ARGS) > 1 else 0.0
 RUNS = int(ARGS[2]) if len(ARGS) > 2 else 1
@@ -29,15 +29,15 @@ WHICH = ARGS[3] if len(ARGS) > 3 else "all"
 
 SETS = []  # (set name, folder, truth dict or None for controls)
 if WHICH in ("tuned", "all"):
-    SETS += [("tuned", "samples", {n: t for n, t in TUNED.items()}), ("controls", "samples", {n: None for n in CONTROLS})]
+    SETS += [("tuned", "samples", dict(TUNED)), ("controls", "samples", dict.fromkeys(CONTROLS))]
 if WHICH in ("heldout", "all"):
-    SETS += [("heldout", "samples_heldout", {n: t for n, t in HELDOUT.items()})]
+    SETS += [("heldout", "samples_heldout", dict(HELDOUT))]
 if WHICH in ("heldout2", "all"):
-    SETS += [("heldout2", "samples_heldout2", {n: t for n, t in HELDOUT2.items()})]
+    SETS += [("heldout2", "samples_heldout2", dict(HELDOUT2))]
 if WHICH in ("heldout3", "all"):
-    SETS += [("heldout3", "samples_heldout3", {n: t for n, t in HELDOUT3.items()})]
+    SETS += [("heldout3", "samples_heldout3", dict(HELDOUT3))]
 if WHICH in ("heldout4", "all"):
-    SETS += [("heldout4", "samples_heldout4", {n: t for n, t in HELDOUT4.items()})]
+    SETS += [("heldout4", "samples_heldout4", dict(HELDOUT4))]
 
 client = get_client()
 rows = []
@@ -89,7 +89,7 @@ out.mkdir(parents=True, exist_ok=True)
 
 for r in rows:
     tag = "CORRECT" if r["correct"] else ("healed-WRONG" if r["healed"] else "not healed")
-    print(f"[{r['set']:8}] {r['sample']:26} guard={str(r['guard_attempts']):5} attempts={r['attempts']} {tag:12} {r['suggestion']}")
+    print(f"[{r['set']:8}] {r['sample']:26} guard={r['guard_attempts']!s:5} attempts={r['attempts']} {tag:12} {r['suggestion']}")
     for why in r["rejections"]:
         print(f"{'':12}   rejected: {why}")
 print(json.dumps(summary, indent=1))
