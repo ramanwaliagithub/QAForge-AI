@@ -30,6 +30,8 @@ ALLOW = re.compile(r"#\s*qaforge:\s*allow\s+(QF\d{3})\s+\S+")
 
 @dataclass(frozen=True)
 class Finding:
+    """One rule violation: where it is, which rule, and what to do about it."""
+
     path: str
     line: int
     rule: str
