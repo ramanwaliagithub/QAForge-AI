@@ -3,7 +3,13 @@ from concurrent.futures import ThreadPoolExecutor
 from types import SimpleNamespace
 
 from ai_testgen.explore_agent import (
-    ALLOWED_TOOLS, OLD_RESULT_CHARS, parse_text_tool_call, repair_args, run_agent, shorten_old_results, to_ollama_tools,
+    ALLOWED_TOOLS,
+    OLD_RESULT_CHARS,
+    parse_text_tool_call,
+    repair_args,
+    run_agent,
+    shorten_old_results,
+    to_ollama_tools,
 )
 
 

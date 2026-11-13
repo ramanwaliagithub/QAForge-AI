@@ -58,7 +58,7 @@ def _first_str(node: ast.Call) -> str:
     if node.args and isinstance(node.args[0], ast.Constant) and isinstance(node.args[0].value, str):
         return node.args[0].value
     if node.args and isinstance(node.args[0], ast.JoinedStr):  # f-string: keep the literal shape
-        return "".join(p.value if isinstance(p, ast.Constant) else "{}" for p in node.args[0].values)
+        return "".join(str(p.value) if isinstance(p, ast.Constant) else "{}" for p in node.args[0].values)
     return ""
 
 

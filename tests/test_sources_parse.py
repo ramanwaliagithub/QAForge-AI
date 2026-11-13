@@ -9,11 +9,9 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
-FILES = sorted(
-    p for folder in ("scripts", "framework", "ai_testgen", "tests") for p in (ROOT / folder).rglob("*.py")
-) + [ROOT / "conftest.py"]
+FILES = [*sorted(p for folder in ("scripts", "framework", "ai_testgen", "tests") for p in (ROOT / folder).rglob("*.py")), ROOT / "conftest.py"]
 
 
 @pytest.mark.parametrize("path", FILES, ids=lambda p: str(p.relative_to(ROOT)))
-def test_file_parses(path):
+def test_file_parses(path):  # qaforge: allow QF004 a SyntaxError from ast.parse is the failure being tested
     ast.parse(path.read_text(), filename=str(path))

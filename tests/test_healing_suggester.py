@@ -5,7 +5,11 @@ import pytest
 
 from framework.healing.collector import load_failure_context
 from framework.healing.suggester import (
-    build_prompt, format_elements, open_snapshot, should_attempt, suggest_locator,
+    build_prompt,
+    format_elements,
+    open_snapshot,
+    should_attempt,
+    suggest_locator,
 )
 from framework.llm_client import LLMResponse
 

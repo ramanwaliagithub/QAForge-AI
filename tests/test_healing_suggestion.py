@@ -4,7 +4,13 @@ import pytest
 
 from framework.healing.collector import load_failure_context
 from framework.healing.suggestion import (
-    repair_dotted_id, failed_role, LocatorSuggestion, SuggestionParseError, intended_action, parse_suggestion, render_locator,
+    LocatorSuggestion,
+    SuggestionParseError,
+    failed_role,
+    intended_action,
+    parse_suggestion,
+    render_locator,
+    repair_dotted_id,
     validate_suggestion,
 )
 
@@ -38,7 +44,7 @@ def S(**kw):
 
 # ---- schema and rendering ----
 
-@pytest.mark.parametrize("kw, source", [
+@pytest.mark.parametrize(("kw", "source"), [
     (dict(strategy="role", role="button", name="Transfer", exact=True), 'get_by_role("button", name="Transfer", exact=True)'),
     (dict(strategy="role", role="textbox"), 'get_by_role("textbox")'),
     (dict(strategy="label", text="Amount"), 'get_by_label("Amount")'),
@@ -57,7 +63,7 @@ def test_render_locator(kw, source):
     dict(strategy="role", role="button", confidence=2),
 ])
 def test_invalid_suggestions_are_rejected(kw):
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"needs|not allowed|confidence|input|validation"):
         S(**kw)
 
 

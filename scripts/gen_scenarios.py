@@ -1,7 +1,7 @@
 """Generate scenarios for every story at several temperatures: `uv run python -m scripts.gen_scenarios`."""
 from dotenv import load_dotenv
 
-from ai_testgen.scenarios import STORIES_DIR, OUTPUTS_DIR, count_scenarios, generate_scenarios, load_story
+from ai_testgen.scenarios import OUTPUTS_DIR, STORIES_DIR, count_scenarios, generate_scenarios, load_story
 from framework.llm_client import get_client
 
 load_dotenv()

@@ -19,6 +19,7 @@ import time
 import xml.etree.ElementTree as ET
 from collections import Counter
 from pathlib import Path
+from typing import Any
 
 
 def build_command(pytest_args: list[str], junit: Path, allure_dir: Path) -> list[str]:
@@ -66,7 +67,7 @@ def main() -> None:
     label, n_runs, pytest_args = sys.argv[1], int(sys.argv[2]), sys.argv[3:]
     collected = count_collected(pytest_args)
     print(f"selection: {pytest_args or ['tests']}  collects {collected} tests", flush=True)
-    runs = []
+    runs: list[dict[str, Any]] = []
     for i in range(1, n_runs + 1):
         result = run_once(i, pytest_args)
         runs.append(result)
@@ -75,11 +76,11 @@ def main() -> None:
 
     failing_runs = [r for r in runs if r["failures"]]
     per_test = Counter(f["test"] for r in runs for f in r["failures"])
-    reasons = {}
+    reasons: dict[str, Counter[str]] = {}
     for r in runs:
         for f in r["failures"]:
             reasons.setdefault(f["test"], Counter())[f["reason"]] += 1
-    summary = {
+    summary: dict[str, Any] = {
         "label": label, "pytest_args": pytest_args or ["tests"], "runs": n_runs, "reruns": 0, "collected": collected,
         "collection_stable": all(r["tests"] == collected for r in runs),
         "runs_with_any_failure": len(failing_runs),

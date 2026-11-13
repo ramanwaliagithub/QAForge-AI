@@ -1,0 +1,27 @@
+# Runs before every commit: `uv run pre-commit install` once per clone. Same commands CI-style checks use, so a hook failure
+# and a test failure never disagree. Local hooks on purpose: tool versions come from uv.lock, nothing is downloaded at commit time.
+repos:
+  - repo: local
+    hooks:
+      - id: ruff
+        name: ruff (lint)
+        entry: uv run ruff check
+        language: system
+        types: [python]
+      - id: mypy
+        name: mypy (framework, ai_testgen, scripts)
+        entry: uv run mypy
+        language: system
+        types: [python]
+        pass_filenames: false  # mypy needs the whole program, the file list is in pyproject.toml
+      - id: check-tests
+        name: test gate (no fixed waits, no empty assertions)
+        entry: uv run python -m scripts.check_tests
+        language: system
+        types: [python]
+        files: ^(framework|tests|ai_testgen/generated)/
+      - id: no-merge-markers
+        name: no conflict markers or leftover debug breakpoints
+        entry: '^(<<<<<<< |>>>>>>> |\s*(breakpoint\(\)|import pdb))'
+        language: pygrep
+        types: [python]

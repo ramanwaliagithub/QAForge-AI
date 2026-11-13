@@ -7,7 +7,7 @@ import pytest
 from scripts.mutation_check import MUTANTS, PLUGIN_DIR, build_command, failed_tests
 
 sys.path.insert(0, str(PLUGIN_DIR))
-import qaforge_mutants  # noqa: E402
+import qaforge_mutants
 
 
 def test_the_catalogue_and_the_plugin_define_the_same_mutants():

@@ -49,7 +49,7 @@ def test_banned_constructs_are_found_in_both_files():
 
 
 def test_tests_without_an_expect_and_wrong_names_are_reported():
-    got = static_checks(_page(), _tests(names=REQUIRED_TESTS[:4] + ["test_other"], body="assert True"), INIT)
+    got = static_checks(_page(), _tests(names=[*REQUIRED_TESTS[:4], "test_other"], body="assert True"), INIT)
     assert got["4_names_match"] is False and got["4_missing_names"] == [REQUIRED_TESTS[4]]
     assert len(got["5_tests_without_expect"]) == 5
     assert got["7_payment_test_uses_new_customer_page"] is False  # the payment test is missing entirely

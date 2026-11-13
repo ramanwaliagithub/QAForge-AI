@@ -5,7 +5,15 @@ from pathlib import Path
 
 from framework.healing.collector import FailureContext
 from framework.healing.suggestion import (
-    action_compatible, failed_role, repair_dotted_id, LocatorSuggestion, SuggestionParseError, Validation, intended_action, parse_suggestion, render_locator,
+    LocatorSuggestion,
+    SuggestionParseError,
+    Validation,
+    action_compatible,
+    failed_role,
+    intended_action,
+    parse_suggestion,
+    render_locator,
+    repair_dotted_id,
     validate_suggestion,
 )
 from framework.llm_client import LLMClient
@@ -45,7 +53,8 @@ class HealResult:
 
     @property
     def element(self) -> dict | None:
-        return self.attempts[-1].validation.element if self.healed else None
+        validation = self.attempts[-1].validation
+        return validation.element if self.healed and validation else None
 
 
 def should_attempt(ctx: FailureContext, allow_maybe: bool = False) -> bool:

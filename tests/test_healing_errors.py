@@ -20,7 +20,7 @@ EXPECT_WRONG = (
     "Locator expected to have text 'Wire Funds'\nActual value: \n\t\t\tTransfer Funds\n\t\t \nCall log:\n"
     '  - Expect "to_have_text" get_by_role("heading", name="Transfer Funds") with timeout 1500ms\n'
     '  - waiting for get_by_role("heading", name="Transfer Funds")\n'
-    '    16 × locator resolved to <h1 class="title">Transfer Funds</h1>\n'
+    '    16 × locator resolved to <h1 class="title">Transfer Funds</h1>\n'  # noqa: RUF001 (the real Playwright text)
 )
 STRICT = (
     'Locator.click: Error: strict mode violation: locator("option") resolved to 2 elements:\n'
@@ -39,7 +39,7 @@ NOT_ACTIONABLE = (
 )
 
 
-@pytest.mark.parametrize("exc_type, message, kind, locator, action", [
+@pytest.mark.parametrize(("exc_type", "message", "kind", "locator", "action"), [
     (TIMEOUT, ID_MISSING, "locator_not_found", 'locator("#amt")', "fill"),
     (TIMEOUT, ROLE_CHANGED, "locator_not_found", 'get_by_role("button", name="Transfer Money")', "click"),
     (ASSERT, clean_message(EXPECT_MISSING), "assertion_element_missing",

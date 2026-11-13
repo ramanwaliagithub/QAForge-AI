@@ -15,7 +15,7 @@ def sample(name: str):
     return load_failure_context(next(SAMPLES.glob(f"*test_sample_{name}.json")))
 
 
-@pytest.mark.parametrize("name, kind, hint, where, locator", [
+@pytest.mark.parametrize(("name", "kind", "hint", "where", "locator"), [
     ("id_renamed", "locator_not_found", "locator", "page_object", 'locator("#amt")'),
     ("button_text_changed", "locator_not_found", "locator", "page_object",
      'get_by_role("button", name="Transfer Money", exact=True)'),

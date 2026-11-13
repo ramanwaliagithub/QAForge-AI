@@ -3,7 +3,11 @@ import json
 import pytest
 
 from ai_testgen.edge_cases import (
-    EdgeCaseError, classify_outcome, expects_rejection, parse_edge_cases, propose_edge_cases,
+    EdgeCaseError,
+    classify_outcome,
+    expects_rejection,
+    parse_edge_cases,
+    propose_edge_cases,
 )
 from framework.llm_client import LLMResponse
 
@@ -49,7 +53,7 @@ def test_propose_reports_rejected_items():
     assert len(result.cases) == 1 and len(result.rejected) == 1
 
 
-@pytest.mark.parametrize("expected, rejects", [
+@pytest.mark.parametrize(("expected", "rejects"), [
     ("The transfer is rejected with an error message", True),
     ("The transfer should not be allowed", True),
     ("The app should show a validation error", True),

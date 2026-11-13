@@ -11,7 +11,7 @@ import json
 import os
 import warnings
 from dataclasses import asdict
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import allure
@@ -89,7 +89,7 @@ def write_report(events: list[dict], path: str | Path) -> Path:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps({
-        "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "generated_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "model": os.getenv("OLLAMA_MODEL", "llama3.1:8b") if os.getenv("LLM_PROVIDER", "ollama") == "ollama" else os.getenv("LLM_PROVIDER"),
         "note": "Proposals only: no source file was changed. Review each, then fix the page object by hand.",
         "summary": summarize(events), "events": events,

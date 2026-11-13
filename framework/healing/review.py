@@ -9,7 +9,7 @@ import hashlib
 import html
 import json
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from framework.healing.patching import DEFAULT_ROOTS, PatchRefused, locate, plan_patch
@@ -21,7 +21,7 @@ DECISION_FIELDS = ("status", "note", "decided_at", "applied_at", "applied_diff")
 
 
 def now() -> str:
-    return datetime.now(timezone.utc).isoformat(timespec="seconds")
+    return datetime.now(UTC).isoformat(timespec="seconds")
 
 
 def proposal_id(failed: str, suggestion: str) -> str:
@@ -150,7 +150,7 @@ def patch_preview(p: dict, roots=DEFAULT_ROOTS, repo_root: Path | None = None) -
 
 
 def summary_counts(review: dict) -> dict:
-    out = {s: 0 for s in STATUSES}
+    out = dict.fromkeys(STATUSES, 0)
     for p in review["proposals"]:
         out[p["status"]] += 1
     return out
@@ -170,7 +170,7 @@ def render_markdown(review: dict, events: list[dict] | None = None, roots=DEFAUL
     if events:
         skipped = [e for e in events if e.get("outcome") not in ("healed", "retry_failed", None)]
         if skipped:
-            by = defaultdict(int)
+            by: defaultdict[str, int] = defaultdict(int)
             for e in skipped:
                 by[e["outcome"]] += 1
             out += ["Not proposals (nothing to review): " + ", ".join(f"{n}x {k}" for k, n in sorted(by.items())) + ".", ""]

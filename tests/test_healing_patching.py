@@ -43,7 +43,7 @@ def test_role_locator_is_patched_too(repo):
     assert p.line == 8 and 'name="Transfer", exact=True' in p.new_line
 
 
-@pytest.mark.parametrize("old, code", [
+@pytest.mark.parametrize(("old", "code"), [
     ('locator("#not-there")', "no_match"),
     ("locator(\"input[name='customer.firstName']\")", "no_match"),  # built from an f-string at run time
     ("", "incomplete"),

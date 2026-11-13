@@ -8,6 +8,7 @@ import json
 import os
 import uuid
 from pathlib import Path
+from typing import Any
 
 from dotenv import load_dotenv
 
@@ -26,8 +27,9 @@ VALUES = ["Mcp", "Explorer", "1 Test Street", "Testville", "CA", "90210", "55501
 
 async def main():
     user = f"mcp_{uuid.uuid4().hex[:8]}"
-    values = VALUES + [user, "Passw0rd!", "Passw0rd!"]
-    log, pages = [], []
+    values = [*VALUES, user, "Passw0rd!", "Passw0rd!"]
+    log: list[Any] = []
+    pages: list[Any] = []
     RAW.mkdir(parents=True, exist_ok=True)
 
     async with playwright_mcp() as s:

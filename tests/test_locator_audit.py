@@ -3,7 +3,7 @@ import pytest
 from framework.locator_audit import Finding, audit_source, classify_css, score
 
 
-@pytest.mark.parametrize("selector, tier", [
+@pytest.mark.parametrize(("selector", "tier"), [
     ("#amount", "id"),
     ("#customer.firstName", "fragile"),  # reads as id + class: a bug in the selector itself
     ("input[name='username']", "name_attr"),

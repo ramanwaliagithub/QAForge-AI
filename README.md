@@ -22,8 +22,8 @@ uv run pytest -q
 
 ## Status
 
-Day 20 of 60: Phase 3 (AI-assisted development workflows) is under way: [specs](specs/README.md) that agents can execute (Day 18) and agent
-instruction files, [CLAUDE.md](CLAUDE.md) and [Copilot instructions](.github/copilot-instructions.md) (Day 19), and a [review checklist](docs/test-review-checklist.md) applied to the Bill Pay tests (Day 20: 7/8 to 8/8 injected bugs caught).
+Day 21 of 60: Phase 3 (AI-assisted development workflows) is under way: [specs](specs/README.md) that agents can execute (Day 18) and agent
+instruction files, [CLAUDE.md](CLAUDE.md) and [Copilot instructions](.github/copilot-instructions.md) (Day 19), and a [review checklist](docs/test-review-checklist.md) applied to the Bill Pay tests (Day 20: 7/8 to 8/8 injected bugs caught), and automated gates for generated code: ruff, mypy, a [custom test gate](scripts/check_tests.py) and pre-commit hooks (Day 21, [notes](docs/notes/day21.md)).
 Phase 2 (AI test generation and self-healing) is complete, tagged `v0.2-ai-testgen`; the honest numbers are in
 [docs/phase2-results.md](docs/phase2-results.md): 1 of 15 generated tests passes, locator healing is 7/7 on a held-out set, and the suite is
 stable (0 failures in 30 parallel runs with reruns off). The spec-vs-vague-prompt comparison is in [docs/notes/day18.md](docs/notes/day18.md); what the instruction files did and did not change is in [docs/notes/day19.md](docs/notes/day19.md).
@@ -35,6 +35,8 @@ uv run pytest -n 3                                  # parallel; writes allure-re
 uv run python -m scripts.suite_stability suite 30   # flake rate per test over 30 runs, reruns off
 uv run python -m scripts.spec_scorecard <checkout> <label>   # score an agent's implementation of specs/001 (reports/day18/)
 uv run python -m scripts.mutation_check <checkout> <label>   # does its Bill Pay suite notice 8 injected app bugs? (reports/day19/)
+uv run ruff check . && uv run mypy                 # lint and type check
+uv run python -m scripts.check_tests                # no fixed waits, no empty assertions in tests (also a pre-commit hook: uv run pre-commit install)
 allure generate allure-results -o allure-report --clean
 allure open allure-report
 ```

@@ -14,7 +14,37 @@ dependencies = [
 [dependency-groups]
 dev = [
     "allure-pytest>=2.16.2",
+    "mypy>=2.4.1",
+    "pre-commit>=4.7.0",
     "pyflakes>=4.0.3",
     "pytest-rerunfailures>=16.7",
     "pytest-xdist>=3.8.0",
+    "ruff>=0.17.5",
 ]
+
+[tool.ruff]
+line-length = 140
+target-version = "py311"
+extend-exclude = ["allure-report", "allure-results", "test-results"]
+
+[tool.ruff.lint]
+# Chosen, not inherited: bugs (F, B), imports (I), modernisation (UP), simplification (SIM), tests (PT), no print in library code (T20 is off: scripts print).
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "PT", "C4", "RUF"]
+ignore = [
+    "RUF012",  # mutable class defaults on page objects are read-only constants
+    "PT018",   # `assert a and b` is used on purpose when both halves are one fact; the message names the failing half
+    "C408",    # dict(...) keyword form is used for readable fixtures
+    "E501",    # no formatter in this repo; long lines carry URLs and expected texts
+]
+
+[tool.ruff.lint.per-file-ignores]
+"ai_testgen/generated/**" = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+files = ["framework", "ai_testgen", "scripts"]
+exclude = ["ai_testgen/generated/"]
+ignore_missing_imports = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+check_untyped_defs = true
