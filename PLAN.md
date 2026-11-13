@@ -39,6 +39,7 @@ Critical decisions are asked before building and recorded here.
 | 2026-10-30 | Definition of "healing rate" for Phase 2 (Day 17) | Primary number: **healed correctly, at first sight, on samples written after the suggester stopped changing** (held-out set 4, committed before the model ran on it). Always reported next to the wrong-heal count, the guard-eligible subset and the pre-fix pooled figure (5/12). Rates on tuned or diagnosed sets are never quoted alone | "Healed" alone is not enough: a locator that resolves to one element can still be the wrong one (Day 14). Pass rate and flake rate are measured with reruns off |
 | 2026-11-03 | Spec format and how agent output is compared (Day 18) | Eight-section spec (goal, context, deliverables, acceptance criteria, constraints, out of scope, verification, open questions). Comparison: one agent per arm (vague prompt vs spec), same model, own worktree; rubric = the spec's acceptance criteria as a script committed **before** scoring; the spec run's code is adopted **unedited** as the Day 20 review baseline, the vague run is kept as a patch | n = 1 per arm: it shows what a spec changed, not how often. A spec's design hints can close off a better option (the vague run found fully semantic locators the spec ruled out), so facts and hints are written apart |
 | 2026-11-04 | Instruction files and how they are judged (Day 19) | `CLAUDE.md` is the full rule list (ids P/L/T/C/D); `.github/copilot-instructions.md` mirrors the same ids; `docs/test-writing-checklist.md` cites them; `tests/test_agent_instructions.py` keeps the three in sync and caps their length. Judged by a 2 x 2 (vague/spec x with/without context), one run per cell, scored by the Day 18 scorecard plus a mutation check (8 mutants fixed before the runs) | Tuned on spec 001 (rules L2 and T4 came from Day 18's output), so it cannot show generalisation. Result: process changed (agents mutation-test their own tests), output did not improve, and rule D2 cost one run its balance check; D2 was reworded afterwards and the new wording is untested |
+| 2026-11-12 | Quality gates for generated code (Day 21) | ruff with a chosen rule set (four rules ignored, each with a reason), mypy on `framework`, `ai_testgen`, `scripts` (not tests), a custom AST gate `scripts/check_tests.py` (QF001-QF004, opt-out needs a reason), local pre-commit hooks through `uv run` | The gates found no defect in the generated tests (already clean); they guard future output. The custom gate is syntactic: it cannot judge assertion strength, which stays the job of the mutation check |
 | 2026-10-05 | Remote | `https://github.com/ramanwaliagithub/QAForge-AI.git` | |
 
 ## Open-source stack
@@ -238,10 +239,10 @@ qaforge-ai/
 - Commit: `docs: ai test review checklist, fixes`
 
 ### Day 21: Automated quality gates for generated code
-- [ ] Add ruff + mypy (or pyright) config
-- [ ] Add pre-commit hooks
-- [ ] Add a custom check that bans `time.sleep` and empty assertions
-- [ ] Run on all generated tests
+- [x] Add ruff + mypy (or pyright) config
+- [x] Add pre-commit hooks
+- [x] Add a custom check that bans `time.sleep` and empty assertions
+- [x] Run on all generated tests
 - Commit: `chore: lint, type check, pre-commit, custom rules`
 
 ### Day 22: Test data with AI

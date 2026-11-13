@@ -7,6 +7,7 @@ Do the measured checks first: they do not depend on how convincing the code read
 - [ ] **Passes alone, serially, and 3 x `-n 3`, `--reruns=0`.** A pass that needs reruns is a flake. [D1]
 - [ ] **Repo checks pass:** `tests/test_locator_quality.py`, `tests/test_lint.py`, `tests/test_docstrings.py`, `tests/test_sources_parse.py`.
 - [ ] **Mutation check:** inject the app bugs the requirement describes and count how many the tests notice (`scripts/mutation_check.py` for Bill Pay). Every survivor is a finding.
+- [ ] **Gates:** `uv run ruff check .`, `uv run mypy` and `uv run python -m scripts.check_tests` print nothing (`scripts/check_tests.py`: fixed waits, empty assertions, unfinished `expect`, checkless tests).
 - [ ] **Locator score** did not drop (`uv run python -m scripts.locator_audit`); each new non-semantic selector has a reason in `ACCEPTED`. [L1] [L3]
 
 ## B. Assertions (the usual place AI tests are weak)

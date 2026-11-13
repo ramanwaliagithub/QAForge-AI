@@ -9,6 +9,8 @@ For the person or agent writing a test. Go through it top to bottom before sayin
 - [ ] I know which fixture gives the right customer: the shared one (read-only) or a fresh one (may change balances). [T6]
 - [ ] I read one existing page object and one existing test as the model. [P4]
 
+Before saying a test is done, `uv run python -m scripts.check_tests` (see `scripts/check_tests.py`) must print nothing; the pre-commit hook runs it for you.
+
 ## 2. Locators
 - [ ] Semantic first (role + name, label, text); no class, generated id, XPath, `.nth()`, `.first`, `.last`. [L1]
 - [ ] Where there is no accessible name I tried a labelled container before CSS. [L2]
