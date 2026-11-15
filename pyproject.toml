@@ -3,6 +3,7 @@ name = "qaforge-ai"
 version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = [
+    "faker>=40.54.0",
     "mcp>=2.3.0",
     "ollama>=0.6.3",
     "playwright>=1.63.0",
