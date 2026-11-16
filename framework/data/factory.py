@@ -23,6 +23,14 @@ class IdentitySource(Protocol):
     def identities(self, n: int) -> list[Identity]: ...
 
 
+def seed_for_worker(base: int, worker_id: str) -> int:
+    """The seed one pytest-xdist worker uses: `base` for a serial run ("master"), `base + 1 + index` for worker "gw<index>".
+
+    Workers must not share a seed: identical seeds mean identical usernames, and two workers registering the same one collide.
+    """
+    return base if worker_id == "master" else base + 1 + int(worker_id.removeprefix("gw"))
+
+
 class DataFactory:
     """Seeded test data. `seed=None` picks a random seed and keeps it in `.seed`: print it, and a failing run can be replayed exactly.
 
