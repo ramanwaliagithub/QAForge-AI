@@ -26,7 +26,7 @@ checklist is `docs/test-writing-checklist.md`. The rule ids below are the same i
 - [T4] A rejection test checks the message and that nothing happened (no confirmation, no request, no balance change).
 - [T5] Tables and dropdowns load asynchronously: wait with `expect(...).to_have_count(...)` before reading text.
 - [T6] Independent tests. `logged_in_page` is shared (never change its balance); `new_customer_page` is a fresh customer with one account.
-- [T7] Data constants once per module; read balances and account numbers from the UI.
+- [T7] Data constants once per module; read balances and account numbers from the UI; generated people and amounts come from the `data_factory` fixture, names ASCII.
 - [T8] Never write a passing test that depends on a known ParaBank bug; use `xfail(strict=True, raises=AssertionError)`.
 - [T9] Break the test on purpose once and see it fail for the right reason.
 

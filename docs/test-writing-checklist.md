@@ -24,7 +24,7 @@ Before saying a test is done, `uv run python -m scripts.check_tests` (see `scrip
 - [ ] A rejection test checks the message and that nothing happened (no confirmation, no request, no balance change). [T4]
 - [ ] No `time.sleep`, no `wait_for_timeout`. [T2]
 - [ ] It passes alone, in any order and in parallel; it creates what it needs. [T6]
-- [ ] No hard-coded balance or account number; data constants are defined once. [T7]
+- [ ] No hard-coded balance or account number; data constants are defined once; generated people and amounts come from the `data_factory` fixture, names are ASCII. [T7]
 - [ ] It does not rely on a known ParaBank bug; if it describes correct behaviour the app violates, it is a strict `xfail`. [T8]
 - [ ] I broke it on purpose once (changed an expected value) and it failed for the right reason. [T9]
 

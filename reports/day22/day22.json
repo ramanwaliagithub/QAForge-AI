@@ -1,0 +1,127 @@
+{
+  "model": "llama3.1:8b",
+  "n": 30,
+  "faker": {
+    "source": "faker",
+    "n": 30,
+    "valid_on_first_sight": 1.0,
+    "seconds": 0.02,
+    "variety": {
+      "first_names": 0.97,
+      "last_names": 0.97,
+      "cities": 1.0,
+      "states": 0.73,
+      "zip_codes": 1.0,
+      "streets": 1.0,
+      "phone_suffixes": 1.0,
+      "ssn_serials": 1.0,
+      "sequential_phones": 0.0
+    },
+    "same_seed_same_people": true
+  },
+  "llm_runs": [
+    {
+      "source": "llm",
+      "run": 1,
+      "n": 30,
+      "got": 30,
+      "error": null,
+      "calls": 4,
+      "items_returned": 76,
+      "rejected": {
+        "phone": 31,
+        "city": 2,
+        "ssn": 10
+      },
+      "duplicates": 3,
+      "valid_on_first_sight": 0.43,
+      "seconds": 113.4,
+      "variety": {
+        "first_names": 0.83,
+        "last_names": 0.47,
+        "cities": 0.8,
+        "states": 0.53,
+        "zip_codes": 0.87,
+        "streets": 0.83,
+        "phone_suffixes": 0.33,
+        "ssn_serials": 0.87,
+        "sequential_phones": 0.0
+      }
+    },
+    {
+      "source": "llm",
+      "run": 2,
+      "n": 30,
+      "got": 30,
+      "error": null,
+      "calls": 3,
+      "items_returned": 64,
+      "rejected": {
+        "phone": 31,
+        "city": 2,
+        "ssn": 1
+      },
+      "duplicates": 0,
+      "valid_on_first_sight": 0.47,
+      "seconds": 82.6,
+      "variety": {
+        "first_names": 0.93,
+        "last_names": 0.93,
+        "cities": 0.93,
+        "states": 0.7,
+        "zip_codes": 0.93,
+        "streets": 0.77,
+        "phone_suffixes": 0.17,
+        "ssn_serials": 0.3,
+        "sequential_phones": 0.0
+      }
+    },
+    {
+      "source": "llm",
+      "run": 3,
+      "n": 30,
+      "got": 30,
+      "error": null,
+      "calls": 2,
+      "items_returned": 40,
+      "rejected": {
+        "ssn": 8,
+        "city": 1,
+        "phone": 1
+      },
+      "duplicates": 0,
+      "valid_on_first_sight": 0.75,
+      "seconds": 55.7,
+      "variety": {
+        "first_names": 0.97,
+        "last_names": 0.67,
+        "cities": 0.8,
+        "states": 0.6,
+        "zip_codes": 0.87,
+        "streets": 0.83,
+        "phone_suffixes": 0.2,
+        "ssn_serials": 0.2,
+        "sequential_phones": 0.0
+      }
+    }
+  ],
+  "llm_median_seconds": 82.6,
+  "llm_run_to_run_overlap": 0.0,
+  "llm_complete_runs": 3,
+  "registration": [
+    {
+      "source": "faker",
+      "tried": 30,
+      "accepted": 30,
+      "name_not_shown_as_given": [],
+      "failed": []
+    },
+    {
+      "source": "llm",
+      "tried": 30,
+      "accepted": 30,
+      "name_not_shown_as_given": [],
+      "failed": []
+    }
+  ]
+}

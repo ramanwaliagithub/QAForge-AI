@@ -3,6 +3,7 @@ page objects, and the --heal plugin.
 """
 
 import os
+import random
 import re
 import uuid
 from pathlib import Path
@@ -13,6 +14,7 @@ from dotenv import load_dotenv
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import expect, sync_playwright
 
+from framework.data import DataFactory, seed_for_worker
 from framework.healing.collector import DEFAULT_DIR, collect_failure_context
 from framework.logging_utils import get_logger
 from framework.pages import LoginPage, RegisterPage
@@ -29,6 +31,24 @@ expect.set_options(timeout=int(os.getenv("EXPECT_TIMEOUT_MS", "10000")))
 def pytest_addoption(parser):
     parser.addoption("--headed", action="store_true", default=False, help="Show the browser window")
     parser.addoption("--slowmo", type=int, default=0, help="Slow down actions by N ms")
+    parser.addoption("--data-seed", type=int, default=None, help="Seed for generated test data (printed in the header; reuse it to replay a run)")
+
+
+def pytest_configure(config):
+    """Choose the data seed once, in the controller, so every xdist worker derives its own from the same base."""
+    if not hasattr(config, "workerinput"):
+        chosen = config.getoption("--data-seed")
+        config._data_seed = random.SystemRandom().getrandbits(31) if chosen is None else chosen
+    else:
+        config._data_seed = config.workerinput["data_seed"]
+
+
+def pytest_configure_node(node):
+    node.workerinput["data_seed"] = node.config._data_seed
+
+
+def pytest_report_header(config):
+    return f"test data seed: {config._data_seed} (replay with --data-seed={config._data_seed})"
 
 
 @pytest.fixture(scope="session")
@@ -159,3 +179,10 @@ def new_customer_page(browser, base_url, request):
     yield page
     collect_failure(request, page)
     context.close()
+
+
+@pytest.fixture(scope="session")
+def data_factory(request):
+    """Seeded test data for this worker (Faker identities, unique usernames, money). The seed is in the report header."""
+    worker_id = os.environ.get("PYTEST_XDIST_WORKER", "master")
+    return DataFactory(seed=seed_for_worker(request.config._data_seed, worker_id))
