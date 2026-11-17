@@ -42,6 +42,7 @@ Tests
 - [T6] Independence: each test opens its own page and creates what it needs. `logged_in_page` is a shared customer: never change its balance or accounts.
   `new_customer_page` is a fresh customer with exactly one account: use it to pay, transfer, open accounts or count accounts.
 - [T7] Test data is a constant defined once per module. Never hard-code a balance or an account number: read it from the UI.
+  Generated people and amounts come from the `data_factory` fixture (`framework/data/`), never an inline faker call; names are ASCII (ParaBank answers HTTP 400 to "Siobhán").
 - [T8] Known ParaBank bugs (negative and zero amounts accepted, no overdraft check, a login/session race): do not write a passing test that depends on them.
   Describe the correct behaviour as `xfail(strict=True, raises=AssertionError)` like `tests/test_transfer_edge_cases.py`.
 - [T9] Break it on purpose once: change one expected value and see the test fail for the right reason. A test that cannot fail is not a test.
