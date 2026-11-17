@@ -8,7 +8,7 @@ from typing import Annotated
 
 from pydantic import BaseModel, ConfigDict, StringConstraints, field_validator
 
-NAME = re.compile(r"^[^\W\d_]+(?:[ '\-][^\W\d_]+)*$")  # letters, with single spaces, apostrophes or hyphens inside
+NAME = re.compile(r"^[A-Za-z]+(?:[ '\-][A-Za-z]+)*$")  # ASCII letters, with single spaces, apostrophes or hyphens inside: ParaBank answers HTTP 400 to "Siobhán"
 CITY = NAME
 SSN = re.compile(r"^(?!000|666|9)\d{3}-(?!00)\d{2}-(?!0000)\d{4}$")  # the format the form expects, and a number the SSA never issues is refused
 
@@ -40,7 +40,7 @@ class Identity(BaseModel):
     @classmethod
     def _letters_only(cls, value: str) -> str:
         if not NAME.match(value):
-            raise ValueError(f"{value!r} is not a name: letters, with single spaces, apostrophes or hyphens inside")
+            raise ValueError(f"{value!r} is not a name: ASCII letters, with single spaces, apostrophes or hyphens inside")
         return value
 
     @field_validator("street")

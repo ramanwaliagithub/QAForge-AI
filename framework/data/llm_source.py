@@ -18,9 +18,9 @@ log = get_logger("qaforge.data")
 
 PROMPT = """Invent {n} different, realistic United States customers for testing a banking website.
 Return JSON only: {{"identities": [ ... ]}} where every item has exactly these string fields:
-  first_name, last_name  letters only (a space, hyphen or apostrophe inside is fine), at most 30 characters
+  first_name, last_name  plain English letters A-Z only, no accents (a space, hyphen or apostrophe inside is fine), at most 30 characters
   street                 a street address with a number, 5 to 50 characters, for example "418 Maple Avenue"
-  city                   a real US city, letters only
+  city                   a real US city, plain English letters only
   state                  the two-letter capital abbreviation, for example "OH"
   zip_code               exactly 5 digits
   phone                  exactly 10 digits, no punctuation, the first digit 2 to 9

@@ -13,7 +13,7 @@ def test_a_valid_identity_is_accepted_and_untouched():
 
 
 @pytest.mark.parametrize(("field", "bad"), [
-    ("first_name", ""), ("first_name", "R2D2"), ("first_name", "x" * 31), ("last_name", "Smith<script>"),
+    ("first_name", ""), ("first_name", "R2D2"), ("first_name", "Siobhán"), ("city", "San José"), ("first_name", "x" * 31), ("last_name", "Smith<script>"),
     ("street", "Oak"), ("street", "12345"), ("street", "Oak Street"),
     ("city", "1ville"), ("state", "ca"), ("state", "California"), ("zip_code", "9021"), ("zip_code", "902101"), ("zip_code", "9021a"),
     ("phone", "1055550123"), ("phone", "555-0123"), ("phone", "505555012"),
