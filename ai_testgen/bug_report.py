@@ -6,6 +6,7 @@ and a draft with an unfounded quote is sent back once with the quote named. A te
 accessibility text instead, and the report says so.
 """
 import ast
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -138,3 +139,38 @@ def draft_bug_report(client: LLMClient, ctx: FailureContext, source: str, temper
     dropped = ungrounded(report, brief)
     report.evidence = [quote for quote in report.evidence if quote not in dropped]
     return report, {"attempts": max_attempts, "dropped_quotes": dropped}
+
+
+def report_id(ctx: FailureContext) -> str:
+    """A stable id for the failure's report: the same test always gets the same id, so a rerun replaces its own report."""
+    return "bug-" + hashlib.sha1(ctx.test_id.encode()).hexdigest()[:8]
+
+
+def render_markdown(report: BugReport, ctx: FailureContext, info: dict, model: str, duplicate: dict | None = None) -> str:
+    """The report as a markdown file a person can read and paste into a tracker, with what the draft could not know stated at the end."""
+    lines = [
+        f"# {report.title}",
+        "",
+        "| | |",
+        "|---|---|",
+        f"| Id | `{report_id(ctx)}` |",
+        f"| Triage (the model's call, unverified) | **{report.classification}**, severity {report.severity} |",
+        f"| Failing test | `{ctx.test_id}` |",
+        f"| Page | {ctx.page.title} ({ctx.page.url}) |",
+        f"| Failure collected | {ctx.collected_at} |",
+    ]
+    if duplicate:
+        lines += [f"| Possible duplicate of | `{duplicate['id']}` (similarity {duplicate['similarity']:.2f}) |"]
+    lines += ["", "## Summary", report.summary, "", "## Steps to reproduce"]
+    lines += [f"{n}. {step}" for n, step in enumerate(report.steps_to_reproduce, 1)]
+    lines += ["", "## Expected", report.expected, "", "## Actual", report.actual]
+    if report.evidence:
+        lines += ["", "## Evidence (checked: each quote occurs in the failure)", *[f"- `{quote}`" for quote in report.evidence]]
+    if report.suspected_cause:
+        lines += ["", "## Suspected cause", report.suspected_cause]
+    lines += ["", "## Next action", report.next_action, "", "## About this draft",
+              f"- Drafted by `{model}` from the failure log and the page's accessibility text; it did not see the screenshot"
+              + (f" (`{ctx.screenshot}`)." if ctx.screenshot else "."),
+              f"- Attempts: {info['attempts']}." + (f" Dropped as not found in the failure: {info['dropped_quotes']}." if info["dropped_quotes"] else ""),
+              "- Triage and severity are a draft. A person confirms whether this is a product bug before it is filed."]
+    return "\n".join(lines) + "\n"

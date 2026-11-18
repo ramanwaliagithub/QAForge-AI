@@ -4,7 +4,17 @@ from pathlib import Path
 
 import pytest
 
-from ai_testgen.bug_report import BugReport, DraftError, build_brief, draft_bug_report, read_test_source, ungrounded, visible_text
+from ai_testgen.bug_report import (
+    BugReport,
+    DraftError,
+    build_brief,
+    draft_bug_report,
+    read_test_source,
+    render_markdown,
+    report_id,
+    ungrounded,
+    visible_text,
+)
 from framework.healing.collector import load_failure_context
 from framework.llm_client import LLMResponse
 
@@ -94,3 +104,24 @@ def test_a_model_that_never_produces_a_valid_report_ends_in_a_clear_error():
 def test_an_unknown_classification_is_refused():
     with pytest.raises(ValueError, match="classification"):
         BugReport(**{**DRAFT, "classification": "my_fault"})
+
+
+def test_the_report_id_is_stable_per_test_and_different_between_tests():
+    other = load_failure_context(SAMPLE.with_name(SAMPLE.name.replace("button_text_changed", "id_renamed")))
+    assert report_id(CTX) == report_id(CTX) and report_id(CTX) != report_id(other) and report_id(CTX).startswith("bug-")
+
+
+def test_the_markdown_has_every_section_and_says_what_the_draft_did_not_see():
+    report, info = draft_bug_report(Scripted({**DRAFT, "evidence": ["TimeoutError"], "suspected_cause": "Button renamed."}), CTX, SOURCE)
+    md = render_markdown(report, CTX, info, "llama-test")
+    for heading in ("# Transfer button is not found", "## Summary", "## Steps to reproduce", "## Expected", "## Actual", "## Evidence",
+                    "## Suspected cause", "## Next action", "## About this draft"):
+        assert heading in md
+    assert "1. Open Transfer Funds" in md and "2. Click the button" in md
+    assert "did not see the screenshot" in md and CTX.test_id in md and "Possible duplicate" not in md
+
+
+def test_a_duplicate_is_named_with_its_similarity_and_dropped_quotes_are_listed():
+    report, info = draft_bug_report(Scripted(DRAFT), CTX, SOURCE)
+    md = render_markdown(report, CTX, {**info, "dropped_quotes": ["Transfer Complete!"]}, "m", duplicate={"id": "bug-12345678", "similarity": 0.9137})
+    assert "Possible duplicate of | `bug-12345678` (similarity 0.91)" in md and "Dropped as not found in the failure: ['Transfer Complete!']" in md
