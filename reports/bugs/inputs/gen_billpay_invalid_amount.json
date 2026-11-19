@@ -1,0 +1,276 @@
+{
+  "schema": 1,
+  "test_id": "ai_testgen/generated/test_bill_pay_04_amount_is_not_a_number.py::test_amount_is_not_a_number",
+  "collected_at": "2026-10-30T11:04:34+00:00",
+  "error": {
+    "type": "builtins.AssertionError",
+    "message": "Locator expected to be visible\nActual value: None\nError: element(s) not found \nCall log:\n  - Expect \"to_be_visible\" get_by_text(\"Invalid amount\") with timeout 10000ms\n  - waiting for get_by_text(\"Invalid amount\")",
+    "kind": "assertion_element_missing",
+    "heal_hint": "maybe",
+    "locator": "get_by_text(\"Invalid amount\")",
+    "action": "to_be_visible",
+    "timeout_ms": null,
+    "frames": [
+      {
+        "file": "ai_testgen/generated/test_bill_pay_04_amount_is_not_a_number.py",
+        "line": 19,
+        "function": "test_amount_is_not_a_number",
+        "code": "expect(logged_in_page.get_by_text(\"Invalid amount\")).to_be_visible()"
+      }
+    ],
+    "raised_in": "test"
+  },
+  "page": {
+    "url": "http://localhost:8080/parabank/billpay.htm",
+    "title": "ParaBank | Bill Pay",
+    "aria_snapshot": "- link:\n  - /url: admin.htm\n  - img\n- link \"ParaBank\":\n  - /url: index.htm\n  - img \"ParaBank\"\n- paragraph: Experience the difference\n- list:\n  - listitem: Solutions\n  - listitem:\n    - link \"About Us\":\n      - /url: about.htm\n  - listitem:\n    - link \"Services\":\n      - /url: services.htm\n  - listitem:\n    - link \"Products\":\n      - /url: http://www.parasoft.com/jsp/products.jsp\n  - listitem:\n    - link \"Locations\":\n      - /url: http://www.parasoft.com/jsp/pr/contacts.jsp\n  - listitem:\n    - link \"Admin Page\":\n      - /url: admin.htm\n- list:\n  - listitem:\n    - link \"home\":\n      - /url: index.htm\n  - listitem:\n    - link \"about\":\n      - /url: about.htm\n  - listitem:\n    - link \"contact\":\n      - /url: contact.htm\n- paragraph: Welcome Qa Forge\n- heading \"Account Services\" [level=2]\n- list:\n  - listitem:\n    - link \"Open New Account\":\n      - /url: openaccount.htm\n  - listitem:\n    - link \"Accounts Overview\":\n      - /url: overview.htm\n  - listitem:\n    - link \"Transfer Funds\":\n      - /url: transfer.htm\n  - listitem:\n    - link \"Bill Pay\":\n      - /url: billpay.htm\n  - listitem:\n    - link \"Find Transactions\":\n      - /url: findtrans.htm\n  - listitem:\n    - link \"Update Contact Info\":\n      - /url: updateprofile.htm\n  - listitem:\n    - link \"Request Loan\":\n      - /url: requestloan.htm\n  - listitem:\n    - link \"Log Out\":\n      - /url: logout.htm\n- heading \"Bill Payment Service\" [level=1]\n- paragraph: Enter payee information\n- table:\n  - rowgroup:\n    - 'row \"Payee Name: Test Payee\"':\n      - cell \"Payee Name:\"\n      - cell \"Test Payee\":\n        - textbox: Test Payee\n      - cell\n    - 'row \"Address: 123 Main St\"':\n      - cell \"Address:\"\n      - cell \"123 Main St\":\n        - textbox: 123 Main St\n      - cell\n    - 'row \"City: Anytown\"':\n      - cell \"City:\"\n      - cell \"Anytown\":\n        - textbox: Anytown\n      - cell\n    - 'row \"State: CA\"':\n      - cell \"State:\"\n      - cell \"CA\":\n        - textbox: CA\n      - cell\n    - 'row \"Zip Code: 12345\"':\n      - cell \"Zip Code:\"\n      - cell \"12345\":\n        - textbox: \"12345\"\n      - cell\n    - 'row \"Phone #: 1234567890\"':\n      - 'cell \"Phone #:\"'\n      - cell \"1234567890\":\n        - textbox: \"1234567890\"\n      - cell\n    - row:\n      - cell\n    - 'row \"Account #: 1234567890\"':\n      - 'cell \"Account #:\"'\n      - cell \"1234567890\":\n        - textbox: \"1234567890\"\n      - cell\n    - 'row \"Verify Account #: 1234567890\"':\n      - 'cell \"Verify Account #:\"'\n      - cell \"1234567890\":\n        - textbox: \"1234567890\"\n      - cell\n    - row:\n      - cell\n    - 'row \"Amount: $ abc Please enter a valid amount.\"':\n      - 'cell \"Amount: $\"'\n      - cell \"abc\":\n        - textbox: abc\n      - cell \"Please enter a valid amount.\"\n    - row:\n      - cell\n    - 'row \"From account #: 581331\"':\n      - 'cell \"From account #:\"'\n      - cell \"581331\":\n        - combobox:\n          - option \"581331\" [selected]\n    - row \"Send Payment\":\n      - cell\n      - cell \"Send Payment\":\n        - button \"Send Payment\"\n- list:\n  - listitem:\n    - link \"Home\":\n      - /url: index.htm\n    - text: \"|\"\n  - listitem:\n    - link \"About Us\":\n      - /url: about.htm\n    - text: \"|\"\n  - listitem:\n    - link \"Services\":\n      - /url: services.htm\n    - text: \"|\"\n  - listitem:\n    - link \"Products\":\n      - /url: http://www.parasoft.com/jsp/products.jsp\n    - text: \"|\"\n  - listitem:\n    - link \"Locations\":\n      - /url: http://www.parasoft.com/jsp/pr/contacts.jsp\n    - text: \"|\"\n  - listitem:\n    - link \"Site Map\":\n      - /url: sitemap.htm\n    - text: \"|\"\n  - listitem:\n    - link \"Contact Us\":\n      - /url: contact.htm\n- paragraph: \u00a9 Parasoft. All rights reserved.\n- list:\n  - listitem: \"Visit us at:\"\n  - listitem:\n    - link \"www.parasoft.com\":\n      - /url: http://www.parasoft.com/",
+    "elements": [
+      {
+        "tag": "a",
+        "href": "admin.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "href": "index.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "About Us",
+        "href": "about.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Services",
+        "href": "services.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Products",
+        "href": "http://www.parasoft.com/jsp/products.jsp",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Locations",
+        "href": "http://www.parasoft.com/jsp/pr/contacts.jsp",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Admin Page",
+        "href": "admin.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "home",
+        "href": "index.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "about",
+        "href": "about.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "contact",
+        "href": "contact.htm",
+        "visible": true
+      },
+      {
+        "tag": "h2",
+        "text": "Account Services",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Open New Account",
+        "href": "openaccount.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Accounts Overview",
+        "href": "overview.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Transfer Funds",
+        "href": "transfer.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Bill Pay",
+        "href": "billpay.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Find Transactions",
+        "href": "findtrans.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Update Contact Info",
+        "href": "updateprofile.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Request Loan",
+        "href": "requestloan.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Log Out",
+        "href": "logout.htm",
+        "visible": true
+      },
+      {
+        "tag": "h1",
+        "text": "Bill Payment Service",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "name": "payee.name",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "name": "payee.address.street",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "name": "payee.address.city",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "name": "payee.address.state",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "name": "payee.address.zipCode",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "id": "30510182-6cbf-4262-80a6-7c6b6b41086a",
+        "name": "payee.phoneNumber",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "name": "payee.accountNumber",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "name": "verifyAccount",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "text",
+        "name": "amount",
+        "visible": true
+      },
+      {
+        "tag": "select",
+        "type": "select-one",
+        "name": "fromAccountId",
+        "text": "581331",
+        "visible": true
+      },
+      {
+        "tag": "input",
+        "type": "button",
+        "value": "Send Payment",
+        "visible": true
+      },
+      {
+        "tag": "h1",
+        "text": "Bill Payment Complete",
+        "visible": false
+      },
+      {
+        "tag": "h1",
+        "text": "Error!",
+        "visible": false
+      },
+      {
+        "tag": "a",
+        "text": "Home",
+        "href": "index.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "About Us",
+        "href": "about.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Services",
+        "href": "services.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Products",
+        "href": "http://www.parasoft.com/jsp/products.jsp",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Locations",
+        "href": "http://www.parasoft.com/jsp/pr/contacts.jsp",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Site Map",
+        "href": "sitemap.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "Contact Us",
+        "href": "contact.htm",
+        "visible": true
+      },
+      {
+        "tag": "a",
+        "text": "www.parasoft.com",
+        "href": "http://www.parasoft.com/",
+        "visible": true
+      }
+    ],
+    "html": "<!DOCTYPE html><html><head>\n\t\t<meta charset=\"UTF-8\">\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n\t\t<title>ParaBank | Bill Pay</title>\n\t\t<link href=\"template.css\" rel=\"stylesheet\" type=\"text/css\">\n\t\t<link href=\"style.css\" rel=\"stylesheet\" type=\"text/css\">\n\t\t<script src=\"webjars/jquery/4.0.0/jquery.min.js\"></script>\n\t</head>\n\n\t<body>\n\t\t<div id=\"mainPanel\">\n\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\n\n\n\n<div id=\"topPanel\">\n  <a href=\"admin.htm\"><img src=\"images/clear.gif\" width=\"56\" height=\"42\" border=\"0\" class=\"admin\"></a>\n  <a href=\"index.htm\"><img src=\"images/logo.gif\" alt=\"ParaBank\" width=\"136\" height=\"31\" border=\"0\" class=\"logo\" title=\"ParaBank\"></a>\n  <p class=\"caption\">Experience the difference</p>\n</div>\n<div id=\"headerPanel\" style=\"background: url(images/header-customer.jpg) 0 0 no-repeat;\">\n  \n\n\n<ul class=\"leftmenu\">\n  <li class=\"Solutions\">Solutions</li>\n  <li><a href=\"about.htm\">About Us</a></li>\n  <li><a href=\"services.htm\">Services</a></li>\n  <li><a href=\"http://www.parasoft.com/jsp/products.jsp\">Products</a></li>\n  <li><a href=\"http://www.parasoft.com/jsp/pr/contacts.jsp\">Locations</a></li>\n  <li><a href=\"admin.htm\">Admin Page</a></li>\n  \n</ul>\n  \n\n\n<ul class=\"button\">\n  <li class=\"home\"><a href=\"index.htm\">home</a></li>\n  <li class=\"aboutus\"><a href=\"about.htm\">about</a></li>\n  <li class=\"contact\"><a href=\"contact.htm\">contact</a></li>\n</ul>\n</div>\n\t\t\t\t\n\t\t\t\n\t\t\t<div id=\"bodyPanel\">\n\t\t\t\t<div id=\"leftPanel\">\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\n\n<p class=\"smallText\"><b>Welcome</b> Qa Forge</p>\n\n<h2>Account Services</h2>\n\n\n\n<ul>\n  <li><a href=\"openaccount.htm\">Open New Account</a></li>\n  <li><a href=\"overview.htm\">Accounts Overview</a></li>\n  <li><a href=\"transfer.htm\">Transfer Funds</a></li>\n  <li><a href=\"billpay.htm\">Bill Pay</a></li>\n  <li><a href=\"findtrans.htm\">Find Transactions</a></li>\n  <li><a href=\"updateprofile.htm\">Update Contact Info</a></li>\n  <li><a href=\"requestloan.htm\">Request Loan</a></li>\n  <li><a href=\"logout.htm\">Log Out</a></li>\n</ul>\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t\t<div id=\"rightPanel\">\n\t\t\t\t\t\n\n\n\n<div>\n\n<div id=\"billpayForm\">\n    <h1 class=\"title\">Bill Payment Service</h1>\n    <p>Enter payee information</p>\n\n    <form>\n        <table class=\"form2\">\n            <tbody><tr>\n                <td align=\"right\" width=\"30%\"><b>Payee Name:</b></td>\n                <td width=\"20%\"><input class=\"input\" name=\"payee.name\"></td>\n                <td width=\"50%\">\n                    <span style=\"display:none\" id=\"validationModel-name\" class=\"error\">Payee name is required.</span>\n                </td>\n            </tr>\n            <tr>\n                <td align=\"right\" width=\"30%\"><b>Address:</b></td>\n                <td width=\"20%\"><input class=\"input\" name=\"payee.address.street\"></td>\n                <td width=\"50%\"><span style=\"display:none\" id=\"validationModel-address\" class=\"error\">Address is required.</span></td>\n            </tr>\n            <tr>\n                <td align=\"right\" width=\"30%\"><b>City:</b></td>\n                <td width=\"20%\"><input class=\"input\" name=\"payee.address.city\"></td>\n                <td width=\"50%\"><span style=\"display:none\" id=\"validationModel-city\" class=\"error\">City is required.</span></td>\n            </tr>\n            <tr>\n                <td align=\"right\" width=\"30%\"><b>State:</b></td>\n                <td width=\"20%\"><input class=\"input\" name=\"payee.address.state\"></td>\n                <td width=\"50%\"><span style=\"display:none\" id=\"validationModel-state\" class=\"error\">State is required.</span></td>\n            </tr>\n            <tr>\n                <td align=\"right\" width=\"30%\"><b>Zip Code:</b></td>\n                <td width=\"20%\"><input class=\"input\" name=\"payee.address.zipCode\"></td>\n                <td width=\"50%\"><span style=\"display:none\" id=\"validationModel-zipCode\" class=\"error\">Zip Code is required.</span></td>\n            </tr>\n            <tr>\n                \n                \n                <td align=\"right\" width=\"30%\"><b>Phone #:</b></td>\n                <td width=\"20%\"><input id=\"30510182-6cbf-4262-80a6-7c6b6b41086a\" class=\"input phone-number-30510182-6cbf-4262-80a6-7c6b6b41086a\" name=\"payee.phoneNumber\"></td>\n                <td width=\"50%\"><span style=\"display:none\" id=\"validationModel-phoneNumber\" class=\"error\">Phone number is required.</span></td>\n            </tr>\n            <tr><td>&nbsp;</td></tr>\n            <tr>\n                <td align=\"right\" width=\"30%\"><b>Account #:</b></td>\n                <td><input class=\"input\" name=\"payee.accountNumber\"></td>\n                <td width=\"50%\">\n                    <span style=\"display:none\" id=\"validationModel-account-empty\" class=\"error\">Account number is required.</span>\n                    <span style=\"display:none\" id=\"validationModel-account-invalid\" class=\"error\">Please enter a valid number.</span>\n                </td>\n            </tr>\n            <tr>\n                <td align=\"right\" width=\"30%\"><b>Verify Account #:</b></td>\n                <td width=\"20%\"><input class=\"input\" name=\"verifyAccount\"></td>\n                <td width=\"50%\">\n                    <span style=\"display:none\" id=\"validationModel-verifyAccount-empty\" class=\"error\">Account number is required.</span>\n                    <span style=\"display:none\" id=\"validationModel-verifyAccount-invalid\" class=\"error\">Please enter a valid number.</span>\n                    <span style=\"display:none\" id=\"validationModel-verifyAccount-mismatch\" class=\"error\">The account numbers do not match.</span>\n                </td>\n            </tr>\n            <tr>\n                <td>&nbsp;</td>\n            </tr>\n            <tr>\n                <td align=\"right\" width=\"30%\"><b>Amount: $</b></td>\n                <td width=\"20%\"><input class=\"input\" name=\"amount\"></td>\n                <td width=\"50%\">\n                    <span style=\"display:none\" id=\"validationModel-amount-empty\" class=\"error\">The amount cannot be empty. </span>\n                    <span style=\"\" id=\"validationModel-amount-invalid\" class=\"error\">Please enter a valid amount.</span>\n                </td>\n            </tr>\n            <tr>\n                <td>&nbsp;</td>\n            </tr>\n            <tr>\n                <td align=\"right\"><b>From account #:</b></td>\n                <td>\n                    <select name=\"fromAccountId\" class=\"input\">\n                        \n                            <option value=\"581331\">581331</option>\n                        \n                    </select>\n                </td>\n            </tr>\n            <tr>\n                <td>&nbsp;</td>\n                <td><input type=\"button\" class=\"button\" value=\"Send Payment\"></td>\n            </tr>\n        </tbody></table>\n    </form>\n</div>\n\n<div id=\"billpayResult\" style=\"display:none\">\n    <h1 class=\"title\">Bill Payment Complete</h1>\n    <p>\n        Bill Payment to <span id=\"payeeName\"></span> in the amount of <span id=\"amount\"></span> from account <span id=\"fromAccountId\"></span> was successful.\n    </p>\n    <p>See Account Activity for more details.</p>\n</div>\n\n<div id=\"billpayError\" style=\"display:none\">\n     <h1 class=\"title\">Error!</h1>\n     <p class=\"error\">An internal error has occurred and has been logged.</p>\n</div>\n\n</div>\n\n<script type=\"text/javascript\">\n\t$(document).ready(function() {\n\t\tvar accountId= null;\n\t\tvar verifyAccount = null;\n\t\tvar amount = null;\n\t\tvar showForm = function(visible) {\n\t\t\tif (visible) {\n\t\t\t\t$(\"#billpayForm\").show();\n\t\t\t} else {\n\t\t\t\t$(\"#billpayForm\").hide();\n\t\t\t}\n\t\t}\n        var showResult = function(visible) {\n\t\t\tif (visible) {\n\t\t\t\t$(\"#billpayResult\").show();\n\t\t\t} else {\n\t\t\t\t$(\"#billpayResult\").hide();\n\t\t\t}\t\n        }\n        var showBillpayError = function(visible) {\n\t\t\tif (visible) {\n\t\t\t\t$(\"#billpayError\").show();\n\t\t\t} else {\n\t\t\t\t$(\"#billpayError\").hide();\n\t\t\t}\n        }\n        var payee = {\n\t\t\taddress : { }\n        };\n        \n        var currencyFormat = function(amount) {\n            return '$' + amount.toFixed(2);\n        }\n        \n        var isNonEmpty = function(str) {\n        \treturn str !== null && str !== undefined && str.trim() !== '';\n        }\n        \n        var isNumber = function(num) {\n            return !isNaN(parseFloat(num));\n        }\n        \n        var validateNumber = function(num) {\n        \tif (!isNonEmpty(num)) {\n        \t\treturn 'empty';\n        \t} else if (isNaN(parseFloat(num))) {\n        \t\treturn 'invalid'\n        \t}\n        \treturn null;\n        }\n        var createValidationModel = function() {\n        \treturn { \n                name : true,\n                address : true,\n                city : true,\n                state : true,\n                zipCode : true,\n                phoneNumber : true,\n                account : null,\n                verifyAccount : null,\n                amount : null\n            };\n        }\n        \n        var updateModels = function() {\n        \t//payee\n\t        payee.name = $(\"[name='payee.name']\").val();\n\t        payee.address.street = $(\"[name='payee.address.street']\").val();\n\t        payee.address.city = $(\"[name='payee.address.city']\").val();\n\t        payee.address.state = $(\"[name='payee.address.state']\").val();\n\t        payee.address.zipCode = $(\"[name='payee.address.zipCode']\").val();\n\t        payee.phoneNumber = $(\"[name='payee.phoneNumber']\").val();\n\t        payee.accountNumber = $(\"[name='payee.accountNumber']\").val();\n\t        \n\t        //account\n\t        accountId = $(\"[name='fromAccountId']\").val();\n\t        verifyAccount = $(\"[name='verifyAccount']\").val();\n\t        amount = $(\"[name='amount']\").val();\n        }\n        \n        var showError= function(error) {\n            validationModel = createValidationModel();\n            showForm(false);\n            showResult(false);\n            showBillpayError(true);\n            var status = error.status > 0 ? error.status : \"timeout\";\n            var data = error.data ? error.data : \"Server timeout\"\n            console.error(\"Server returned \" + status + \": \" + data);\n        }\n        \n        var validate = function() {\n            isNonEmpty(payee.name) ? $(\"#validationModel-name\").hide() : $(\"#validationModel-name\").show();\n        \tvar address = payee.address;\n            isNonEmpty(address.street) ? $(\"#validationModel-address\").hide() : $(\"#validationModel-address\").show();\n        \tisNonEmpty(address.city) ? $(\"#validationModel-city\").hide() : $(\"#validationModel-city\").show();\n        \tisNonEmpty(address.state) ? $(\"#validationModel-state\").hide() : $(\"#validationModel-state\").show();\n        \tisNonEmpty(address.zipCode) ? $(\"#validationModel-zipCode\").hide() : $(\"#validationModel-zipCode\").show();\n        \tisNonEmpty(payee.phoneNumber) ? $(\"#validationModel-phoneNumber\").hide() : $(\"#validationModel-phoneNumber\").show();\n        \tvar account = payee.accountNumber;\n        \tvalidationModel.account = validateNumber(payee.accountNumber);\n        \tvalidationModel.account == \"empty\" ? $(\"#validationModel-account-empty\").show() : $(\"#validationModel-account-empty\").hide();\n        \tvalidationModel.account == \"invalid\" ? $(\"#validationModel-account-invalid\").show() : $(\"#validationModel-account-invalid\").hide();\n        \tvalidationModel.verifyAccount = validateNumber(verifyAccount);\n        \tif (validationModel.verifyAccount == null && verifyAccount !== account) {\n        \t\tvalidationModel.verifyAccount = 'mismatch';\n        \t}\n        \tvalidationModel.verifyAccount == \"empty\" ? $(\"#validationModel-verifyAccount-empty\").show() : $(\"#validationModel-verifyAccount-empty\").hide();\n        \tvalidationModel.verifyAccount == \"mismatch\" ? $(\"#validationModel-verifyAccount-mismatch\").show() : $(\"#validationModel-verifyAccount-mismatch\").hide();\n        \tvalidationModel.verifyAccount == \"invalid\" ? $(\"#validationModel-verifyAccount-invalid\").show() : $(\"#validationModel-verifyAccount-invalid\").hide();\n        \t\n        \tvalidationModel.amount = validateNumber(amount)\n        \tvalidationModel.amount == \"empty\" ? $(\"#validationModel-amount-empty\").show() : $(\"#validationModel-amount-empty\").hide();\n        \tvalidationModel.amount == \"invalid\" ? $(\"#validationModel-amount-invalid\").show() : $(\"#validationModel-amount-invalid\").hide();\n\t\t\t\n        \t//look thru validation markers to see if any are visible\n        \treturn $(\"[id^=validationModel]:visible\").length == 0;\n        }\n        \n        var validationModel = createValidationModel();\n        \n        var submit = function() {\n            if (!validate()) {\n            \treturn;\n            } \n            $.ajax({\n            \t  url: 'services_proxy/bank/billpay?accountId='+ accountId + '&amount=' + amount,\n            \t  type: 'POST',\n            \t  contentType: 'application/json',\n            \t  data: JSON.stringify(payee),\n            \t  success: function(response) {\n\t\t\t\t\t$(\"#payeeName\").text(response.payeeName);\n\t\t\t\t\t$(\"#amount\").text(currencyFormat(response.amount));\n              \t\t$(\"#fromAccountId\").text(response.accountId);\n              \t\tshowForm(false);\n\t\t\t\t\tshowResult(true);\n              \t\tdocument.title = 'ParaBank | ' + 'Bill Payment Complete'\n            \t  },\n            \t  error: function(xhr, status, error) {\n            \t\t  showError(error);\n            \t  }\n            \t});\n        }\n        $(\"input[type=button]\").click(() => {\n        \tupdateModels();\n        \tsubmit(); \n\t\t});\n\t});\n</script>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t\n\n\n<div id=\"footermainPanel\">\n  <div id=\"footerPanel\">\n    <ul>\n      <li><a href=\"index.htm\">Home</a>| </li>\n      <li><a href=\"about.htm\">About Us</a>| </li>\n      <li><a href=\"services.htm\">Services</a>| </li>\n      <li><a href=\"http://www.parasoft.com/jsp/products.jsp\">Products</a>| </li>\n      <li><a href=\"http://www.parasoft.com/jsp/pr/contacts.jsp\">Locations</a>| </li>\n      <li><a href=\"sitemap.htm\">Site Map</a>| </li>\n      <li><a href=\"contact.htm\">Contact Us</a></li>\n    </ul>\n    <p class=\"copyright\">\u00a9 Parasoft. All rights reserved.</p>\n    <ul class=\"visit\">\n      <li>Visit us at:</li>\n      <li><a href=\"http://www.parasoft.com/\" target=\"_blank\">www.parasoft.com</a></li>\n    </ul>\n  </div>\n</div>\n\t\n\n</body></html>",
+    "html_truncated": false,
+    "capture_errors": []
+  },
+  "screenshot": "gen_billpay_invalid_amount.png"
+}

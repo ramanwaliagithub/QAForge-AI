@@ -1,0 +1,16 @@
+{
+  "note": "Written by hand from the evidence in each failure before any model drafted a report. 'classes' lists the classifications I accept; 'group' names the root cause, failures in one group are duplicates of each other, a failure with a null group duplicates nothing.",
+  "failures": {
+    "rejected_empty":            {"classes": ["app_bug"], "group": "rejected_form_posts", "why": "mutation run: the form showed its error and still posted the payment"},
+    "rejected_mismatch":         {"classes": ["app_bug"], "group": "rejected_form_posts", "why": "same mutant, other validation"},
+    "rejected_nonnumeric":       {"classes": ["app_bug"], "group": "rejected_form_posts", "why": "same mutant, other validation"},
+    "stale_amt_negative":        {"classes": ["test_bug", "ui_change"], "group": "stale_amt_locator", "why": "the page object waited for #amt, which the page does not have (a stale locator at that time)"},
+    "stale_amt_larger":          {"classes": ["test_bug", "ui_change"], "group": "stale_amt_locator", "why": "same stale #amt locator"},
+    "stale_amt_decimal":         {"classes": ["test_bug", "ui_change"], "group": "stale_amt_locator", "why": "same stale #amt locator"},
+    "gen_billpay_form":          {"classes": ["test_bug"], "group": null, "why": "generated test: get_by_text('Account #:') matches three labels (docs/phase2-results.md)"},
+    "gen_billpay_invalid_amount": {"classes": ["test_bug"], "group": null, "why": "generated test asserts 'Invalid amount', which the page never shows"},
+    "gen_openaccount_text":      {"classes": ["test_bug"], "group": null, "why": "generated test asserts text the page never shows; same class as the line above, a different defect"},
+    "sample_wrong_text":         {"classes": ["test_bug"], "group": null, "why": "sample test expects 'Transfer Done!' where the page says 'Transfer Complete!'"},
+    "heldout_username":          {"classes": ["test_bug", "ui_change"], "group": null, "why": "sample test looks for input[name='user'], which the page does not have"}
+  }
+}
