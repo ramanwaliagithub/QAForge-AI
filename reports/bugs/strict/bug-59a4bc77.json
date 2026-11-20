@@ -1,0 +1,25 @@
+{
+  "input": "stale_amt_negative",
+  "report": {
+    "title": "Negative transfer amount is not rejected",
+    "classification": "test_bug",
+    "severity": "major",
+    "summary": "The test expects a negative transfer amount to be rejected, but the test times out waiting for the result heading.",
+    "steps_to_reproduce": [
+      "1. Open the ParaBank website and navigate to the Transfer Funds page.",
+      "2. Attempt to transfer a negative amount from one account to another."
+    ],
+    "expected": "The test should fail with an assertion error, indicating that the negative transfer amount was accepted.",
+    "actual": "The test times out waiting for the result heading, indicating that the transfer was not rejected.",
+    "evidence": [
+      "Locator.wait_for: Timeout 2000ms exceeded.",
+      "Locator waited for: locator(\"#amt\")"
+    ],
+    "suspected_cause": "The test code does not correctly wait for the result heading to appear after attempting a negative transfer amount.",
+    "next_action": "Review the test code and ensure that it correctly waits for the result heading to appear after attempting a negative transfer amount."
+  },
+  "info": {
+    "attempts": 2,
+    "dropped_quotes": []
+  }
+}

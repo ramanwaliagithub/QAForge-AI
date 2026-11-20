@@ -118,10 +118,22 @@ def test_the_markdown_has_every_section_and_says_what_the_draft_did_not_see():
                     "## Suspected cause", "## Next action", "## About this draft"):
         assert heading in md
     assert "1. Open Transfer Funds" in md and "2. Click the button" in md
-    assert "did not see the screenshot" in md and CTX.test_id in md and "Possible duplicate" not in md
+    assert "did not see the screenshot" in md and CTX.test_id in md and "Similar to" not in md and "Same failure" not in md
 
 
-def test_a_duplicate_is_named_with_its_similarity_and_dropped_quotes_are_listed():
+def test_steps_the_model_already_numbered_are_not_numbered_twice():
+    report, info = draft_bug_report(Scripted({**DRAFT, "steps_to_reproduce": ["1. Open Transfer Funds", "2) Click the button", "Done"]}), CTX, SOURCE)
+    md = render_markdown(report, CTX, info, "m")
+    assert "1. Open Transfer Funds" in md and "2. Click the button" in md and "3. Done" in md and "1. 1." not in md
+
+
+def test_a_similar_report_is_named_with_its_similarity_and_dropped_quotes_are_listed():
     report, info = draft_bug_report(Scripted(DRAFT), CTX, SOURCE)
-    md = render_markdown(report, CTX, {**info, "dropped_quotes": ["Transfer Complete!"]}, "m", duplicate={"id": "bug-12345678", "similarity": 0.9137})
-    assert "Possible duplicate of | `bug-12345678` (similarity 0.91)" in md and "Dropped as not found in the failure: ['Transfer Complete!']" in md
+    md = render_markdown(report, CTX, {**info, "dropped_quotes": ["Transfer Complete!"]}, "m", duplicate={"id": "bug-12345678", "similarity": 0.9137, "kind": "similar"})
+    assert "Similar to | `bug-12345678` (embedding similarity 0.91)" in md and "Dropped as not found in the failure: ['Transfer Complete!']" in md
+
+
+def test_a_same_failure_match_says_so_without_a_similarity_number():
+    report, info = draft_bug_report(Scripted(DRAFT), CTX, SOURCE)
+    md = render_markdown(report, CTX, info, "m", duplicate={"id": "bug-12345678", "similarity": 1.0, "kind": "same_failure"})
+    assert "Same failure as | `bug-12345678`" in md and "probably a duplicate" in md and "1.00" not in md

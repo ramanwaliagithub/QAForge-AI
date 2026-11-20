@@ -1,0 +1,26 @@
+{
+  "input": "stale_amt_decimal",
+  "report": {
+    "title": "Decimal amount transfer fails with timeout",
+    "classification": "environment",
+    "severity": "major",
+    "summary": "The transfer page times out when waiting for the amount field to be visible. The test is trying to transfer a decimal amount.",
+    "steps_to_reproduce": [
+      "Open the ParaBank website and navigate to the Transfer Funds page",
+      "Enter a decimal amount in the transfer field",
+      "Wait for the page to timeout"
+    ],
+    "expected": "The amount field should be visible and the transfer should be successful",
+    "actual": "Locator.wait_for: Timeout 2000ms exceeded. waiting for locator(\"#amt\") to be visible",
+    "evidence": [
+      "Locator.wait_for: Timeout 2000ms exceeded.",
+      "waiting for locator(\"#amt\") to be visible"
+    ],
+    "suspected_cause": "The browser or application is taking too long to load the amount field",
+    "next_action": "Check the browser and application performance to ensure they are functioning correctly"
+  },
+  "info": {
+    "attempts": 1,
+    "dropped_quotes": []
+  }
+}

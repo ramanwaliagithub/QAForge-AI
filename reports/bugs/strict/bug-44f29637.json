@@ -1,0 +1,27 @@
+{
+  "input": "rejected_nonnumeric",
+  "report": {
+    "title": "Non-numeric amount is accepted",
+    "classification": "app_bug",
+    "severity": "major",
+    "summary": "The page accepts a non-numeric amount for a payment request, sending it to the server. This is a security risk.",
+    "steps_to_reproduce": [
+      "1. Log in to the ParaBank website",
+      "2. Go to the Bill Pay page",
+      "3. Enter a non-numeric amount for the payment",
+      "4. Click Send Payment"
+    ],
+    "expected": "The page should refuse to accept a non-numeric amount and not send the payment request to the server.",
+    "actual": "The page sent a payment request to the server with a non-numeric amount.",
+    "evidence": [
+      "Amount: $ abc Please enter a valid amount.",
+      "a rejected form sent a payment request: ['http://localhost:8080/parabank/services_proxy/bank/billpay?accountId=0&amount=1']"
+    ],
+    "suspected_cause": "The page's validation logic may be faulty.",
+    "next_action": "The development team should review the page's validation logic to ensure it correctly handles non-numeric amounts."
+  },
+  "info": {
+    "attempts": 2,
+    "dropped_quotes": []
+  }
+}

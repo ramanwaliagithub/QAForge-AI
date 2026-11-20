@@ -1,18 +1,20 @@
 """Find a bug report that is probably a duplicate of an earlier one, by comparing embeddings of what the reports say.
 
-The text embedded is the report's content (title, expected, actual), never the test name or the locator: two different tests can show one
-bug, and two tests that fail the same way for different reasons are not duplicates. The threshold is a measured number, not a default
-(docs/notes/day23.md): below it a report is new, at or above it a person is told which earlier report to look at. Nothing is merged or closed.
+Two signals, because they fail differently (docs/notes/day23.md). A *fingerprint* (failure kind, locator, shape of the message) says "the same failure":
+exact, cheap, and blind to anything phrased differently. An *embedding* of the draft's title, expected and actual says "similar": it ranks well
+(AUC 0.93) but no threshold separates duplicates from look-alikes cleanly, so its match is only a pointer for a person. Nothing is merged or closed.
 """
 import json
 import math
+import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from ai_testgen.bug_report import BugReport
+from framework.healing.collector import FailureContext
 from framework.llm_client import LLMClient
 
-THRESHOLD = 0.85
+SIMILAR_THRESHOLD = 0.75  # fitted on 11 failures: precision 0.75, recall 0.5. The first guess of 0.85 found none of the 6 duplicate pairs
 
 
 @dataclass
@@ -21,6 +23,7 @@ class Match:
 
     id: str
     similarity: float
+    kind: str = "similar"  # "same_failure" (equal fingerprints, similarity 1.0) or "similar" (embedding at or above the threshold)
 
 
 def cosine(a: list[float], b: list[float]) -> float:
@@ -32,6 +35,17 @@ def cosine(a: list[float], b: list[float]) -> float:
 def embedding_text(report: BugReport) -> str:
     """What is embedded for a report: the three fields that say what is wrong."""
     return f"{report.title}. Expected: {report.expected} Actual: {report.actual}"
+
+
+def fingerprint(ctx: FailureContext) -> str:
+    """What a failure is, apart from which test hit it: its kind, the locator it was waiting for, and the shape of the first line of its message.
+
+    Numbers (timeouts, account ids) and URLs are blanked, so the same failure on another run or another test gives the same text.
+    """
+    first = next((line for line in ctx.error.message.splitlines() if line.strip()), "")
+    shape = re.sub(r"https?://\S+", "<url>", first.lower())
+    shape = re.sub(r"\d+", "#", shape)[:90]
+    return f"{ctx.error.kind}|{ctx.error.locator or ''}|{shape}"
 
 
 class DuplicateIndex:
@@ -52,14 +66,20 @@ class DuplicateIndex:
         scored = [Match(r["id"], cosine(vector, r["vector"])) for r in self.records if r["id"] != exclude]
         return max(scored, key=lambda m: m.similarity) if scored else None
 
-    def check_and_add(self, client: LLMClient, report_id: str, report: BugReport, threshold: float = THRESHOLD) -> Match | None:
-        """Embed the report, return the earlier report it duplicates (similarity at or above `threshold`) or None, and store it either way.
+    def check_and_add(self, client: LLMClient, report_id: str, report: BugReport, threshold: float = SIMILAR_THRESHOLD,
+                      failure_fingerprint: str | None = None) -> Match | None:
+        """Embed the report and return the earlier report it repeats or resembles, or None; store it either way.
 
+        An equal fingerprint wins (kind `same_failure`); otherwise the nearest embedding at or above `threshold` (kind `similar`).
         A report with the same id replaces its old entry, so rerunning a failure does not make it a duplicate of itself.
         """
         vector = client.embed(embedding_text(report))
+        others = [r for r in self.records if r["id"] != report_id]
+        same = next((r for r in others if failure_fingerprint and r.get("fingerprint") == failure_fingerprint), None)
         nearest = self.nearest(vector, exclude=report_id)
-        self.records = [r for r in self.records if r["id"] != report_id] + [{"id": report_id, "vector": vector}]
+        self.records = [*others, {"id": report_id, "vector": vector, "fingerprint": failure_fingerprint}]
+        if same:
+            return Match(same["id"], 1.0, "same_failure")
         return nearest if nearest and nearest.similarity >= threshold else None
 
     def save(self) -> None:

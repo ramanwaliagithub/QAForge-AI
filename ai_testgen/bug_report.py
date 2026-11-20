@@ -42,6 +42,14 @@ Return JSON only, with exactly these keys:
   "next_action": "one sentence: who should do what"}}{feedback}"""
 
 
+# v2: the first measurement (docs/notes/day23.md) showed the model calling app_bug whenever a check failed. This version was written after
+# seeing that, on the same 11 failures it is then scored on, so its score is optimistic.
+PROMPT_STRICT = PROMPT.replace("Return JSON only", """Be strict about app_bug: choose it only when the facts show the PAGE itself behaving wrongly for a user (a request that should not have
+been sent, a wrong value on screen). A test that waits for a locator or text that is not there, or whose expected text differs from what the page
+shows, is test_bug or ui_change unless the facts say the page broke. When the facts cannot tell a test mistake from a page mistake, choose unclear.
+Return JSON only""", 1)
+
+
 class BugReport(BaseModel):
     """A drafted bug report. `evidence` quotes must be copied from the failure; `classification` is the model's triage call."""
 
@@ -111,7 +119,8 @@ def ungrounded(report: BugReport, brief: str) -> list[str]:
     return [quote for quote in report.evidence if " ".join(quote.lower().split()) not in norm]
 
 
-def draft_bug_report(client: LLMClient, ctx: FailureContext, source: str, temperature: float = 0.0, max_attempts: int = 3) -> tuple[BugReport, dict]:
+def draft_bug_report(client: LLMClient, ctx: FailureContext, source: str, temperature: float = 0.0, max_attempts: int = 3,
+                     prompt: str = PROMPT) -> tuple[BugReport, dict]:
     """Draft a report for one failure. Returns the report and `{"attempts": n, "dropped_quotes": [...]}`.
 
     Invalid JSON or an invalid report is retried with the problem named. A quote that is not in the failure is retried too; if it is still
@@ -121,7 +130,7 @@ def draft_bug_report(client: LLMClient, ctx: FailureContext, source: str, temper
     feedback = ""
     report = None
     for attempt in range(1, max_attempts + 1):
-        response = client.generate(PROMPT.format(brief=brief, feedback=feedback), temperature=temperature, json_mode=True)
+        response = client.generate(prompt.format(brief=brief, feedback=feedback), temperature=temperature, json_mode=True)
         try:
             report = BugReport(**json.loads(response.text))
         except (json.JSONDecodeError, ValidationError, TypeError) as error:
@@ -139,6 +148,11 @@ def draft_bug_report(client: LLMClient, ctx: FailureContext, source: str, temper
     dropped = ungrounded(report, brief)
     report.evidence = [quote for quote in report.evidence if quote not in dropped]
     return report, {"attempts": max_attempts, "dropped_quotes": dropped}
+
+
+def _unnumbered(step: str) -> str:
+    """A step without the "1." or "2)" the model put in front of it: the report numbers its own steps."""
+    return re.sub(r"^\s*\d+[.)]\s*", "", step)
 
 
 def report_id(ctx: FailureContext) -> str:
@@ -160,9 +174,12 @@ def render_markdown(report: BugReport, ctx: FailureContext, info: dict, model: s
         f"| Failure collected | {ctx.collected_at} |",
     ]
     if duplicate:
-        lines += [f"| Possible duplicate of | `{duplicate['id']}` (similarity {duplicate['similarity']:.2f}) |"]
+        if duplicate.get("kind") == "same_failure":
+            lines += [f"| Same failure as | `{duplicate['id']}` (equal kind, locator and message shape): probably a duplicate |"]
+        else:
+            lines += [f"| Similar to | `{duplicate['id']}` (embedding similarity {duplicate['similarity']:.2f}): worth a look, not proof |"]
     lines += ["", "## Summary", report.summary, "", "## Steps to reproduce"]
-    lines += [f"{n}. {step}" for n, step in enumerate(report.steps_to_reproduce, 1)]
+    lines += [f"{n}. {_unnumbered(step)}" for n, step in enumerate(report.steps_to_reproduce, 1)]
     lines += ["", "## Expected", report.expected, "", "## Actual", report.actual]
     if report.evidence:
         lines += ["", "## Evidence (checked: each quote occurs in the failure)", *[f"- `{quote}`" for quote in report.evidence]]

@@ -1,0 +1,32 @@
+{
+  "input": "rejected_empty",
+  "report": {
+    "title": "Payment request sent despite empty form submission",
+    "classification": "app_bug",
+    "severity": "major",
+    "summary": "The page sent a payment request despite the form being empty, showing error messages for each required field.",
+    "steps_to_reproduce": [
+      "1. Open the Bill Pay page",
+      "2. Submit the form without filling in any fields",
+      "3. Observe that the page shows error messages for each required field"
+    ],
+    "expected": "The page should not send a payment request if the form is empty.",
+    "actual": "a rejected form sent a payment request: ['http://localhost:8080/parabank/services_proxy/bank/billpay?accountId=0&amount=1']",
+    "evidence": [
+      "Payee name is required.",
+      "Address is required.",
+      "City is required.",
+      "State is required.",
+      "Zip Code is required.",
+      "Phone number is required.",
+      "Account number is required.",
+      "The amount cannot be empty."
+    ],
+    "suspected_cause": "The page's validation logic may be faulty.",
+    "next_action": "Investigate the page's validation logic to determine why it is sending payment requests despite empty forms."
+  },
+  "info": {
+    "attempts": 2,
+    "dropped_quotes": []
+  }
+}

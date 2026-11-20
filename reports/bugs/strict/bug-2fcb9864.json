@@ -1,0 +1,26 @@
+{
+  "input": "sample_wrong_text",
+  "report": {
+    "title": "Incorrect Transfer Success Heading",
+    "classification": "app_bug",
+    "severity": "major",
+    "summary": "The ParaBank website displays incorrect text on the transfer success heading. The expected text is 'Transfer Done!', but the actual text is 'Transfer Complete!'.",
+    "steps_to_reproduce": [
+      "1. Log in to the ParaBank website.",
+      "2. Navigate to the Transfer Funds page.",
+      "3. Initiate a transfer of $10 from account #521835 to account #521835."
+    ],
+    "expected": "The transfer success heading should display 'Transfer Done!'.",
+    "actual": "The transfer success heading displays 'Transfer Complete!'.",
+    "evidence": [
+      "Locator expected to have text 'Transfer Done!' Actual value: Transfer Complete! ",
+      "unexpected value \"Transfer Complete!\""
+    ],
+    "suspected_cause": "The page's heading text is incorrect.",
+    "next_action": "The development team should investigate and correct the heading text to display the expected 'Transfer Done!' text."
+  },
+  "info": {
+    "attempts": 1,
+    "dropped_quotes": []
+  }
+}

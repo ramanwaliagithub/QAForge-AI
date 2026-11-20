@@ -1,10 +1,12 @@
 """Duplicate detection with a stand-in embedder: the arithmetic, the threshold, the index file and the rules that stop false alarms."""
 import hashlib
+from pathlib import Path
 
 import pytest
 
 from ai_testgen.bug_report import BugReport
-from ai_testgen.duplicates import THRESHOLD, DuplicateIndex, cosine, embedding_text
+from ai_testgen.duplicates import SIMILAR_THRESHOLD, DuplicateIndex, cosine, embedding_text, fingerprint
+from framework.healing.collector import load_failure_context
 
 
 class WordEmbedder:
@@ -34,7 +36,7 @@ def test_a_report_resembling_an_earlier_one_is_named_and_a_different_one_is_not(
     index, client = DuplicateIndex("m"), WordEmbedder()
     assert index.check_and_add(client, "bug-a", _report("Rejected form posts a payment request")) is None  # nothing earlier
     same = index.check_and_add(client, "bug-b", _report("Rejected form still posts a payment request"))
-    assert same is not None and same.id == "bug-a" and same.similarity >= THRESHOLD
+    assert same is not None and same.id == "bug-a" and same.similarity >= SIMILAR_THRESHOLD and same.kind == "similar"
     other = _report("Negative transfer amount is accepted", expected="A negative amount is refused.", actual="The transfer completes.")
     assert index.check_and_add(client, "bug-c", other) is None
 
@@ -69,3 +71,33 @@ def test_the_index_survives_a_save_and_load_and_remembers_its_embedding_model(tm
 def test_saving_without_a_path_is_an_error():
     with pytest.raises(ValueError, match="no path"):
         DuplicateIndex("m").save()
+
+
+SAMPLES = Path(__file__).resolve().parent.parent / "framework/healing/samples"
+
+
+def _ctx(name):
+    return load_failure_context(next(SAMPLES.glob(f"*{name}.json")))
+
+
+def test_equal_fingerprints_are_the_same_failure_even_when_the_wording_is_unrelated():
+    index, client = DuplicateIndex("m"), WordEmbedder()
+    fp = "assertion|get_by_text('x')|expected"
+    index.check_and_add(client, "bug-a", _report("Alpha beta gamma", "one", "two"), failure_fingerprint=fp)
+    found = index.check_and_add(client, "bug-b", _report("Completely different words here", "three", "four"), failure_fingerprint=fp)
+    assert found is not None and found.id == "bug-a" and found.kind == "same_failure" and found.similarity == 1.0
+
+
+def test_no_fingerprint_means_no_same_failure_claim():
+    index, client = DuplicateIndex("m"), WordEmbedder()
+    index.check_and_add(client, "bug-a", _report("Alpha beta gamma", "one", "two"))
+    assert index.check_and_add(client, "bug-b", _report("Delta epsilon zeta", "three", "four")) is None
+
+
+def test_the_fingerprint_ignores_numbers_but_not_the_locator_or_the_kind():
+    one, other = _ctx("test_sample_id_renamed"), _ctx("test_sample_button_text_changed")
+    assert fingerprint(one) == fingerprint(one) and fingerprint(one) != fingerprint(other)
+    shifted = load_failure_context(next(SAMPLES.glob("*test_sample_id_renamed.json")))
+    shifted.error.message = shifted.error.message.replace("3000ms", "9000ms")
+    assert fingerprint(shifted) == fingerprint(one)
+    assert "locator_not_found" in fingerprint(one) and "#" in fingerprint(one)

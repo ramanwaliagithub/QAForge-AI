@@ -1,0 +1,13 @@
+{
+  "prompt": "strict",
+  "total": 11,
+  "right": 7,
+  "unclear": 0,
+  "wrong": 4,
+  "wrong_items": [
+    "gen_billpay_form: said app_bug, accepted ['test_bug']",
+    "gen_billpay_invalid_amount: said app_bug, accepted ['test_bug']",
+    "sample_wrong_text: said app_bug, accepted ['test_bug']",
+    "stale_amt_larger: said app_bug, accepted ['test_bug', 'ui_change']"
+  ]
+}

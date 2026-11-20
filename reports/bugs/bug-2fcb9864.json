@@ -1,0 +1,27 @@
+{
+  "input": "sample_wrong_text",
+  "report": {
+    "title": "Wrong text on Transfer Complete! page",
+    "classification": "app_bug",
+    "severity": "major",
+    "summary": "The page shows 'Transfer Complete!' instead of 'Transfer Done!' when a transfer is successful. This is a bug in the application.",
+    "steps_to_reproduce": [
+      "1. Log in to the ParaBank website",
+      "2. Go to the Transfer Funds page",
+      "3. Transfer $10 from one account to another"
+    ],
+    "expected": "The page should show 'Transfer Done!' when a transfer is successful",
+    "actual": "The page shows 'Transfer Complete!' when a transfer is successful",
+    "evidence": [
+      "Locator expected to have text 'Transfer Done!' Actual value: Transfer Complete!"
+    ],
+    "suspected_cause": "The application's text is not consistent with its expected behavior.",
+    "next_action": "The development team should review the application's text and behavior to ensure consistency."
+  },
+  "info": {
+    "attempts": 3,
+    "dropped_quotes": [
+      "unexpected value 'Transfer Complete!'"
+    ]
+  }
+}
