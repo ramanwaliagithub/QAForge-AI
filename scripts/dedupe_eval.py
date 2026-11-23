@@ -19,6 +19,7 @@ from ai_testgen.bug_report import BugReport
 from ai_testgen.duplicates import SIMILAR_THRESHOLD, cosine, embedding_text, fingerprint
 from framework.healing.collector import load_failure_context
 from framework.llm_client import get_client
+from scripts.flags import parse_flags
 
 ROOT = Path(__file__).resolve().parent.parent
 FIRST_GUESS = 0.85  # the threshold I set before measuring; kept in the report to show what measuring changed
@@ -51,7 +52,7 @@ def best(pairs: list[tuple[float, bool]]) -> dict[str, float]:
 def main(argv: list[str]) -> None:
     """Embed the failures four ways, score every pair, and write the comparison."""
     load_dotenv()
-    flags = dict(a[2:].split("=", 1) for a in argv if a.startswith("--") and "=" in a)
+    flags, _ = parse_flags(argv, __doc__)
     folder = ROOT / flags.get("dir", "reports/bugs")
     truth = json.loads((folder / "ground_truth.json").read_text())["failures"]
     names = sorted(truth)

@@ -4,25 +4,10 @@ import json
 import pytest
 
 from framework.data import DataFactory, DataGenerationError, FakerSource, FrozenSource, LLMSource, save_identities
-from framework.llm_client import LLMResponse
+from framework.llm_client import ScriptedClient
 
 GOOD = dict(first_name="Maria", last_name="Lopez", street="12 Oak Street", city="Santa Fe", state="NM", zip_code="87501",
             phone="5055550123", ssn="123-45-6789")
-
-
-class Scripted:
-    """Returns the given answers in order and remembers every prompt."""
-
-    def __init__(self, *answers):
-        self.answers, self.prompts = list(answers), []
-
-    def generate(self, prompt, *, system=None, temperature=0.0, json_mode=False, num_ctx=None):
-        self.prompts.append(prompt)
-        answer = self.answers.pop(0)
-        return LLMResponse(text=answer if isinstance(answer, str) else json.dumps(answer), model="scripted", latency_s=0.5)
-
-    def embed(self, text):
-        return [0.0]
 
 
 def _letters(i):  # distinct, letters-only names
@@ -34,17 +19,17 @@ def _people(count, start=0, **changes):
 
 
 def test_valid_answers_are_returned_as_identities():
-    got = LLMSource(Scripted({"identities": _people(3)})).identities(3)
+    got = LLMSource(ScriptedClient({"identities": _people(3)})).identities(3)
     assert [p.first_name for p in got] == ["Aann", "Bann", "Cann"]
 
 
 def test_a_bare_list_or_another_key_name_is_accepted():
-    assert len(LLMSource(Scripted(_people(2))).identities(2)) == 2
-    assert len(LLMSource(Scripted({"customers": _people(2)})).identities(2)) == 2
+    assert len(LLMSource(ScriptedClient(_people(2))).identities(2)) == 2
+    assert len(LLMSource(ScriptedClient({"customers": _people(2)})).identities(2)) == 2
 
 
 def test_bad_items_are_dropped_counted_and_the_shortfall_is_asked_for_again_with_the_reasons():
-    client = Scripted({"identities": [*_people(2, 0), *_people(2, 5, phone="505-555-0123")]}, {"identities": _people(2, 10)})
+    client = ScriptedClient({"identities": [*_people(2, 0), *_people(2, 5, phone="505-555-0123")]}, {"identities": _people(2, 10)})
     source = LLMSource(client)
     assert len(source.identities(4)) == 4
     assert source.stats.calls == 2 and source.stats.rejected == {"phone": 2}
@@ -53,25 +38,25 @@ def test_bad_items_are_dropped_counted_and_the_shortfall_is_asked_for_again_with
 
 
 def test_duplicate_names_are_dropped_and_counted():
-    source = LLMSource(Scripted({"identities": _people(2) + _people(2)}, {"identities": _people(2, 4)}))
+    source = LLMSource(ScriptedClient({"identities": _people(2) + _people(2)}, {"identities": _people(2, 4)}))
     assert len(source.identities(4)) == 4 and source.stats.duplicates == 2
 
 
 def test_not_json_and_non_objects_do_not_crash_and_are_retried():
-    client = Scripted("Sure! Here are your customers:", {"identities": ["nope", 7]}, {"identities": _people(2)})
+    client = ScriptedClient("Sure! Here are your customers:", {"identities": ["nope", 7]}, {"identities": _people(2)})
     assert len(LLMSource(client).identities(2)) == 2
     assert "not valid JSON" in client.prompts[1] and "not an object" in client.prompts[2]
 
 
 def test_it_gives_up_with_an_error_that_says_how_far_it_got():
-    source = LLMSource(Scripted(*[{"identities": _people(1, 0, state="Ohio")}] * 3), max_attempts=3)
+    source = LLMSource(ScriptedClient(*[{"identities": _people(1, 0, state="Ohio")}] * 3), max_attempts=3)
     with pytest.raises(DataGenerationError, match=r"only 0 of 2 valid identities after 3 attempts"):
         source.identities(2)
     assert source.stats.rejected["state"] == 3
 
 
 def test_model_data_goes_through_the_factory_with_credentials_the_model_cannot_touch():
-    customers = DataFactory(seed=9, source=LLMSource(Scripted({"identities": _people(30)}))).customers(30)
+    customers = DataFactory(seed=9, source=LLMSource(ScriptedClient({"identities": _people(30)}))).customers(30)
     assert len({c.username for c in customers}) == 30 and all(c.username.startswith("qaforge_") for c in customers)
 
 

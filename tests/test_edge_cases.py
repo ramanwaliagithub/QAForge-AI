@@ -9,7 +9,7 @@ from ai_testgen.edge_cases import (
     parse_edge_cases,
     propose_edge_cases,
 )
-from framework.llm_client import LLMResponse
+from framework.llm_client import ScriptedClient
 
 CASE = {"title": "Negative amount", "amount": "-5", "from_index": 0, "to_index": 1, "expected": "The transfer is rejected"}
 
@@ -32,24 +32,15 @@ def test_parse_edge_cases_rejects_bad_output(text):
         parse_edge_cases(text)
 
 
-class Scripted:
-    def __init__(self, *outs):
-        self.outs, self.prompts = list(outs), []
-
-    def generate(self, prompt, **kw):
-        self.prompts.append(prompt)
-        return LLMResponse(self.outs.pop(0), "fake", 0.0)
-
-
 def test_propose_retries_with_feedback_and_truncates_to_n():
-    client = Scripted("garbage", json.dumps({"edge_cases": [CASE] * 7}))
+    client = ScriptedClient("garbage", json.dumps({"edge_cases": [CASE] * 7}))
     result = propose_edge_cases(client, "SNAP", n=5)
     assert len(result.cases) == 5 and "rejected" in client.prompts[1] and "SNAP" in client.prompts[0]
 
 
 def test_propose_reports_rejected_items():
     reply = json.dumps({"edge_cases": [CASE, {**CASE, "from_index": 3}]})
-    result = propose_edge_cases(Scripted(reply), "SNAP", n=5)
+    result = propose_edge_cases(ScriptedClient(reply), "SNAP", n=5)
     assert len(result.cases) == 1 and len(result.rejected) == 1
 
 

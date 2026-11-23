@@ -18,6 +18,7 @@ from ai_testgen.bug_report import PROMPT, PROMPT_STRICT, DraftError, draft_bug_r
 from ai_testgen.duplicates import SIMILAR_THRESHOLD, DuplicateIndex, as_dict, fingerprint
 from framework.healing.collector import load_failure_context
 from framework.llm_client import get_client
+from scripts.flags import parse_flags
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -25,10 +26,10 @@ ROOT = Path(__file__).resolve().parent.parent
 def main(argv: list[str]) -> None:
     """Draft, check and save one report per failure; print a one-line result for each."""
     load_dotenv()
-    flags = dict(a[2:].split("=", 1) for a in argv if a.startswith("--") and "=" in a)
+    flags, positional = parse_flags(argv, __doc__)
     out = ROOT / flags.get("out", "reports/bugs")
     threshold = float(flags.get("threshold", SIMILAR_THRESHOLD))
-    inputs = [Path(a) for a in argv if not a.startswith("--")] or sorted((ROOT / flags.get("inputs", "reports/bugs/inputs")).glob("*.json"))
+    inputs = [Path(a) for a in positional] or sorted((ROOT / flags.get("inputs", "reports/bugs/inputs")).glob("*.json"))
     out.mkdir(parents=True, exist_ok=True)
     client = get_client()
     model = getattr(client, "model", "unknown")

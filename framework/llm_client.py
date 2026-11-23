@@ -99,6 +99,32 @@ class ReplayClient:
         return [0.0]
 
 
+class ScriptedClient:
+    """In-memory stand-in for a model, for tests: answers in the order given, and records every prompt and the options it was called with.
+
+    A string answer is returned as it is, anything else (a dict, a list) as JSON. When the answers run out it raises `RuntimeError(exhausted)`,
+    so a test notices a call it did not expect. Unlike `ReplayClient` it needs no file.
+    """
+
+    def __init__(self, *answers, latency_s: float = 0.0, exhausted: str = "ScriptedClient has no answer left"):
+        self.answers = list(answers)
+        self.latency_s = latency_s
+        self.exhausted = exhausted
+        self.prompts: list[str] = []
+        self.kwargs: list[dict] = []
+
+    def generate(self, prompt, *, system=None, temperature=0.0, json_mode=False, num_ctx=None) -> LLMResponse:
+        self.prompts.append(prompt)
+        self.kwargs.append({"system": system, "temperature": temperature, "json_mode": json_mode, "num_ctx": num_ctx})
+        if not self.answers:
+            raise RuntimeError(self.exhausted)
+        answer = self.answers.pop(0)
+        return LLMResponse(text=answer if isinstance(answer, str) else json.dumps(answer), model="scripted", latency_s=self.latency_s)
+
+    def embed(self, text: str) -> list[float]:
+        return [0.0]
+
+
 def get_client() -> LLMClient:
     """Factory: pick the backend from LLM_PROVIDER: `ollama` (default) or `replay` (canned answers, for tests)."""
     provider = os.getenv("LLM_PROVIDER", "ollama")

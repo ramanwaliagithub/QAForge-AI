@@ -1,5 +1,4 @@
 """The bug report drafter with a scripted model (none is called): what the model is shown, and what is done with what it says."""
-import json
 from pathlib import Path
 
 import pytest
@@ -16,7 +15,7 @@ from ai_testgen.bug_report import (
     visible_text,
 )
 from framework.healing.collector import load_failure_context
-from framework.llm_client import LLMResponse
+from framework.llm_client import ScriptedClient
 
 SAMPLE = Path(__file__).resolve().parent.parent / "framework/healing/samples/framework_healing_sample_tests_test_broken_locators.py_test_sample_button_text_changed.json"
 CTX = load_failure_context(SAMPLE)
@@ -26,18 +25,6 @@ DRAFT = {"title": "Transfer button is not found by its name", "classification": 
          "summary": "The test waits for a button that has another name now.", "steps_to_reproduce": ["Open Transfer Funds", "Click the button"],
          "expected": "The test finds the button.", "actual": "Timeout waiting for the button.", "evidence": [],
          "suspected_cause": "", "next_action": "Update the locator."}
-
-
-class Scripted:
-    """Returns the given answers in order and remembers every prompt."""
-
-    def __init__(self, *answers):
-        self.answers, self.prompts = list(answers), []
-
-    def generate(self, prompt, *, system=None, temperature=0.0, json_mode=False, num_ctx=None):
-        self.prompts.append(prompt)
-        answer = self.answers.pop(0)
-        return LLMResponse(text=answer if isinstance(answer, str) else json.dumps(answer), model="scripted", latency_s=0.0)
 
 
 def test_visible_text_keeps_what_a_user_reads_once_and_in_order():
@@ -64,14 +51,14 @@ def test_the_brief_holds_the_facts_and_not_the_screenshot():
 
 
 def test_a_valid_draft_is_returned_with_its_labels_normalised():
-    report, info = draft_bug_report(Scripted(DRAFT), CTX, SOURCE)
+    report, info = draft_bug_report(ScriptedClient(DRAFT), CTX, SOURCE)
     assert isinstance(report, BugReport) and report.classification == "ui_change" and report.severity == "minor" and info["attempts"] == 1
 
 
 def test_a_quote_that_is_not_in_the_failure_is_sent_back_naming_the_quote():
     brief = build_brief(CTX, SOURCE)
     invented = {**DRAFT, "evidence": ["Transfer Complete!", "TimeoutError"]}
-    client = Scripted(invented, {**DRAFT, "evidence": ["TimeoutError"]})
+    client = ScriptedClient(invented, {**DRAFT, "evidence": ["TimeoutError"]})
     report, info = draft_bug_report(client, CTX, SOURCE)
     assert ungrounded(BugReport(**invented), brief) == ["Transfer Complete!"]
     assert "Transfer Complete!" in client.prompts[1] and info == {"attempts": 2, "dropped_quotes": []} and report.evidence == ["TimeoutError"]
@@ -79,7 +66,7 @@ def test_a_quote_that_is_not_in_the_failure_is_sent_back_naming_the_quote():
 
 def test_a_quote_still_invented_on_the_last_attempt_is_dropped_and_listed_not_kept():
     invented = {**DRAFT, "evidence": ["Transfer Complete!", "TimeoutError"]}
-    report, info = draft_bug_report(Scripted(invented, invented), CTX, SOURCE, max_attempts=2)
+    report, info = draft_bug_report(ScriptedClient(invented, invented), CTX, SOURCE, max_attempts=2)
     assert report.evidence == ["TimeoutError"] and info["dropped_quotes"] == ["Transfer Complete!"]
 
 
@@ -90,7 +77,7 @@ def test_quote_matching_ignores_case_and_spacing():
 
 
 def test_bad_json_and_a_report_missing_fields_are_retried_with_the_problem_named():
-    client = Scripted("Here is your bug report:", {"title": "x"}, DRAFT)
+    client = ScriptedClient("Here is your bug report:", {"title": "x"}, DRAFT)
     report, info = draft_bug_report(client, CTX, SOURCE)
     assert info["attempts"] == 3 and report.title == DRAFT["title"]
     assert "rejected" in client.prompts[1] and "rejected" in client.prompts[2]
@@ -98,7 +85,7 @@ def test_bad_json_and_a_report_missing_fields_are_retried_with_the_problem_named
 
 def test_a_model_that_never_produces_a_valid_report_ends_in_a_clear_error():
     with pytest.raises(DraftError, match="no valid bug report after 2 attempts"):
-        draft_bug_report(Scripted("no", "still no"), CTX, SOURCE, max_attempts=2)
+        draft_bug_report(ScriptedClient("no", "still no"), CTX, SOURCE, max_attempts=2)
 
 
 def test_an_unknown_classification_is_refused():
@@ -112,7 +99,7 @@ def test_the_report_id_is_stable_per_test_and_different_between_tests():
 
 
 def test_the_markdown_has_every_section_and_says_what_the_draft_did_not_see():
-    report, info = draft_bug_report(Scripted({**DRAFT, "evidence": ["TimeoutError"], "suspected_cause": "Button renamed."}), CTX, SOURCE)
+    report, info = draft_bug_report(ScriptedClient({**DRAFT, "evidence": ["TimeoutError"], "suspected_cause": "Button renamed."}), CTX, SOURCE)
     md = render_markdown(report, CTX, info, "llama-test")
     for heading in ("# Transfer button is not found", "## Summary", "## Steps to reproduce", "## Expected", "## Actual", "## Evidence",
                     "## Suspected cause", "## Next action", "## About this draft"):
@@ -122,18 +109,18 @@ def test_the_markdown_has_every_section_and_says_what_the_draft_did_not_see():
 
 
 def test_steps_the_model_already_numbered_are_not_numbered_twice():
-    report, info = draft_bug_report(Scripted({**DRAFT, "steps_to_reproduce": ["1. Open Transfer Funds", "2) Click the button", "Done"]}), CTX, SOURCE)
+    report, info = draft_bug_report(ScriptedClient({**DRAFT, "steps_to_reproduce": ["1. Open Transfer Funds", "2) Click the button", "Done"]}), CTX, SOURCE)
     md = render_markdown(report, CTX, info, "m")
     assert "1. Open Transfer Funds" in md and "2. Click the button" in md and "3. Done" in md and "1. 1." not in md
 
 
 def test_a_similar_report_is_named_with_its_similarity_and_dropped_quotes_are_listed():
-    report, info = draft_bug_report(Scripted(DRAFT), CTX, SOURCE)
+    report, info = draft_bug_report(ScriptedClient(DRAFT), CTX, SOURCE)
     md = render_markdown(report, CTX, {**info, "dropped_quotes": ["Transfer Complete!"]}, "m", duplicate={"id": "bug-12345678", "similarity": 0.9137, "kind": "similar"})
     assert "Similar to | `bug-12345678` (embedding similarity 0.91)" in md and "Dropped as not found in the failure: ['Transfer Complete!']" in md
 
 
 def test_a_same_failure_match_says_so_without_a_similarity_number():
-    report, info = draft_bug_report(Scripted(DRAFT), CTX, SOURCE)
+    report, info = draft_bug_report(ScriptedClient(DRAFT), CTX, SOURCE)
     md = render_markdown(report, CTX, info, "m", duplicate={"id": "bug-12345678", "similarity": 1.0, "kind": "same_failure"})
     assert "Same failure as | `bug-12345678`" in md and "probably a duplicate" in md and "1.00" not in md

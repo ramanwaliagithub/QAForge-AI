@@ -1,4 +1,3 @@
-import json
 
 import pytest
 from playwright.sync_api import Error as PlaywrightError
@@ -7,7 +6,7 @@ from playwright.sync_api import expect
 
 from framework.healing import runtime
 from framework.healing.runtime import HealConfig, Healer
-from framework.llm_client import LLMResponse
+from framework.llm_client import ScriptedClient
 from framework.pages.base_page import BasePage
 
 HTML = """<html><body>
@@ -16,18 +15,6 @@ HTML = """<html><body>
 <input type="submit" value="Transfer" onclick="document.title='submitted'">
 <input id="locked" type="text" disabled>
 </body></html>"""
-
-
-class Scripted:
-    def __init__(self, *replies):
-        self.replies = [json.dumps(r) if isinstance(r, dict) else r for r in replies]
-        self.prompts = []
-
-    def generate(self, prompt, **kw):
-        self.prompts.append(prompt)
-        if not self.replies:
-            raise RuntimeError("model is down")
-        return LLMResponse(self.replies.pop(0), "fake", 0.0)
 
 
 AMOUNT = {"strategy": "css", "css": "#amount", "reason": "the amount input", "confidence": 0.9}
@@ -53,7 +40,7 @@ def test_without_a_healer_failures_propagate_exactly_as_before(po):
 
 
 def test_broken_fill_is_healed_and_retried_once(po):
-    client = Scripted(AMOUNT)
+    client = ScriptedClient(AMOUNT, exhausted="model is down")
     healer = healer_with(client)
     with runtime.use(healer):
         po.fill(po.page.locator("#amt"), "10")
@@ -66,7 +53,7 @@ def test_broken_fill_is_healed_and_retried_once(po):
 
 
 def test_broken_button_and_dropdown_are_healed_too(po):
-    healer = healer_with(Scripted(BUTTON, ACCT))
+    healer = healer_with(ScriptedClient(BUTTON, ACCT))
     with runtime.use(healer):
         po.click(po.page.get_by_role("button", name="Transfer Money", exact=True))
         po.select_option(po.page.locator("#account"), "2")
@@ -75,7 +62,7 @@ def test_broken_button_and_dropdown_are_healed_too(po):
 
 
 def test_runtime_scope_is_restored_after_the_block():
-    h = healer_with(Scripted())
+    h = healer_with(ScriptedClient(exhausted="model is down"))
     with runtime.use(h):
         assert runtime.current() is h
         with runtime.use(None):
@@ -86,7 +73,7 @@ def test_runtime_scope_is_restored_after_the_block():
 
 def test_a_failed_retry_reraises_the_original_error_and_is_recorded(po):
     # #locked exists, is unique and is a text input, so validation passes; but it is disabled so the retry fails
-    healer = healer_with(Scripted({"strategy": "css", "css": "#locked"}))
+    healer = healer_with(ScriptedClient({"strategy": "css", "css": "#locked"}))
     with runtime.use(healer), pytest.raises(PlaywrightTimeoutError, match="#amt"):  # the ORIGINAL locator's error
         po.fill(po.page.locator("#amt"), "10")
     (e,) = healer.events
@@ -95,7 +82,7 @@ def test_a_failed_retry_reraises_the_original_error_and_is_recorded(po):
 
 def test_nothing_acceptable_from_the_model_means_the_original_failure(po):
     bad = {"strategy": "css", "css": "#nope"}
-    healer = healer_with(Scripted(bad, bad, bad))
+    healer = healer_with(ScriptedClient(bad, bad, bad))
     with runtime.use(healer), pytest.raises(PlaywrightTimeoutError, match="#amt"):
         po.fill(po.page.locator("#amt"), "10")
     (e,) = healer.events
@@ -103,7 +90,7 @@ def test_nothing_acceptable_from_the_model_means_the_original_failure(po):
 
 
 def test_a_model_outage_never_changes_the_failure(po):
-    healer = healer_with(Scripted())  # raises RuntimeError("model is down") on the first call
+    healer = healer_with(ScriptedClient(exhausted="model is down"))  # raises RuntimeError("model is down") on the first call
     with runtime.use(healer), pytest.raises(PlaywrightTimeoutError, match="#amt"):
         po.fill(po.page.locator("#amt"), "10")
     assert healer.events[0].outcome == "error" and "model is down" in healer.events[0].error_message
@@ -111,7 +98,7 @@ def test_a_model_outage_never_changes_the_failure(po):
 
 def test_guard_skips_failures_that_are_not_locator_problems(po):
     # the element exists but cannot take text: not_actionable (cause is ambiguous) -> not attempted by default
-    client = Scripted(AMOUNT)
+    client = ScriptedClient(AMOUNT, exhausted="model is down")
     healer = healer_with(client)
     with runtime.use(healer), pytest.raises(PlaywrightError, match="not an <input>"):
         po.fill(po.page.locator("#acct"), "x")
@@ -121,21 +108,21 @@ def test_guard_skips_failures_that_are_not_locator_problems(po):
 
 
 def test_allow_maybe_opts_in_to_ambiguous_failures(po):
-    healer = healer_with(Scripted(AMOUNT), allow_maybe=True)
+    healer = healer_with(ScriptedClient(AMOUNT, exhausted="model is down"), allow_maybe=True)
     with runtime.use(healer):
         po.fill(po.page.locator("#acct"), "7")
     assert healer.events[0].outcome == "healed" and po.page.locator("#amount").input_value() == "7"
 
 
 def test_assertions_in_a_test_are_never_healed(po):
-    healer = healer_with(Scripted(AMOUNT))
+    healer = healer_with(ScriptedClient(AMOUNT, exhausted="model is down"))
     with runtime.use(healer), pytest.raises(AssertionError):
         expect(po.page.locator("#amt")).to_be_visible(timeout=300)  # a test assertion: no page-object action involved
     assert healer.events == []
 
 
 def test_the_models_answer_is_cached_per_page_locator_and_action(po):
-    client = Scripted(AMOUNT)  # only ONE answer: a second model call would raise "model is down"
+    client = ScriptedClient(AMOUNT, exhausted="model is down")  # only ONE answer: a second model call would raise "model is down"
     healer = healer_with(client)
     with runtime.use(healer):
         po.fill(po.page.locator("#amt"), "1")
@@ -145,7 +132,7 @@ def test_the_models_answer_is_cached_per_page_locator_and_action(po):
 
 
 def test_heals_per_test_are_bounded(po):
-    healer = healer_with(Scripted(AMOUNT, ACCT), max_heals_per_test=1)
+    healer = healer_with(ScriptedClient(AMOUNT, ACCT), max_heals_per_test=1)
     healer.begin_test("t::budget")
     with runtime.use(healer):
         po.fill(po.page.locator("#amt"), "1")
@@ -160,7 +147,7 @@ def test_heals_per_test_are_bounded(po):
 
 def test_the_client_is_only_created_when_a_heal_is_needed(po):
     created = []
-    healer = Healer(lambda: created.append(1) or Scripted(AMOUNT))
+    healer = Healer(lambda: created.append(1) or ScriptedClient(AMOUNT, exhausted="model is down"))
     with runtime.use(healer):
         po.fill(po.page.locator("#amount"), "ok")  # a locator that works: no model needed
     assert created == [] and healer.events == []

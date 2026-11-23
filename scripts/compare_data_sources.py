@@ -18,6 +18,7 @@ from dotenv import load_dotenv
 
 from framework.data import DataFactory, DataGenerationError, FakerSource, Identity, LLMSource
 from framework.llm_client import get_client
+from scripts.flags import parse_flags
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -112,8 +113,8 @@ def register_all(people: list[Identity], label: str) -> dict[str, Any]:
 def main(argv: list[str]) -> None:
     """Run the comparison and write the report."""
     load_dotenv()
-    flags = {a.split("=")[0]: a.split("=")[1] if "=" in a else "1" for a in argv if a.startswith("--")}
-    label = next((a for a in argv if not a.startswith("--")), "comparison")
+    flags, positional = parse_flags(argv, __doc__)
+    label = positional[0] if positional else "comparison"
     n, runs = int(flags.get("--n", 30)), int(flags.get("--llm-runs", 3))
     faker = faker_row(n)
     out = ROOT / "reports" / "day22"
