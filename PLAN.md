@@ -42,6 +42,7 @@ Critical decisions are asked before building and recorded here.
 | 2026-11-12 | Quality gates for generated code (Day 21) | ruff with a chosen rule set (four rules ignored, each with a reason), mypy on `framework`, `ai_testgen`, `scripts` (not tests), a custom AST gate `scripts/check_tests.py` (QF001-QF004, opt-out needs a reason), local pre-commit hooks through `uv run` | The gates found no defect in the generated tests (already clean); they guard future output. The custom gate is syntactic: it cannot judge assertion strength, which stays the job of the mutation check |
 | 2026-11-17 | Test data sources (Day 22) | `framework/data/`: identities (name, address, phone, SSN) come from a pluggable source (Faker by default, a model, or a frozen reviewed file) and are validated by the same strict rules; usernames, passwords and amounts always come from a seeded generator in the factory. One base seed per run, printed in the report header (`--data-seed`), one derived seed per xdist worker | A model is never trusted for anything that must be unique or exact. A model source is not repeatable: freeze and review the result before tests depend on it. Measured on one local model (llama3.1:8b), 3 runs of 30 |
 | 2026-11-20 | Bug report drafts and duplicate detection (Day 23) | A draft's evidence quotes are checked against the failure (invented ones dropped and listed); the model sees page text, not the screenshot. Duplicates: an exact **fingerprint** (kind, locator, message shape) means "same failure"; **embedding similarity** (nomic-embed-text, 0.75) only means "similar, look". Triage and severity are labelled as drafts | The first guess of 0.85 found 0 of 6 duplicate pairs; embeddings rank well (AUC 0.93) but do not separate duplicates from look-alikes. Triage was 6/11 right (7/11 with a stricter prompt tuned on the same data), never "unclear". Ground truth and fingerprint are mine, 11 failures: a first measurement |
+| 2026-11-25 | Phase 3 closed (Day 24) | The playbook is `docs/ai-dev-workflow.md`: delegate scaffolding, drafts and proposals; keep what "correct" means, uniqueness, and the decisions; measured checks before reading code. One shared `ScriptedClient` for model-free tests and one flag parser for the scripts; the README diagram is checked by a test | Every claim in the playbook is n=1 to n=3 and one model; its Open questions lists three things not tried. Phase 4 (evals) is where those numbers get a proper design |
 | 2026-10-05 | Remote | `https://github.com/ramanwaliagithub/QAForge-AI.git` | |
 
 ## Open-source stack
@@ -262,10 +263,10 @@ qaforge-ai/
 - Commit: `feat: ai bug report drafter`
 
 ### Day 24: Phase 3 consolidation
-- [ ] Write `docs/ai-dev-workflow.md` (your personal playbook: what to delegate, what to review)
-- [ ] Refactor anything messy
-- [ ] Update README with architecture diagram (Mermaid)
-- [ ] Tag `v0.3-workflow`
+- [x] Write `docs/ai-dev-workflow.md` (your personal playbook: what to delegate, what to review)
+- [x] Refactor anything messy
+- [x] Update README with architecture diagram (Mermaid)
+- [x] Tag `v0.3-workflow`
 - Commit: `docs: ai dev workflow playbook, tag v0.3`
 
 ---
