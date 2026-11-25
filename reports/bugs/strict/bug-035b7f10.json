@@ -1,0 +1,25 @@
+{
+  "input": "stale_amt_decimal",
+  "report": {
+    "title": "Decimal amount transfer fails due to timeout",
+    "classification": "test_bug",
+    "severity": "major",
+    "summary": "The test for decimal amount transfer fails due to a timeout error. The test is expecting the page to be visible with a specific text.",
+    "steps_to_reproduce": [
+      "1. Open the ParaBank website and navigate to the Transfer Funds page.",
+      "2. Attempt to transfer an amount with decimal places (e.g. 100.50)."
+    ],
+    "expected": "The page should be visible with the text '$100.50 has been transferred'.",
+    "actual": "Locator.wait_for: Timeout 2000ms exceeded. Locator waited for: locator(\"#amt\")",
+    "evidence": [
+      "Locator.wait_for: Timeout 2000ms exceeded.",
+      "Locator waited for: locator(\"#amt\")"
+    ],
+    "suspected_cause": "The test is waiting for a locator that is not present on the page.",
+    "next_action": "Review the test code and ensure that the locator is correct and the page is behaving as expected."
+  },
+  "info": {
+    "attempts": 1,
+    "dropped_quotes": []
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "model": "llama3.1:8b",
+  "threshold": 0.75,
+  "rows": [
+    {
+      "input": "gen_billpay_form",
+      "id": "bug-5ac31e97",
+      "test": "ai_testgen/generated/test_bill_pay_01_bill_payment_service_form_is_displayed.py::test_bill_payment_service_form_is_displayed",
+      "classification": "test_bug",
+      "severity": "major",
+      "title": "Bill Payment Service Form Locator Issue",
+      "attempts": 1,
+      "dropped_quotes": [],
+      "matches": null,
+      "nearest": null,
+      "seconds": 4.5
+    },
+    {
+      "input": "gen_billpay_invalid_amount",
+      "id": "bug-f0e4ae00",
+      "test": "ai_testgen/generated/test_bill_pay_04_amount_is_not_a_number.py::test_amount_is_not_a_number",
+      "classification": "app_bug",
+      "severity": "major",
+      "title": "Invalid amount not detected",
+      "attempts": 1,
+      "dropped_quotes": [],
+      "matches": null,
+      "nearest": {
+        "id": "bug-5ac31e97",
+        "similarity": 0.5572750928092395,
+        "kind": "similar"
+      },
+      "seconds": 4.4
+    },
+    {
+      "input": "gen_openaccount_text",
+      "id": "bug-4fc63474",
+      "test": "ai_testgen/generated/test_open_account_01_open_new_checking_account.py::test_open_new_checking_account",
+      "classification": "test_bug",
+      "severity": "major",
+      "title": "Account Opened! page element not found",
+      "attempts": 1,
+      "dropped_quotes": [],
+      "matches": null,
+      "nearest": {
+        "id": "bug-5ac31e97",
+        "similarity": 0.7254647565596921,
+        "kind": "similar"
+      },
+      "seconds": 4.9
+    },
+    {
+      "input": "heldout_username",
+      "id": "bug-b0ffa18f",
+      "test": "framework/healing/sample_tests/test_heldout_locators.py::test_heldout_username_renamed",
+      "classification": "ui_change",
+      "severity": "major",
+      "title": "Username input not found",
+      "attempts": 1,
+      "dropped_quotes": [],
+      "matches": null,
+      "nearest": {
+        "id": "bug-4fc63474",
+        "similarity": 0.6695326181597142,
+        "kind": "similar"
+      },
+      "seconds": 4.3
+    },
+    {
+      "input": "rejected_empty",
+      "id": "bug-b1870e48",
+      "test": "tests/test_bill_pay.py::test_empty_submit_requires_every_field",
+      "classification": "app_bug",
+      "severity": "major",
+      "title": "Empty form submission does not require all fields",
+      "attempts": 1,
+      "dropped_quotes": [],
+      "matches": null,
+      "nearest": {
+        "id": "bug-5ac31e97",
+        "similarity": 0.6608344526922919,
+        "kind": "similar"
+      },
+      "seconds": 5.5
+    },
+    {
+      "input": "rejected_mismatch",
+      "id": "bug-d539a9be",
+      "test": "tests/test_bill_pay.py::test_mismatched_account_numbers_are_refused",
+      "classification": "app_bug",
+      "severity": "major",
+      "title": "Bill Pay refuses mismatched account numbers",
+      "attempts": 1,
+      "dropped_quotes": [],
+      "matches": {
+        "id": "bug-b1870e48",
+        "similarity": 1.0,
+        "kind": "same_failure"
+      },
+      "nearest": {
+        "id": "bug-5ac31e97",
+        "similarity": 0.6929727042646572,
+        "kind": "similar"
+      },
+      "seconds": 5.0
+    },
+    {
+      "input": "rejected_nonnumeric",
+      "id": "bug-44f29637",
+      "test": "tests/test_bill_pay.py::test_non_numeric_amount_is_refused",
+      "classification": "app_bug",
+      "severity": "major",
+      "title": "Non-numeric amount is not refused",
+      "attempts": 1,
+      "dropped_quotes": [],
+      "matches": {
+        "id": "bug-b1870e48",
+        "similarity": 1.0,
+        "kind": "same_failure"
+      },
+      "nearest": {
+        "id": "bug-d539a9be",
+        "similarity": 0.7752451425601037,
+        "kind": "similar"
+      },
+      "seconds": 4.9
+    },
+    {
+      "input": "sample_wrong_text",
+      "id": "bug-2fcb9864",
+      "test": "framework/healing/sample_tests/test_broken_locators.py::test_sample_wrong_text_on_found_element",
+      "classification": "app_bug",
+      "severity": "major",
+      "title": "Wrong text on Transfer Complete! page",
+      "attempts": 3,
+      "dropped_quotes": [
+        "unexpected value 'Transfer Complete!'"
+      ],
+      "matches": null,
+      "nearest": {
+        "id": "bug-4fc63474",
+        "similarity": 0.5945405050140943,
+        "kind": "similar"
+      },
+      "seconds": 13.9
+    },
+    {
+      "input": "stale_amt_decimal",
+      "id": "bug-035b7f10",
+      "test": "tests/test_transfer_edge_cases.py::test_decimal_amount_is_accepted",
+      "classification": "environment",
+      "severity": "major",
+      "title": "Decimal amount transfer fails with timeout",
+      "attempts": 1,
+      "dropped_quotes": [],
+      "matches": null,
+      "nearest": {
+        "id": "bug-b0ffa18f",
+        "similarity": 0.6626178674770171,
+        "kind": "similar"
+      },
+      "seconds": 4.3
+    },
+    {
+      "input": "stale_amt_larger",
+      "id": "bug-3a92ea8a",
+      "test": "tests/test_transfer_edge_cases.py::test_transfer_larger_than_balance_is_rejected",
+      "classification": "app_bug",
+      "severity": "critical",
+      "title": "Transfer larger than balance is not rejected",
+      "attempts": 1,
+      "dropped_quotes": [],
+      "matches": {
+        "id": "bug-035b7f10",
+        "similarity": 1.0,
+        "kind": "same_failure"
+      },
+      "nearest": {
+        "id": "bug-44f29637",
+        "similarity": 0.7726127308206923,
+        "kind": "similar"
+      },
+      "seconds": 4.4
+    },
+    {
+      "input": "stale_amt_negative",
+      "id": "bug-59a4bc77",
+      "test": "tests/test_transfer_edge_cases.py::test_negative_amount_is_rejected",
+      "classification": "app_bug",
+      "severity": "critical",
+      "title": "Transfer page does not reject negative amount",
+      "attempts": 1,
+      "dropped_quotes": [],
+      "matches": {
+        "id": "bug-035b7f10",
+        "similarity": 1.0,
+        "kind": "same_failure"
+      },
+      "nearest": {
+        "id": "bug-3a92ea8a",
+        "similarity": 0.8301524667827548,
+        "kind": "similar"
+      },
+      "seconds": 4.4
+    }
+  ]
+}

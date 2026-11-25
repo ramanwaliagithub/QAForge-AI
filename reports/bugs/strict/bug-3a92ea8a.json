@@ -1,0 +1,28 @@
+{
+  "input": "stale_amt_larger",
+  "report": {
+    "title": "Transfer larger than balance is not rejected",
+    "classification": "app_bug",
+    "severity": "major",
+    "summary": "The page failed to reject a transfer larger than the balance, allowing an invalid transaction to proceed.",
+    "steps_to_reproduce": [
+      "Open the ParaBank website and navigate to the Transfer Funds page.",
+      "Attempt to transfer a large amount of money from one account to another, exceeding the balance in the source account."
+    ],
+    "expected": "The page should reject the transfer and display an error message.",
+    "actual": "The page allowed the transfer to proceed, exceeding the balance in the source account.",
+    "evidence": [
+      "Locator.wait_for: Timeout 2000ms exceeded.",
+      "Locator waited for: locator(\"#amt\")",
+      "Page: ParaBank | Transfer Funds (http://localhost:8080/parabank/transfer.htm)"
+    ],
+    "suspected_cause": "The page's validation logic may be faulty, allowing invalid transactions to proceed.",
+    "next_action": "Review the page's validation logic and ensure it correctly rejects transfers exceeding the balance in the source account."
+  },
+  "info": {
+    "attempts": 3,
+    "dropped_quotes": [
+      "TEXT THE PAGE SHOWED: ParaBank | About Us | Services | Products | Locations | Admin Page | home | about | contact | Account Services | Open New Account | Accounts Overview | Transfer Funds | Bill Pay | Find Transactions | Update Contact Info | Request Loan | Log Out | \"Amount: $\" | \"From account #\" | 405729 | 405840 | \"to account #\" | Transfer | Home | \"|\" | Site Map | Contact Us | Visit us at: | www.parasoft.com"
+    ]
+  }
+}

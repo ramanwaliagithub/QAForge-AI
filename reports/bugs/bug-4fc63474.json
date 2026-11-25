@@ -1,0 +1,27 @@
+{
+  "input": "gen_openaccount_text",
+  "report": {
+    "title": "Account Opened! page element not found",
+    "classification": "test_bug",
+    "severity": "major",
+    "summary": "The test expects an element to be visible on the Account Opened! page, but it is not found.",
+    "steps_to_reproduce": [
+      "1. Go to the ParaBank website",
+      "2. Log in as a registered user",
+      "3. Click on the 'Open New Account' button",
+      "4. Verify that the 'Account Opened!' page is displayed"
+    ],
+    "expected": "The element 'with a new checking account number' should be visible on the Account Opened! page.",
+    "actual": "Locator expected to be visible Actual value: None Error: element(s) not found",
+    "evidence": [
+      "Locator waited for: get_by_text(\"with a new checking account number\")",
+      "Actual value: None Error: element(s) not found"
+    ],
+    "suspected_cause": "The test is expecting an element that does not exist on the page.",
+    "next_action": "Review the test code and verify that the expected element exists on the page."
+  },
+  "info": {
+    "attempts": 1,
+    "dropped_quotes": []
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "input": "gen_openaccount_text",
+  "report": {
+    "title": "Locator expected to be visible but was not",
+    "classification": "test_bug",
+    "severity": "major",
+    "summary": "The test expected a locator to be visible, but it was not. This is likely due to the test expecting a specific text that is not present on the page.",
+    "steps_to_reproduce": [
+      "1. Go to the ParaBank website and log in as a registered user.",
+      "2. Navigate to the Open Account page.",
+      "3. Select 'CHECKING' as the account type and a funding account.",
+      "4. Click the 'Open New Account' button."
+    ],
+    "expected": "The locator 'with a new checking account number' should be visible on the page.",
+    "actual": "Locator expected to be visible, but was not (Actual value: None)",
+    "evidence": [
+      "Locator expected to be visible",
+      "Actual value: None",
+      "Error: element(s) not found"
+    ],
+    "suspected_cause": "The test is expecting a specific text that is not present on the page.",
+    "next_action": "Review the test code and verify that the expected text is correct and present on the page."
+  },
+  "info": {
+    "attempts": 1,
+    "dropped_quotes": []
+  }
+}

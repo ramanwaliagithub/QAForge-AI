@@ -1,0 +1,25 @@
+{
+  "input": "stale_amt_larger",
+  "report": {
+    "title": "Transfer larger than balance is not rejected",
+    "classification": "app_bug",
+    "severity": "critical",
+    "summary": "The page failed to reject a transfer larger than the balance. The test expected the transfer to be rejected.",
+    "steps_to_reproduce": [
+      "Open the ParaBank website and navigate to the Transfer Funds page.",
+      "Attempt to transfer an amount larger than the balance from one account to another."
+    ],
+    "expected": "The transfer to be rejected with an error message.",
+    "actual": "The transfer was not rejected and the page timed out waiting for the amount field to be visible.",
+    "evidence": [
+      "Locator.wait_for: Timeout 2000ms exceeded.",
+      "Call log:  - waiting for locator(\"#amt\") to be visible"
+    ],
+    "suspected_cause": "The page's validation logic for transfers may be faulty.",
+    "next_action": "The development team should review the page's validation logic for transfers and ensure it correctly rejects transfers larger than the balance."
+  },
+  "info": {
+    "attempts": 1,
+    "dropped_quotes": []
+  }
+}

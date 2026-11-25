@@ -1,0 +1,212 @@
+{
+  "model": "llama3.1:8b",
+  "prompt": "strict",
+  "threshold": 0.75,
+  "rows": [
+    {
+      "input": "gen_billpay_form",
+      "id": "bug-5ac31e97",
+      "test": "ai_testgen/generated/test_bill_pay_01_bill_payment_service_form_is_displayed.py::test_bill_payment_service_form_is_displayed",
+      "classification": "app_bug",
+      "severity": "major",
+      "title": "Locator expected to be visible but was not",
+      "attempts": 1,
+      "dropped_quotes": [],
+      "matches": null,
+      "nearest": null,
+      "seconds": 5.3
+    },
+    {
+      "input": "gen_billpay_invalid_amount",
+      "id": "bug-f0e4ae00",
+      "test": "ai_testgen/generated/test_bill_pay_04_amount_is_not_a_number.py::test_amount_is_not_a_number",
+      "classification": "app_bug",
+      "severity": "major",
+      "title": "Invalid amount not detected",
+      "attempts": 1,
+      "dropped_quotes": [],
+      "matches": null,
+      "nearest": {
+        "id": "bug-5ac31e97",
+        "similarity": 0.6239363944850157,
+        "kind": "similar"
+      },
+      "seconds": 5.1
+    },
+    {
+      "input": "gen_openaccount_text",
+      "id": "bug-4fc63474",
+      "test": "ai_testgen/generated/test_open_account_01_open_new_checking_account.py::test_open_new_checking_account",
+      "classification": "test_bug",
+      "severity": "major",
+      "title": "Locator expected to be visible but was not",
+      "attempts": 1,
+      "dropped_quotes": [],
+      "matches": {
+        "id": "bug-5ac31e97",
+        "similarity": 0.8956953089204067,
+        "kind": "similar"
+      },
+      "nearest": {
+        "id": "bug-5ac31e97",
+        "similarity": 0.8956953089204067,
+        "kind": "similar"
+      },
+      "seconds": 5.4
+    },
+    {
+      "input": "heldout_username",
+      "id": "bug-b0ffa18f",
+      "test": "framework/healing/sample_tests/test_heldout_locators.py::test_heldout_username_renamed",
+      "classification": "ui_change",
+      "severity": "major",
+      "title": "Username input not found",
+      "attempts": 2,
+      "dropped_quotes": [],
+      "matches": null,
+      "nearest": {
+        "id": "bug-4fc63474",
+        "similarity": 0.6901367759039437,
+        "kind": "similar"
+      },
+      "seconds": 10.5
+    },
+    {
+      "input": "rejected_empty",
+      "id": "bug-b1870e48",
+      "test": "tests/test_bill_pay.py::test_empty_submit_requires_every_field",
+      "classification": "app_bug",
+      "severity": "major",
+      "title": "Payment request sent despite empty form submission",
+      "attempts": 2,
+      "dropped_quotes": [],
+      "matches": null,
+      "nearest": {
+        "id": "bug-f0e4ae00",
+        "similarity": 0.6618430415738645,
+        "kind": "similar"
+      },
+      "seconds": 10.5
+    },
+    {
+      "input": "rejected_mismatch",
+      "id": "bug-d539a9be",
+      "test": "tests/test_bill_pay.py::test_mismatched_account_numbers_are_refused",
+      "classification": "app_bug",
+      "severity": "major",
+      "title": "Bill Pay refuses mismatched account numbers",
+      "attempts": 1,
+      "dropped_quotes": [],
+      "matches": {
+        "id": "bug-b1870e48",
+        "similarity": 1.0,
+        "kind": "same_failure"
+      },
+      "nearest": {
+        "id": "bug-b1870e48",
+        "similarity": 0.7277237785338173,
+        "kind": "similar"
+      },
+      "seconds": 5.2
+    },
+    {
+      "input": "rejected_nonnumeric",
+      "id": "bug-44f29637",
+      "test": "tests/test_bill_pay.py::test_non_numeric_amount_is_refused",
+      "classification": "app_bug",
+      "severity": "major",
+      "title": "Non-numeric amount is accepted",
+      "attempts": 2,
+      "dropped_quotes": [],
+      "matches": {
+        "id": "bug-b1870e48",
+        "similarity": 1.0,
+        "kind": "same_failure"
+      },
+      "nearest": {
+        "id": "bug-f0e4ae00",
+        "similarity": 0.8296511792374813,
+        "kind": "similar"
+      },
+      "seconds": 10.0
+    },
+    {
+      "input": "sample_wrong_text",
+      "id": "bug-2fcb9864",
+      "test": "framework/healing/sample_tests/test_broken_locators.py::test_sample_wrong_text_on_found_element",
+      "classification": "app_bug",
+      "severity": "major",
+      "title": "Incorrect Transfer Success Heading",
+      "attempts": 1,
+      "dropped_quotes": [],
+      "matches": null,
+      "nearest": {
+        "id": "bug-5ac31e97",
+        "similarity": 0.5739583946865026,
+        "kind": "similar"
+      },
+      "seconds": 4.9
+    },
+    {
+      "input": "stale_amt_decimal",
+      "id": "bug-035b7f10",
+      "test": "tests/test_transfer_edge_cases.py::test_decimal_amount_is_accepted",
+      "classification": "test_bug",
+      "severity": "major",
+      "title": "Decimal amount transfer fails due to timeout",
+      "attempts": 1,
+      "dropped_quotes": [],
+      "matches": null,
+      "nearest": {
+        "id": "bug-4fc63474",
+        "similarity": 0.6619698559645271,
+        "kind": "similar"
+      },
+      "seconds": 5.0
+    },
+    {
+      "input": "stale_amt_larger",
+      "id": "bug-3a92ea8a",
+      "test": "tests/test_transfer_edge_cases.py::test_transfer_larger_than_balance_is_rejected",
+      "classification": "app_bug",
+      "severity": "major",
+      "title": "Transfer larger than balance is not rejected",
+      "attempts": 3,
+      "dropped_quotes": [
+        "TEXT THE PAGE SHOWED: ParaBank | About Us | Services | Products | Locations | Admin Page | home | about | contact | Account Services | Open New Account | Accounts Overview | Transfer Funds | Bill Pay | Find Transactions | Update Contact Info | Request Loan | Log Out | \"Amount: $\" | \"From account #\" | 405729 | 405840 | \"to account #\" | Transfer | Home | \"|\" | Site Map | Contact Us | Visit us at: | www.parasoft.com"
+      ],
+      "matches": {
+        "id": "bug-035b7f10",
+        "similarity": 1.0,
+        "kind": "same_failure"
+      },
+      "nearest": {
+        "id": "bug-44f29637",
+        "similarity": 0.7398413798158344,
+        "kind": "similar"
+      },
+      "seconds": 17.1
+    },
+    {
+      "input": "stale_amt_negative",
+      "id": "bug-59a4bc77",
+      "test": "tests/test_transfer_edge_cases.py::test_negative_amount_is_rejected",
+      "classification": "test_bug",
+      "severity": "major",
+      "title": "Negative transfer amount is not rejected",
+      "attempts": 2,
+      "dropped_quotes": [],
+      "matches": {
+        "id": "bug-035b7f10",
+        "similarity": 1.0,
+        "kind": "same_failure"
+      },
+      "nearest": {
+        "id": "bug-3a92ea8a",
+        "similarity": 0.7646216166054777,
+        "kind": "similar"
+      },
+      "seconds": 10.5
+    }
+  ]
+}

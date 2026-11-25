@@ -1,0 +1,152 @@
+{
+  "failures": 11,
+  "pairs": 55,
+  "duplicate_pairs": 6,
+  "shipped_threshold": 0.75,
+  "first_guess": 0.85,
+  "methods": {
+    "draft (title, expected, actual)": {
+      "auc": 0.93,
+      "best": {
+        "threshold": 0.74,
+        "called": 5,
+        "precision": 0.8,
+        "recall": 0.67,
+        "f1": 0.73
+      },
+      "at_shipped": {
+        "threshold": 0.75,
+        "called": 4,
+        "precision": 0.75,
+        "recall": 0.5,
+        "f1": 0.6
+      },
+      "at_first_guess": {
+        "threshold": 0.85,
+        "called": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "duplicate_scores": [
+        0.83,
+        0.775,
+        0.76,
+        0.74,
+        0.695,
+        0.685
+      ],
+      "highest_non_duplicate": 0.773
+    },
+    "draft, actual only": {
+      "auc": 0.85,
+      "best": {
+        "threshold": 0.671,
+        "called": 11,
+        "precision": 0.45,
+        "recall": 0.83,
+        "f1": 0.59
+      },
+      "at_shipped": {
+        "threshold": 0.75,
+        "called": 4,
+        "precision": 0.5,
+        "recall": 0.33,
+        "f1": 0.4
+      },
+      "at_first_guess": {
+        "threshold": 0.85,
+        "called": 2,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "duplicate_scores": [
+        0.807,
+        0.798,
+        0.716,
+        0.682,
+        0.671,
+        0.522
+      ],
+      "highest_non_duplicate": 0.915
+    },
+    "draft with 'clustering:' prefix": {
+      "auc": 0.88,
+      "best": {
+        "threshold": 0.838,
+        "called": 4,
+        "precision": 0.75,
+        "recall": 0.5,
+        "f1": 0.6
+      },
+      "at_shipped": {
+        "threshold": 0.75,
+        "called": 25,
+        "precision": 0.24,
+        "recall": 1.0,
+        "f1": 0.39
+      },
+      "at_first_guess": {
+        "threshold": 0.85,
+        "called": 1,
+        "precision": 1.0,
+        "recall": 0.17,
+        "f1": 0.29
+      },
+      "duplicate_scores": [
+        0.892,
+        0.84,
+        0.838,
+        0.802,
+        0.772,
+        0.771
+      ],
+      "highest_non_duplicate": 0.838
+    },
+    "raw failure (kind, locator, message line)": {
+      "auc": 1.0,
+      "best": {
+        "threshold": 1.0,
+        "called": 6,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "at_shipped": {
+        "threshold": 0.75,
+        "called": 12,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1": 0.67
+      },
+      "at_first_guess": {
+        "threshold": 0.85,
+        "called": 10,
+        "precision": 0.6,
+        "recall": 1.0,
+        "f1": 0.75
+      },
+      "duplicate_scores": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "highest_non_duplicate": 0.907
+    },
+    "fingerprint equal (no model)": {
+      "auc": 1.0,
+      "best": {
+        "threshold": 1.0,
+        "called": 6,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "wrong_pairs": []
+    }
+  }
+}

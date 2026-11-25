@@ -41,6 +41,7 @@ Critical decisions are asked before building and recorded here.
 | 2026-11-04 | Instruction files and how they are judged (Day 19) | `CLAUDE.md` is the full rule list (ids P/L/T/C/D); `.github/copilot-instructions.md` mirrors the same ids; `docs/test-writing-checklist.md` cites them; `tests/test_agent_instructions.py` keeps the three in sync and caps their length. Judged by a 2 x 2 (vague/spec x with/without context), one run per cell, scored by the Day 18 scorecard plus a mutation check (8 mutants fixed before the runs) | Tuned on spec 001 (rules L2 and T4 came from Day 18's output), so it cannot show generalisation. Result: process changed (agents mutation-test their own tests), output did not improve, and rule D2 cost one run its balance check; D2 was reworded afterwards and the new wording is untested |
 | 2026-11-12 | Quality gates for generated code (Day 21) | ruff with a chosen rule set (four rules ignored, each with a reason), mypy on `framework`, `ai_testgen`, `scripts` (not tests), a custom AST gate `scripts/check_tests.py` (QF001-QF004, opt-out needs a reason), local pre-commit hooks through `uv run` | The gates found no defect in the generated tests (already clean); they guard future output. The custom gate is syntactic: it cannot judge assertion strength, which stays the job of the mutation check |
 | 2026-11-17 | Test data sources (Day 22) | `framework/data/`: identities (name, address, phone, SSN) come from a pluggable source (Faker by default, a model, or a frozen reviewed file) and are validated by the same strict rules; usernames, passwords and amounts always come from a seeded generator in the factory. One base seed per run, printed in the report header (`--data-seed`), one derived seed per xdist worker | A model is never trusted for anything that must be unique or exact. A model source is not repeatable: freeze and review the result before tests depend on it. Measured on one local model (llama3.1:8b), 3 runs of 30 |
+| 2026-11-20 | Bug report drafts and duplicate detection (Day 23) | A draft's evidence quotes are checked against the failure (invented ones dropped and listed); the model sees page text, not the screenshot. Duplicates: an exact **fingerprint** (kind, locator, message shape) means "same failure"; **embedding similarity** (nomic-embed-text, 0.75) only means "similar, look". Triage and severity are labelled as drafts | The first guess of 0.85 found 0 of 6 duplicate pairs; embeddings rank well (AUC 0.93) but do not separate duplicates from look-alikes. Triage was 6/11 right (7/11 with a stricter prompt tuned on the same data), never "unclear". Ground truth and fingerprint are mine, 11 failures: a first measurement |
 | 2026-10-05 | Remote | `https://github.com/ramanwaliagithub/QAForge-AI.git` | |
 
 ## Open-source stack
@@ -254,10 +255,10 @@ qaforge-ai/
 - Commit: `feat: test data factory (faker + llm)`
 
 ### Day 23: AI bug report and triage helper
-- [ ] Prompt: failure log + screenshot summary to a clear bug report
-- [ ] Add duplicate detection by embedding similarity (nomic-embed-text)
-- [ ] Run on 5 saved failures
-- [ ] Save outputs in `reports/bugs/`
+- [x] Prompt: failure log + screenshot summary to a clear bug report
+- [x] Add duplicate detection by embedding similarity (nomic-embed-text)
+- [x] Run on 5 saved failures
+- [x] Save outputs in `reports/bugs/`
 - Commit: `feat: ai bug report drafter`
 
 ### Day 24: Phase 3 consolidation

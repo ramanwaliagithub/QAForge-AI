@@ -1,0 +1,27 @@
+{
+  "input": "gen_billpay_invalid_amount",
+  "report": {
+    "title": "Invalid amount not detected",
+    "classification": "app_bug",
+    "severity": "major",
+    "summary": "The page did not detect an invalid amount, allowing a non-numeric value to be submitted. This is a security risk.",
+    "steps_to_reproduce": [
+      "1. Go to the Bill Pay page",
+      "2. Fill in a valid payee and address",
+      "3. Enter a non-numeric value in the Amount field",
+      "4. Click Send Payment"
+    ],
+    "expected": "The page should detect the invalid amount and display an error message",
+    "actual": "The page allowed the non-numeric value to be submitted and did not display an error message",
+    "evidence": [
+      "Locator expected to be visible Actual value: None Error: element(s) not found",
+      "Expect \"to_be_visible\" get_by_text(\"Invalid amount\") with timeout 10000ms"
+    ],
+    "suspected_cause": "The page's validation logic may be faulty.",
+    "next_action": "The development team should review the page's validation logic and fix the issue to prevent security risks."
+  },
+  "info": {
+    "attempts": 1,
+    "dropped_quotes": []
+  }
+}

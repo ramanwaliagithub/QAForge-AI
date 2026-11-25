@@ -1,0 +1,25 @@
+{
+  "input": "stale_amt_negative",
+  "report": {
+    "title": "Transfer page does not reject negative amount",
+    "classification": "app_bug",
+    "severity": "critical",
+    "summary": "The transfer page does not reject negative amounts as expected. This is a critical issue as it allows users to transfer invalid amounts.",
+    "steps_to_reproduce": [
+      "1. Open the ParaBank website and navigate to the Transfer Funds page.",
+      "2. Attempt to transfer a negative amount from one account to another."
+    ],
+    "expected": "The transfer page should reject negative amounts and display an error message.",
+    "actual": "The transfer page did not reject the negative amount and timed out waiting for the locator '#amt' to be visible.",
+    "evidence": [
+      "Locator.wait_for: Timeout 2000ms exceeded.",
+      "Call log:  - waiting for locator(\"#amt\") to be visible"
+    ],
+    "suspected_cause": "The transfer page's validation logic may be faulty.",
+    "next_action": "The development team should review the transfer page's validation logic and ensure it correctly rejects negative amounts."
+  },
+  "info": {
+    "attempts": 1,
+    "dropped_quotes": []
+  }
+}

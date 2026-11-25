@@ -1,0 +1,27 @@
+{
+  "input": "rejected_mismatch",
+  "report": {
+    "title": "Bill Pay refuses mismatched account numbers",
+    "classification": "app_bug",
+    "severity": "major",
+    "summary": "The Bill Pay page refuses to send a payment request when the account numbers do not match. However, it still allows the user to submit the form.",
+    "steps_to_reproduce": [
+      "1. Log in to the ParaBank website.",
+      "2. Go to the Bill Pay page.",
+      "3. Enter a payment request with mismatched account numbers.",
+      "4. Click Send Payment."
+    ],
+    "expected": "The form should be rejected and an error message should be displayed.",
+    "actual": "The form was submitted and a payment request was sent.",
+    "evidence": [
+      "The account numbers do not match.",
+      "a rejected form sent a payment request: ['http://localhost:8080/parabank/services_proxy/bank/billpay?accountId=0&amount=1']"
+    ],
+    "suspected_cause": "The Bill Pay page's validation logic is not correctly implemented.",
+    "next_action": "The development team should review the Bill Pay page's validation logic and fix the issue."
+  },
+  "info": {
+    "attempts": 1,
+    "dropped_quotes": []
+  }
+}

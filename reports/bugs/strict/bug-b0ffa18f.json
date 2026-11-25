@@ -1,0 +1,25 @@
+{
+  "input": "heldout_username",
+  "report": {
+    "title": "Username input not found",
+    "classification": "ui_change",
+    "severity": "major",
+    "summary": "The test tried to login with a username, but the input field was not found. The page did not show the expected text.",
+    "steps_to_reproduce": [
+      "1. Open the ParaBank website",
+      "2. Try to login with a username"
+    ],
+    "expected": "The username input field should be visible on the login page",
+    "actual": "Locator.wait_for: Timeout 15000ms exceeded. waiting for locator(\"input[name='user']\") to be visible",
+    "evidence": [
+      "Locator.wait_for: Timeout 15000ms exceeded.",
+      "waiting for locator(\"input[name='user']\") to be visible"
+    ],
+    "suspected_cause": "The username input field may have been renamed or moved",
+    "next_action": "Check the page source code to see if the username input field has been renamed or moved"
+  },
+  "info": {
+    "attempts": 2,
+    "dropped_quotes": []
+  }
+}
