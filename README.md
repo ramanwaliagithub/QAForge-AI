@@ -22,7 +22,7 @@ uv run pytest -q
 
 ## Status
 
-Day 23 of 60: Phase 3 (AI-assisted development workflows) is under way: [specs](specs/README.md) that agents can execute (Day 18) and agent
+Day 24 of 60: Phase 3 (AI-assisted development workflows) is complete, tagged `v0.3-workflow`; the playbook is [docs/ai-dev-workflow.md](docs/ai-dev-workflow.md). It covers: [specs](specs/README.md) that agents can execute (Day 18) and agent
 instruction files, [CLAUDE.md](CLAUDE.md) and [Copilot instructions](.github/copilot-instructions.md) (Day 19), and a [review checklist](docs/test-review-checklist.md) applied to the Bill Pay tests (Day 20: 7/8 to 8/8 injected bugs caught), and automated gates for generated code: ruff, mypy, a [custom test gate](scripts/check_tests.py) and pre-commit hooks (Day 21, [notes](docs/notes/day21.md)), then a seeded [test data factory](framework/data/) with Faker and model-written sources (Day 22: [notes](docs/notes/day22.md)), then an AI [bug report drafter](ai_testgen/bug_report.py) with duplicate detection (Day 23: triage 6/11 right, duplicates found by fingerprint, not by embedding alone; [notes](docs/notes/day23.md)).
 Phase 2 (AI test generation and self-healing) is complete, tagged `v0.2-ai-testgen`; the honest numbers are in
 [docs/phase2-results.md](docs/phase2-results.md): 1 of 15 generated tests passes, locator healing is 7/7 on a held-out set, and the suite is
@@ -45,6 +45,43 @@ allure generate allure-results -o allure-report --clean
 allure open allure-report
 ```
 Requires the Allure CLI (`brew install allure`).
+
+## Architecture
+
+How the pieces fit. Boxes name the real folders and files; a test (`tests/test_readme_architecture.py`) fails if one of them is renamed or deleted.
+
+```mermaid
+flowchart LR
+    subgraph Generate["AI test generation (ai_testgen/)"]
+        STORY["ai_testgen/stories/ + scenarios.py"] --> CASES["structured.py: test cases as JSON"]
+        SNAP["ai_testgen/snapshots/ + grounding.py"] --> CASES
+        MCP["mcp_session.py + explore_agent.py"] --> SNAP
+        CASES --> CODE["codegen.py"] --> GEN["ai_testgen/generated/ tests"]
+    end
+    LLM[("framework/llm_client.py: local model via Ollama")]
+    Generate -.-> LLM
+    subgraph Suite["The suite"]
+        TESTS["tests/ + conftest.py"] --> PAGES["framework/pages/"]
+        DATA["framework/data/: seeded Faker, model or frozen file"] --> TESTS
+        GEN --> TESTS
+    end
+    PAGES --> APP[("ParaBank in Docker")]
+    TESTS -- failure --> COLLECT["framework/healing/collector.py"] --> FAILS["reports/failures/"]
+    FAILS --> HEAL["framework/healing/suggester.py: validated locator proposals"] --> REVIEW["framework/healing/review.py: a person approves"] --> PAGES
+    FAILS --> BUG["ai_testgen/bug_report.py + duplicates.py"] --> BUGS["reports/bugs/"]
+    HEAL -.-> LLM
+    BUG -.-> LLM
+    DATA -.-> LLM
+    subgraph Gates["Quality gates"]
+        LINT["ruff + mypy"]
+        RULES["scripts/check_tests.py"]
+        AUDIT["scripts/locator_audit.py"]
+        MUT["scripts/mutation_check.py"]
+    end
+    Gates -. "pre-commit and tests/" .-> Suite
+```
+
+Solid arrows are data flow, dotted arrows are model calls or checks. A model never writes to a page object or a test without a person or a deterministic check in between.
 
 ## Local LLM
 

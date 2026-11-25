@@ -4,25 +4,11 @@ import pytest
 
 from ai_testgen.scenarios import Story
 from ai_testgen.structured import GenerationError, generate_testcases
-from framework.llm_client import LLMResponse
+from framework.llm_client import ScriptedClient
 
 CASE = {"title": "Valid transfer", "steps": ["do"], "expected": "done"}
 VALID = json.dumps({"test_cases": [CASE]})
 STORY = Story("s", "a story", "some criteria")
-
-
-class ScriptedClient:
-    """Returns canned responses in order and records the prompts it was given."""
-
-    def __init__(self, *responses):
-        self.responses = list(responses)
-        self.prompts = []
-        self.kwargs = []
-
-    def generate(self, prompt, **kw):
-        self.prompts.append(prompt)
-        self.kwargs.append(kw)
-        return LLMResponse(self.responses.pop(0), "fake", 0.0)
 
 
 def test_valid_first_try_makes_one_call_in_json_mode():

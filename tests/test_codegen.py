@@ -12,7 +12,7 @@ from ai_testgen.codegen import (
     write_test_file,
 )
 from ai_testgen.schema import TestCase
-from framework.llm_client import LLMResponse
+from framework.llm_client import ScriptedClient
 
 CASE = TestCase(title="Open account", steps=["open page"], expected="Account Opened!")
 GOOD = (
@@ -59,24 +59,15 @@ def test_prompt_contains_case_and_page_objects():
     assert "{testcase}" not in prompt and "{page_objects}" not in prompt
 
 
-class Scripted:
-    def __init__(self, *outs):
-        self.outs, self.prompts = list(outs), []
-
-    def generate(self, prompt, **kw):
-        self.prompts.append(prompt)
-        return LLMResponse(self.outs.pop(0), "fake", 0.0)
-
-
 def test_generate_retries_with_error_feedback():
-    client = Scripted("def test_x(:\n", f"```python\n{GOOD}```")
+    client = ScriptedClient("def test_x(:\n", f"```python\n{GOOD}```")
     assert generate_test_code(client, CASE) == GOOD
     assert "SyntaxError" in client.prompts[1]
 
 
 def test_generate_gives_up():
     with pytest.raises(CodegenError):
-        generate_test_code(Scripted("bad", "bad"), CASE, max_retries=1)
+        generate_test_code(ScriptedClient("bad", "bad"), CASE, max_retries=1)
 
 
 def test_write_test_file_names_by_story_index_and_title(tmp_path):
@@ -93,7 +84,7 @@ def test_prompt_includes_page_context_or_fallback():
 
 
 def test_generate_passes_page_context_into_prompt():
-    client = Scripted(GOOD)
+    client = ScriptedClient(GOOD)
     generate_test_code(client, CASE, page_context="CTX-MARKER")
     assert "CTX-MARKER" in client.prompts[0]
 

@@ -9,6 +9,8 @@ import json
 import sys
 from pathlib import Path
 
+from scripts.flags import parse_flags
+
 ROOT = Path(__file__).resolve().parent.parent
 
 
@@ -22,7 +24,7 @@ def score(rows: list[dict], truth: dict) -> dict:
 
 def main(argv: list[str]) -> None:
     """Print the score for the summary in `--dir`."""
-    flags = dict(a[2:].split("=", 1) for a in argv if a.startswith("--") and "=" in a)
+    flags, _ = parse_flags(argv, __doc__)
     folder = ROOT / flags.get("dir", "reports/bugs")
     truth = json.loads((ROOT / "reports/bugs/ground_truth.json").read_text())["failures"]
     summary = json.loads((folder / "summary.json").read_text())
