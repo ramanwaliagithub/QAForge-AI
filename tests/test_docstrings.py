@@ -14,7 +14,7 @@ MIN_LINES = 8
 
 def _sources():
     files = [ROOT / "conftest.py"]
-    for folder in ("framework", "ai_testgen", "scripts"):
+    for folder in ("framework", "ai_testgen", "scripts", "rag_app"):
         files += sorted((ROOT / folder).rglob("*.py"))
     return [f for f in files if not SKIP_PARTS & set(f.parts) and not any(p.startswith("samples") for p in f.parts)]
 

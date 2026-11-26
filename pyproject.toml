@@ -4,6 +4,7 @@ version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = [
     "faker>=40.54.0",
+    "fastapi>=0.165.0",
     "mcp>=2.3.0",
     "ollama>=0.6.3",
     "playwright>=1.63.0",
@@ -43,7 +44,7 @@ ignore = [
 
 [tool.mypy]
 python_version = "3.11"
-files = ["framework", "ai_testgen", "scripts"]
+files = ["framework", "ai_testgen", "scripts", "rag_app"]
 exclude = ["ai_testgen/generated/"]
 ignore_missing_imports = true
 warn_unused_ignores = true

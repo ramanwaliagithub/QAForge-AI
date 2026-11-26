@@ -1,0 +1,20 @@
+[
+  {"id": "registration", "title": "Registering as a new customer",
+   "text": "To become a customer, open the Register page and fill in every field: first name, last name, address, city, state, zip code, phone number, SSN, a username and a password (the password is typed twice). When the form is accepted you are logged in straight away and your first account is created for you."},
+  {"id": "first-account", "title": "Your first account",
+   "text": "A new customer starts with one account, with a balance of $515.50. The Accounts Overview page lists every account with its balance and available amount, and a total at the bottom. The balance includes deposits that may be subject to holds."},
+  {"id": "open-account", "title": "Opening another account",
+   "text": "Open New Account lets you choose CHECKING or SAVINGS. A minimum of $100.00 must be deposited into the new account when it is opened. You choose an existing account to transfer the funds from."},
+  {"id": "transfer", "title": "Transferring funds between your accounts",
+   "text": "Transfer Funds moves money from one of your accounts to another. Enter the amount, choose the account to take it from and the account to put it in, and submit. A successful transfer shows the heading 'Transfer Complete!' with the amount and both account numbers."},
+  {"id": "bill-pay", "title": "Paying a bill",
+   "text": "Bill Pay asks for the payee's name, address, city, state, zip code and phone number, the payee's account number (entered twice; the two must match), the amount, and the account to pay from. Every field is required. A successful payment shows a confirmation with the payee, the amount and the account it came from, and the amount is taken from that account."},
+  {"id": "find-transactions", "title": "Finding transactions",
+   "text": "Find Transactions searches one account. You can search by transaction ID, by a single date, by a date range (dates are typed as MM-DD-YYYY), or by amount."},
+  {"id": "update-profile", "title": "Updating your contact information",
+   "text": "Update Contact Info lets you change your first name, last name, address, city, state, zip code and phone number. Your username and password are not changed there."},
+  {"id": "loan", "title": "Requesting a loan",
+   "text": "Request Loan asks for a loan amount, a down payment and the account the down payment is taken from."},
+  {"id": "log-out", "title": "Logging out",
+   "text": "The Log Out link in the left-hand menu ends your session and returns you to the login page."}
+]
