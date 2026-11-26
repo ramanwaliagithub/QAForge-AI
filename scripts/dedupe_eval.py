@@ -16,9 +16,10 @@ from typing import Any
 from dotenv import load_dotenv
 
 from ai_testgen.bug_report import BugReport
-from ai_testgen.duplicates import SIMILAR_THRESHOLD, cosine, embedding_text, fingerprint
+from ai_testgen.duplicates import SIMILAR_THRESHOLD, embedding_text, fingerprint
 from framework.healing.collector import load_failure_context
 from framework.llm_client import get_client
+from framework.similarity import cosine
 from scripts.flags import parse_flags
 
 ROOT = Path(__file__).resolve().parent.parent

@@ -6,7 +6,7 @@ from pyflakes.api import check
 from pyflakes.reporter import Reporter
 
 ROOT = Path(__file__).resolve().parent.parent
-FOLDERS = ("framework", "ai_testgen", "scripts", "tests")
+FOLDERS = ("framework", "ai_testgen", "scripts", "rag_app", "tests")
 
 
 class _Collect:

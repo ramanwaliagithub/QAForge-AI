@@ -5,8 +5,9 @@ from pathlib import Path
 import pytest
 
 from ai_testgen.bug_report import BugReport
-from ai_testgen.duplicates import SIMILAR_THRESHOLD, DuplicateIndex, cosine, embedding_text, fingerprint
+from ai_testgen.duplicates import SIMILAR_THRESHOLD, DuplicateIndex, embedding_text, fingerprint
 from framework.healing.collector import load_failure_context
+from framework.similarity import cosine
 
 
 class WordEmbedder:

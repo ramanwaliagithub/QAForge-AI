@@ -5,7 +5,6 @@ exact, cheap, and blind to anything phrased differently. An *embedding* of the d
 (AUC 0.93) but no threshold separates duplicates from look-alikes cleanly, so its match is only a pointer for a person. Nothing is merged or closed.
 """
 import json
-import math
 import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -13,6 +12,7 @@ from pathlib import Path
 from ai_testgen.bug_report import BugReport
 from framework.healing.collector import FailureContext
 from framework.llm_client import LLMClient
+from framework.similarity import cosine
 
 SIMILAR_THRESHOLD = 0.75  # fitted on 11 failures: precision 0.75, recall 0.5. The first guess of 0.85 found none of the 6 duplicate pairs
 
@@ -24,12 +24,6 @@ class Match:
     id: str
     similarity: float
     kind: str = "similar"  # "same_failure" (equal fingerprints, similarity 1.0) or "similar" (embedding at or above the threshold)
-
-
-def cosine(a: list[float], b: list[float]) -> float:
-    """Cosine similarity of two vectors; 0.0 when either has no length (an empty embedding resembles nothing)."""
-    norm = math.sqrt(sum(x * x for x in a)) * math.sqrt(sum(y * y for y in b))
-    return sum(x * y for x, y in zip(a, b, strict=True)) / norm if norm else 0.0
 
 
 def embedding_text(report: BugReport) -> str:

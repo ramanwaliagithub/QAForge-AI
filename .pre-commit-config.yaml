@@ -9,7 +9,7 @@ repos:
         language: system
         types: [python]
       - id: mypy
-        name: mypy (framework, ai_testgen, scripts)
+        name: mypy (framework, ai_testgen, scripts, rag_app)
         entry: uv run mypy
         language: system
         types: [python]

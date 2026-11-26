@@ -13,7 +13,7 @@ pytest + Playwright (sync API) UI tests for ParaBank, with AI-assisted testing t
 
 ## Layout
 `framework/pages/` page objects, `tests/` tests, `conftest.py` fixtures, `specs/` specs to implement (if one is given), `docs/` notes and
-checklists, `reports/` committed evidence. `ai_testgen/` and `framework/healing/` are AI tooling: leave them alone unless asked.
+checklists, `reports/` committed evidence. `ai_testgen/` and `framework/healing/` are AI tooling: leave them alone unless asked. `rag_app/` is the LLM service that Phase 4 evaluates.
 
 ## Rules
 
@@ -48,7 +48,7 @@ Tests
 - [T9] Break it on purpose once: change one expected value and see the test fail for the right reason. A test that cannot fail is not a test.
 
 Code
-- [C1] A docstring on every module, public class and public function of 8 or more lines in `framework/`, `scripts/`, `ai_testgen/` and `conftest.py` (`tests/test_docstrings.py`). Type hints on public signatures.
+- [C1] A docstring on every module, public class and public function of 8 or more lines in `framework/`, `scripts/`, `ai_testgen/`, `rag_app/` and `conftest.py` (`tests/test_docstrings.py`). Type hints on public signatures.
 - [C2] pyflakes clean (`tests/test_lint.py`); every `.py` file parses (`tests/test_sources_parse.py`).
 - [C3] No new dependency unless asked. Comments explain why, not what.
 

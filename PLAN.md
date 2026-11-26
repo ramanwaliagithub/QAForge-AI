@@ -43,6 +43,7 @@ Critical decisions are asked before building and recorded here.
 | 2026-11-17 | Test data sources (Day 22) | `framework/data/`: identities (name, address, phone, SSN) come from a pluggable source (Faker by default, a model, or a frozen reviewed file) and are validated by the same strict rules; usernames, passwords and amounts always come from a seeded generator in the factory. One base seed per run, printed in the report header (`--data-seed`), one derived seed per xdist worker | A model is never trusted for anything that must be unique or exact. A model source is not repeatable: freeze and review the result before tests depend on it. Measured on one local model (llama3.1:8b), 3 runs of 30 |
 | 2026-11-20 | Bug report drafts and duplicate detection (Day 23) | A draft's evidence quotes are checked against the failure (invented ones dropped and listed); the model sees page text, not the screenshot. Duplicates: an exact **fingerprint** (kind, locator, message shape) means "same failure"; **embedding similarity** (nomic-embed-text, 0.75) only means "similar, look". Triage and severity are labelled as drafts | The first guess of 0.85 found 0 of 6 duplicate pairs; embeddings rank well (AUC 0.93) but do not separate duplicates from look-alikes. Triage was 6/11 right (7/11 with a stricter prompt tuned on the same data), never "unclear". Ground truth and fingerprint are mine, 11 failures: a first measurement |
 | 2026-11-25 | Phase 3 closed (Day 24) | The playbook is `docs/ai-dev-workflow.md`: delegate scaffolding, drafts and proposals; keep what "correct" means, uniqueness, and the decisions; measured checks before reading code. One shared `ScriptedClient` for model-free tests and one flag parser for the scripts; the README diagram is checked by a test | Every claim in the playbook is n=1 to n=3 and one model; its Open questions lists three things not tried. Phase 4 (evals) is where those numbers get a proper design |
+| 2026-11-26 | Target of Phase 4 and how model-calling tests run (Day 25) | `rag_app/`: FastAPI `/ask`, retrieval over 9 passages written from the live ParaBank pages, llama3.1:8b at temperature 0.7, model client injectable. Tests that call the real model carry the `eval` marker and are **deselected by default** (`pytest -m eval` to run them) | They are slow and cannot repeat exactly, so they must not be part of every run. Added dependency: fastapi (the plan asks for it). The service is deliberately ordinary; the injected defects (not the service) are what the evals are measured against |
 | 2026-10-05 | Remote | `https://github.com/ramanwaliagithub/QAForge-AI.git` | |
 
 ## Open-source stack
@@ -274,10 +275,10 @@ qaforge-ai/
 # PHASE 4: LLM Evals (Days 25-37)
 
 ### Day 25: Why LLM testing is different
-- [ ] Notes: non-determinism, subjective quality, metrics vs assertions
-- [ ] Build a tiny target: `rag_app/` stub or a simple FastAPI `/ask` endpoint backed by Ollama
-- [ ] Write 5 plain pytest checks on it (status, schema, latency) and see why they are not enough
-- [ ] Define quality dimensions: correctness, faithfulness, safety, consistency
+- [x] Notes: non-determinism, subjective quality, metrics vs assertions
+- [x] Build a tiny target: `rag_app/` stub or a simple FastAPI `/ask` endpoint backed by Ollama
+- [x] Write 5 plain pytest checks on it (status, schema, latency) and see why they are not enough
+- [x] Define quality dimensions: correctness, faithfulness, safety, consistency
 - Commit: `feat: sample llm service under test`
 
 ### Day 26: Golden datasets
