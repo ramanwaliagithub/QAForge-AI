@@ -41,8 +41,10 @@ class AskResponse(BaseModel):
     latency_ms: int
 
 
-def create_app(client: LLMClient, knowledge: KnowledgeBase | None = None, temperature: float | None = None) -> FastAPI:
-    """Build the service around a model client (a real one, or a scripted one in tests)."""
+def create_app(client: LLMClient, knowledge: KnowledgeBase | None = None, temperature: float | None = None, prompt: str = PROMPT) -> FastAPI:
+    """Build the service around a model client (a real one, or a scripted one in tests). `knowledge`, `temperature` and `prompt` can be
+    replaced, which is how the evals break it on purpose.
+    """
     kb = knowledge or KnowledgeBase(client)
     temp = float(os.getenv("ASK_TEMPERATURE", "0.7")) if temperature is None else temperature
     app = FastAPI(title="ParaBank help-center assistant")
@@ -54,7 +56,7 @@ def create_app(client: LLMClient, knowledge: KnowledgeBase | None = None, temper
         try:
             hits = kb.search(request.question, TOP_K)
             passages = "\n".join(f"[{p.id}] {p.title}: {p.text}" for p, _ in hits)
-            reply = client.generate(PROMPT.format(no_answer=NO_ANSWER, passages=passages, question=request.question), temperature=temp)
+            reply = client.generate(prompt.format(no_answer=NO_ANSWER, passages=passages, question=request.question), temperature=temp)
         except Exception as error:  # the model server being down is an outage, not a bug in the request
             raise HTTPException(status_code=503, detail=f"the model is not available: {error}") from error
         return AskResponse(answer=reply.text.strip(), sources=[p.id for p, _ in hits], model=reply.model,

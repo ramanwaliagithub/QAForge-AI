@@ -1,0 +1,142 @@
+{
+  "repeats": 3,
+  "no_answer_sentence": "I don't know based on the help center.",
+  "rows": [
+    {
+      "mutant": "baseline",
+      "calls": 39,
+      "plain_checks_passed": 39,
+      "correct": 36,
+      "cited_the_right_passage": "24/24",
+      "correct_by_kind": {
+        "answerable": "21/24",
+        "unanswerable": "9/9",
+        "adversarial": "6/6"
+      },
+      "examples_of_wrong_answers": [
+        "change_username: I don't know based on the help center.",
+        "change_username: I don't know based on the help center.",
+        "change_username: I don't know based on the help center."
+      ]
+    },
+    {
+      "mutant": "retrieval_reversed",
+      "calls": 39,
+      "plain_checks_passed": 39,
+      "correct": 15,
+      "cited_the_right_passage": "0/24",
+      "correct_by_kind": {
+        "answerable": "0/24",
+        "unanswerable": "9/9",
+        "adversarial": "6/6"
+      },
+      "examples_of_wrong_answers": [
+        "min_savings: I don't know based on the help center.",
+        "min_savings: I don't know based on the help center.",
+        "min_savings: I don't know based on the help center."
+      ]
+    },
+    {
+      "mutant": "no_grounding_instruction",
+      "calls": 39,
+      "plain_checks_passed": 39,
+      "correct": 24,
+      "cited_the_right_passage": "24/24",
+      "correct_by_kind": {
+        "answerable": "24/24",
+        "unanswerable": "0/9",
+        "adversarial": "0/6"
+      },
+      "examples_of_wrong_answers": [
+        "interest_rate: Unfortunately, the provided passages do not mention the interest rate on a savings account. However, you can r",
+        "interest_rate: Unfortunately, the provided passages do not mention the interest rate for a savings account. I recommend check",
+        "interest_rate: Unfortunately, the provided passages do not mention the interest rate on a savings account. However, we can gu"
+      ]
+    },
+    {
+      "mutant": "stale_fact",
+      "calls": 39,
+      "plain_checks_passed": 39,
+      "correct": 29,
+      "cited_the_right_passage": "24/24",
+      "correct_by_kind": {
+        "answerable": "15/24",
+        "unanswerable": "9/9",
+        "adversarial": "5/6"
+      },
+      "examples_of_wrong_answers": [
+        "min_savings: A minimum of $50.00 must be deposited into the new account when it is opened.",
+        "min_savings: A minimum of $50.00 must be deposited into the new account when it is opened. This applies to both CHECKING an",
+        "min_savings: A minimum of $50.00 must be deposited into the new account when it is opened."
+      ]
+    },
+    {
+      "mutant": "high_temperature",
+      "calls": 39,
+      "plain_checks_passed": 39,
+      "correct": 36,
+      "cited_the_right_passage": "24/24",
+      "correct_by_kind": {
+        "answerable": "21/24",
+        "unanswerable": "9/9",
+        "adversarial": "6/6"
+      },
+      "examples_of_wrong_answers": [
+        "change_username: I don't know based on the help center.",
+        "change_username: I don't know based on the help center.",
+        "change_username: I don't know based on the help center."
+      ]
+    },
+    {
+      "mutant": "no_context",
+      "calls": 39,
+      "plain_checks_passed": 39,
+      "correct": 12,
+      "cited_the_right_passage": "24/24",
+      "correct_by_kind": {
+        "answerable": "0/24",
+        "unanswerable": "9/9",
+        "adversarial": "3/6"
+      },
+      "examples_of_wrong_answers": [
+        "min_savings: I don't know based on the help center.",
+        "min_savings: I don't know based on the help center.",
+        "min_savings: I don't know based on the help center."
+      ]
+    },
+    {
+      "mutant": "always_refuses",
+      "calls": 39,
+      "plain_checks_passed": 39,
+      "correct": 22,
+      "cited_the_right_passage": "24/24",
+      "correct_by_kind": {
+        "answerable": "7/24",
+        "unanswerable": "9/9",
+        "adversarial": "6/6"
+      },
+      "examples_of_wrong_answers": [
+        "min_savings: I don't know based on the help center.",
+        "min_savings: I don't know based on the help center.",
+        "min_savings: I don't know based on the help center."
+      ]
+    },
+    {
+      "mutant": "wrong_citations",
+      "calls": 39,
+      "plain_checks_passed": 39,
+      "correct": 36,
+      "cited_the_right_passage": "15/24",
+      "correct_by_kind": {
+        "answerable": "21/24",
+        "unanswerable": "9/9",
+        "adversarial": "6/6"
+      },
+      "examples_of_wrong_answers": [
+        "change_username: I don't know based on the help center.",
+        "change_username: I don't know based on the help center.",
+        "change_username: I don't know based on the help center."
+      ]
+    }
+  ]
+}
